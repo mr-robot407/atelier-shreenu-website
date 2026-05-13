@@ -13,26 +13,26 @@ export function Hero() {
           className="object-cover"
           sizes="(max-width: 768px) 100vw, 50vw"
         />
-        <div className="absolute inset-0 bg-bone/30 md:hidden" />
+        <div className="absolute inset-0 bg-warm-ivory/30 md:hidden" />
       </div>
 
       <div className="relative z-10 grid min-h-screen md:grid-cols-2">
-        <div className="flex flex-col justify-end bg-bone/95 px-6 pb-20 pt-32 backdrop-blur-sm md:bg-bone md:px-20 md:pb-24 md:pt-40 md:backdrop-blur-none">
+        <div className="flex flex-col justify-end bg-warm-ivory/95 px-6 pb-20 pt-32 backdrop-blur-sm md:bg-warm-ivory md:px-20 md:pb-24 md:pt-40 md:backdrop-blur-none">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute left-0 top-1/3 -z-0 select-none font-serif leading-none text-ink/[0.04]"
+            className="pointer-events-none absolute left-0 top-1/3 -z-0 select-none font-serif leading-none text-charcoal/[0.04]"
             style={{ fontSize: "clamp(140px, 18vw, 240px)" }}
-            >
+          >
             Atelier
             <br />
             Shreenu
-        </div>
+          </div>
 
           <FadeIn className="relative">
-            <div className="mb-6 flex items-center gap-3 text-micro text-terracotta">
-              <span>Atelier Shreenu</span>
+            <div className="mb-6 flex items-center gap-3 text-micro text-burgundy">
+              <span>ATELIER SHREENU</span>
               <span>—</span>
-              <span>Est. 2012</span>
+              <span>EST. 2012</span>
             </div>
 
             <h1 className="font-serif text-[56px] leading-[1.04] tracking-tight md:text-[96px]">
@@ -42,7 +42,7 @@ export function Hero() {
               soulful design.
             </h1>
 
-            <p className="mt-8 max-w-md text-base leading-relaxed text-ink/75 md:text-lg">
+            <p className="mt-8 max-w-md text-base leading-relaxed text-charcoal/75 md:text-lg">
               Architecture and interiors rooted in place — by Ranjeet & Shreenu Mukherjee,
               practising across India since 2012.
             </p>
@@ -51,14 +51,13 @@ export function Hero() {
           <FadeIn delay={0.3} className="mt-12 flex items-center gap-8 md:mt-16">
             <a
               href="#work"
-              className="text-micro border border-ink/60 px-7 py-3.5 transition-all duration-500 hover:bg-ink hover:text-bone"
+              className="text-micro border border-charcoal/60 px-7 py-3.5 transition-all duration-500 hover:bg-charcoal hover:text-warm-ivory"
             >
               See the work
             </a>
-
             <a
               href="#approach"
-              className="text-micro border-b border-ink/40 pb-1 transition-all hover:border-ink"
+              className="text-micro border-b border-charcoal/40 pb-1 transition-all hover:border-burgundy"
             >
               Our approach
             </a>

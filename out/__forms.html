@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Netlify Forms — detection skeleton</title>
+  </head>
+  <body>
+    <form name="enquiry" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="enquiry" />
+      <input name="bot-field" />
+      <input name="name" />
+      <input name="email" type="email" />
+      <input name="phone" type="tel" />
+      <input name="location" />
+      <select name="projectType">
+        <option value="architecture">Architecture</option>
+        <option value="interior">Interior Design</option>
+        <option value="both">Architecture + Interiors</option>
+        <option value="turnkey">Turnkey</option>
+      </select>
+      <textarea name="message"></textarea>
+    </form>
+  </body>
+</html>

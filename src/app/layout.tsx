@@ -1,15 +1,16 @@
+import { Shutter } from "@/components/ui/Shutter";
+
 import type { Metadata } from "next";
 import { serif, sans } from "@/styles/fonts";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
-// @ts-ignore
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://thevrindavanproject.com"),
+  metadataBase: new URL("https://ateliershreenu.com"),
   title: {
-  default: "Atelier Shreenu — Architecture and Interior Design",
-  template: "%s · Atelier Shreenu",
- },
+    default: "Atelier Shreenu — Architecture and Interior Design",
+    template: "%s · Atelier Shreenu",
+  },
   description:
     "Architecture and interior design studio based in Gurugram, specialising in residential, hospitality, and ecologically sensitive design across India. By Ranjeet & Shreenu Mukherjee.",
   keywords: [
@@ -20,16 +21,15 @@ export const metadata: Metadata = {
     "residential architect Gurgaon",
     "Ranjeet Mukherjee architect",
     "Shreenu Mukherjee interior designer",
-    "The Vrindavan Project",
     "Atelier Shreenu",
   ],
-  authors: [{ name: "The Vrindavan Project" }],
+  authors: [{ name: "Atelier Shreenu" }],
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://thevrindavanproject.com",
-    siteName: "The Vrindavan Project",
-    title: "The Vrindavan Project — Architecture and Interior Design",
+    url: "https://ateliershreenu.com",
+    siteName: "Atelier Shreenu",
+    title: "Atelier Shreenu — Architecture and Interior Design",
     description:
       "Contextual, conscious and soulful design. Architecture and interiors rooted in place.",
     images: [
@@ -37,13 +37,13 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "The Vrindavan Project",
+        alt: "Atelier Shreenu",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Vrindavan Project",
+    title: "Atelier Shreenu",
     description:
       "Contextual, conscious and soulful design. Architecture and interiors rooted in place.",
     images: ["/og-image.jpg"],
@@ -61,7 +61,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${serif.variable} ${sans.variable}`}>
-      <body>
+      <body className={`${serif.variable} ${sans.variable} font-sans antialiased`}>
+        <Shutter />
         {children}
         <WhatsAppButton />
         {/* Structured data: Architect / LocalBusiness */}
@@ -71,14 +72,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": ["Architect", "LocalBusiness"],
-              name: "The Vrindavan Project",
-              alternateName: "Atelier Shreenu",
-              url: "https://thevrindavanproject.com",
+              name: "Atelier Shreenu",
+              url: "https://ateliershreenu.com",
               telephone: "+91-95601-07193",
-              email: "thevrindavanproject@gmail.com",
+              email: "info@ateliershreenu.com",
               address: {
                 "@type": "PostalAddress",
-                streetAddress: "Celebrity Homes, Palam Vihar",
+                streetAddress: "Palam Vihar",
                 addressLocality: "Gurugram",
                 addressRegion: "Haryana",
                 postalCode: "122017",

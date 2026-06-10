@@ -32,7 +32,7 @@ const config: Config = {
         sans: ["var(--font-jost)", "system-ui", "sans-serif"],
       },
       fontSize: {
-        micro: ["0.6875rem", { lineHeight: "1.2", letterSpacing: "0.08em" }], // 11px - Jost labels
+        micro: ["0.75rem", { lineHeight: "1.2", letterSpacing: "0.08em" }], // 12px - Jost labels
       },
       letterSpacing: {
         tight: "-0.02em",
@@ -44,6 +44,7 @@ const config: Config = {
       animation: {
         "fade-in": "fadeIn 0.6s ease-out forwards",
         "slide-up": "slideUp 0.8s ease-out forwards",
+        "ken-burns": "kenBurns 2.75s ease-out forwards",
       },
       keyframes: {
         fadeIn: {
@@ -53,6 +54,10 @@ const config: Config = {
         slideUp: {
           "0%": { opacity: "0", transform: "translateY(20px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        kenBurns: {
+          "0%": { transform: "scale(1.07)" },
+          "100%": { transform: "scale(1)" },
         },
       },
     },

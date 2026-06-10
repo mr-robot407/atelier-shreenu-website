@@ -7,13 +7,13 @@ export type Testimonial = {
 export const testimonials: Testimonial[] = [
   {
     quote:
-      "Vrindavan Project offers a fantastic quality of service throughout the whole process of designing and building. Ranjeet and Shreenu are professional, pleasant, capable, and above all, easy-going and enlightened human beings. They designed our house with the present and future needs of our family at the heart of it, and the result is a beautiful, highly efficient and sustainable building.",
+      "Atelier Shreenu (formerly The Vrindavan Project) offers a fantastic quality of service throughout the whole process of designing and building. Ranjeet and Shreenu are professional, pleasant, capable, and above all, easy-going and enlightened human beings. They designed our house with the present and future needs of our family at the heart of it, and the result is a beautiful, highly efficient and sustainable building.",
     author: "Sanjiv Gupta",
     role: "Client — Residential Home",
   },
   {
     quote:
-      "Passionate, adaptive, a good ear for feedback, and knowledgeable. It was a pleasure understanding the nuances of design and architecture while engaging with The Vrindavan Project. Absolutely recommended.",
+      "Passionate, adaptive, a good ear for feedback, and knowledgeable. It was a pleasure understanding the nuances of design and architecture while engaging with Atelier Shreenu. Absolutely recommended.",
     author: "Janderpal Singh Bhathal",
     role: "Client",
   },
@@ -25,7 +25,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     quote:
-      "If there's a design firm in India that understands and shares the sensibilities of the client and that of the environment, then it is indeed The Vrindavan Project.",
+      "If there's a design firm in India that understands and shares the sensibilities of the client and that of the environment, then it is indeed Atelier Shreenu.",
     author: "Ashima Sachdeva-Khemka",
     role: "Client",
   },

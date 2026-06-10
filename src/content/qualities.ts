@@ -6,39 +6,33 @@ export type Quality = {
 
 export const qualities: Quality[] = [
   {
-    title: "An Evolving Practice, Not a Formula",
+    title: "Material Excellence",
     description:
-      "We deliberately avoid a signature style. Each project is a fresh response to its brief, its site, and its client — which is why our portfolio spans heritage homes, farmhouses, cafés, and studio apartments with no two looking alike.",
-    icon: "compass",
-  },
-  {
-    title: "Ecological Conviction",
-    description:
-      "Sustainable design is not an add-on for us. It has been central to our practice since our years in Auroville. We bring material knowledge, passive design strategies, and ecological sensitivity to every commission.",
-    icon: "leaf",
-  },
-  {
-    title: "Published, Peer-Recognised Work",
-    description:
-      "Our projects have been featured in Architectural Digest, Elle Decor, and ArchDaily — not through self-promotion, but because the work stands up to editorial scrutiny.",
-    icon: "award",
-  },
-  {
-    title: "Two Disciplines, One Vision",
-    description:
-      "With Ranjeet's architectural training and Shreenu's interior design expertise working in tandem from the outset, architecture and interiors are conceived as a single integrated experience rather than handed off between separate teams.",
+      "Every surface begins with a question of provenance. We source materials for their character, longevity, and relationship to the climate they inhabit — not for trend or convenience. Ecological sensitivity lives within this conviction, not separate from it.",
     icon: "layers",
   },
   {
-    title: "Honest, Direct Engagement",
+    title: "Cultural Sensitivity",
     description:
-      "We take on a limited number of projects at a time to ensure that every client receives the founders' personal attention from brief to handover.",
-    icon: "users",
+      "Design rooted in Indian craft, climate, and context. We work with local artisans and regional materials, drawing from a tradition of making that honours the place where each building will stand.",
+    icon: "map-pin",
   },
   {
-    title: "Rooted in Indian Context",
+    title: "Architectural Clarity",
     description:
-      "Every design decision responds to India's climate, craft traditions, and material culture. We work with local artisans, regional materials, and construction techniques that honor the place where the building will stand.",
-    icon: "map-pin",
+      "Plans with calm logic and structural intent. Architecture and interiors conceived as a single integrated experience — with Ranjeet's architectural rigour and Shreenu's interior expertise working in tandem from the first line.",
+    icon: "compass",
+  },
+  {
+    title: "Quiet Authority",
+    description:
+      "A voice of restraint, never self-promotion. Our projects have been featured in Architectural Digest, Elle Decor, and ArchDaily — not through outreach, but because the work stands up to editorial scrutiny.",
+    icon: "award",
+  },
+  {
+    title: "Timeless Intention",
+    description:
+      "Work that resists trend cycles. We take on a limited number of projects at a time so that every client receives the founders' personal attention — from the first conversation through to handover.",
+    icon: "users",
   },
 ];

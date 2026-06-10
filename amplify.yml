@@ -3,8 +3,7 @@ frontend:
   phases:
     preBuild:
       commands:
-        - node --version
-        - npm ci --quiet
+        - npm ci --loglevel=error
     build:
       commands:
         - npm run build

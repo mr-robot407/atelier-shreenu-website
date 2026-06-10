@@ -52,10 +52,9 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon-as.svg", type: "image/svg+xml" },
-      { url: "/favicon-maroon.jpg", sizes: "any" },
+      { url: "/favicon-beige.jpg", sizes: "any" },
     ],
-    apple: "/favicon-maroon.jpg",
+    apple: "/favicon-beige.jpg",
   },
 };
 

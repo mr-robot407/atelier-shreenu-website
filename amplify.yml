@@ -7,11 +7,8 @@ frontend:
     build:
       commands:
         - npm run build
-    postBuild:
-      commands:
-        - ls -la out/ && echo "BUILD SUCCESS - out/ exists"
   artifacts:
-    baseDirectory: out
+    baseDirectory: .next
     files:
       - '**/*'
   cache:

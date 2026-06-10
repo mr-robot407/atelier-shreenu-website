@@ -4,7 +4,7 @@ frontend:
     preBuild:
       commands:
         - node --version
-        - npm ci
+        - npm ci --quiet
     build:
       commands:
         - npm run build

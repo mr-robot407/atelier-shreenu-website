@@ -16,8 +16,8 @@ export function FoundersNote() {
           <FadeIn delay={0.1} className="col-span-12 md:col-span-5">
             <div className="relative aspect-[4/5] overflow-hidden md:aspect-[3/4]">
               <Image
-                src="/images/team/founders.jpg"
-                alt="Ranjeet and Shreenu Mukherjee — Founders of Atelier Shreenu"
+                src="/images/team/A+D.jpg"
+                alt="Shreenu and Ranjeet Mukherjee — Founders of Atelier Shreenu"
                 fill
                 className="object-cover grayscale-[15%] transition-all duration-700 hover:grayscale-0"
                 sizes="(max-width: 768px) 100vw, 42vw"
@@ -31,40 +31,47 @@ export function FoundersNote() {
           <div className="col-span-12 md:col-span-7">
             <FadeIn delay={0.15}>
               <h2 className="font-serif text-[40px] leading-tight md:text-[56px]">
-                Ranjeet &amp;<br />
-                <span className="italic">Shreenu</span> Mukherjee.
+                Shreenu &amp;<br />
+                <span className="italic">Ranjeet</span> Mukherjee.
               </h2>
             </FadeIn>
 
             <div className="mt-8 space-y-6 text-base leading-relaxed text-ink/75 md:mt-10 md:text-[17px]">
               <FadeIn delay={0.2}>
                 <p>
-                  Ranjeet attended The Doon School before graduating from the Faculty of
-                  Architecture, CEPT University, Ahmedabad. He then spent five years as a
-                  citizen of Auroville — where he met Shreenu, an interior designer trained
-                  at L.S. Raheja School of Architecture, Mumbai.
+                  Shreenu is an interior designer trained at L.S. Raheja School of
+                  Architecture, Mumbai. She spent seven years working in Bombay before
+                  co-founding the practice in 2012. She leads operations and interior
+                  design, bringing material sensitivity and considered detail to every
+                  interior.
                 </p>
               </FadeIn>
 
               <FadeIn delay={0.25}>
                 <p>
-                  In 2012, they embarked upon a journey to explore ecologically sensitive,
-                  contextually appropriate design and construction techniques. Their practice
-                  is an evolving process — one that grows organically and adapts to each task
-                  with complete flexibility.
+                  Ranjeet attended The Doon School before graduating from the Faculty of
+                  Architecture, CEPT University, Ahmedabad. He is the business head and
+                  architecture lead of the practice, bringing rigour and spatial clarity
+                  to every project.
                 </p>
               </FadeIn>
 
               <FadeIn delay={0.3}>
                 <p className="text-ink/65">
-                  The overall resultant continuum is a{" "}
-                  <span className="italic text-ink">&lsquo;Project&rsquo;</span> in itself —
-                  not static or set in any particular form. Vrindavan is a reference to the
-                  Divine abode. Therefore — The Vrindavan Project.
+                  In 2012, they embarked upon a journey to explore ecologically appropriate
+                  design and construction techniques. Their practice is one that grows
+                  organically and adapts to each task with considered intent.
                 </p>
               </FadeIn>
 
               <FadeIn delay={0.35}>
+                <p className="text-ink/80">
+                  Today, that practice continues as Atelier Shreenu —{" "}
+                  <span className="italic">The Cultivated Practice.</span>
+                </p>
+              </FadeIn>
+
+              <FadeIn delay={0.4}>
                 <div className="text-micro mt-10 flex flex-wrap gap-x-8 gap-y-3 border-t border-ink/10 pt-8 text-ink/55">
                   <span>Council of Architecture · CA/2009/44099</span>
                   <span>Indian Institute of Architects · F26195</span>

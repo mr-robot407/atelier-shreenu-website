@@ -1,31 +1,31 @@
 export const site = {
   name: "Atelier Shreenu",
-  tagline: "Architecture and Interior Design",
-  founded: 2012,
+  tagline: "Architecture & Interior Design",
+  founded: 2025,
   description:
-    "Contextual, conscious and soulful design. Architecture and interiors rooted in place.",
+    "Atelier Shreenu — refined architecture & interior design for those who live with intention. Bespoke homes across India. By The Vrindavan Project.",
   founders: "Ranjeet & Shreenu Mukherjee",
 
   contact: {
-    email: "info@ateliershreenu.com", // keeping email same as per brief
+    email: "info@ateliershreenu.com",
     phone: "+91 95601 07193",
     phoneIntl: "919560107193",
     whatsapp: "919560107193",
     address: {
-      line1: "Celebrity Homes",
-      line2: "Palam Vihar",
+      line1: "Palam Vihar",
+      line2: "Gurugram",
       city: "Gurugram",
       state: "Haryana",
       postal: "122017",
       country: "India",
     },
-    mapsUrl: "https://g.page/The-Vrindavan-Project?share", // keeping map same
+    mapsUrl: "https://g.page/The-Vrindavan-Project?share",
   },
 
   social: {
     instagram: "https://www.instagram.com/ateliershreenu/",
-    facebook: "https://www.facebook.com/The.Vrindavan.Project", // brief said keep old
-    linkedin: "https://www.linkedin.com/company/the-vrindavan-project/", // brief said keep old
+    facebook: "https://www.facebook.com/The.Vrindavan.Project",
+    linkedin: "https://www.linkedin.com/company/the-vrindavan-project/",
     youtube: "https://www.youtube.com/@RanjeetMukherjeeArchitect",
   },
 
@@ -37,5 +37,4 @@ export const site = {
     { label: "Contact", href: "#contact" },
   ],
 
-  filmVideoId: "Sb0wXYPINFY",
 };

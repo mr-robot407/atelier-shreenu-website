@@ -1,5 +1,3 @@
-import { Shutter } from "@/components/ui/Shutter";
-
 import type { Metadata } from "next";
 import { serif, sans } from "@/styles/fonts";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
@@ -8,7 +6,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://ateliershreenu.com"),
   title: {
-    default: "Atelier Shreenu — Architecture and Interior Design",
+    default: "Atelier Shreenu — Architecture & Interior Design | by The Vrindavan Project",
     template: "%s · Atelier Shreenu",
   },
   description:
@@ -53,8 +51,11 @@ export const metadata: Metadata = {
     follow: true,
   },
   icons: {
-    icon: "/favicon.svg",
-    apple: "/apple-touch-icon.png",
+    icon: [
+      { url: "/favicon-as.svg", type: "image/svg+xml" },
+      { url: "/favicon-maroon.jpg", sizes: "any" },
+    ],
+    apple: "/favicon-maroon.jpg",
   },
 };
 
@@ -62,7 +63,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${serif.variable} ${sans.variable}`}>
       <body className={`${serif.variable} ${sans.variable} font-sans antialiased`}>
-        <Shutter />
         {children}
         <WhatsAppButton />
         {/* Structured data: Architect / LocalBusiness */}

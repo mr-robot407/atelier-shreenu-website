@@ -1,3 +1,5 @@
+"use client";
+
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
 
@@ -27,8 +29,10 @@ export function Philosophy() {
           <div className="col-span-12 md:col-span-3">
             <FadeIn delay={0.2}>
               <p className="text-sm leading-relaxed text-ink/60">
-                A design and architecture practice based in Gurugram — working across
-                residential, hospitality, and heritage spaces across India since 2012.
+                A practice based in Gurugram, working across residential, hospitality and
+                heritage spaces across India — with roots that reach back to 2012. Today,
+                that practice continues as Atelier Shreenu —{" "}
+                <span className="italic text-ink/75">The Cultivated Practice.</span>
               </p>
             </FadeIn>
           </div>

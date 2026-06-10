@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
@@ -74,7 +76,7 @@ export function UniqueQualities() {
                 <div className="h-full p-8 md:p-10" style={{ backgroundColor: "#F5F1E8" }}>
                   <div className="mb-6 flex items-center gap-4" aria-hidden="true">
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-burgundy/10">
-                      <Icon className="h-5 w-5 text-burgundy" strokeWidth={1.5} />
+                      {Icon && <Icon className="h-5 w-5 text-burgundy" strokeWidth={1.5} />}
                     </div>
                     <div className="h-px flex-1 bg-charcoal/20" />
                   </div>

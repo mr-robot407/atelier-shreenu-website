@@ -1,3 +1,5 @@
+"use client";
+
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { press } from "@/content/press";
@@ -19,12 +21,16 @@ export function Press() {
                 href={p.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-serif text-xl italic text-ink/70 transition-colors hover:text-ink md:text-2xl"
+                className="inline-flex min-h-[44px] cursor-pointer items-center font-serif text-xl italic text-ink/70 transition-colors hover:text-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-ink/50 md:text-2xl"
               >
                 {p.name}
               </a>
             ))}
           </div>
+
+          <p className="mt-8 font-sans text-[13px] italic text-warm-grey">
+            Selected press from our practice, previously known as The Vrindavan Project.
+          </p>
         </FadeIn>
       </Container>
     </section>

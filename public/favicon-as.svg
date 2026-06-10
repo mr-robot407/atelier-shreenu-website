@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" shape-rendering="geometricPrecision">
+  <!-- Burgundy octagonal background -->
+  <polygon
+    points="22,0 78,0 100,22 100,78 78,100 22,100 0,78 0,22"
+    fill="#7D2027"
+  />
+  <!-- Outer cream border -->
+  <polygon
+    points="22,0 78,0 100,22 100,78 78,100 22,100 0,78 0,22"
+    fill="none"
+    stroke="#F0DCC8"
+    stroke-width="2.5"
+  />
+  <!-- Inner cream border (inset 7px) -->
+  <polygon
+    points="28,7 72,7 93,28 93,72 72,93 28,93 7,72 7,28"
+    fill="none"
+    stroke="#F0DCC8"
+    stroke-width="1.5"
+  />
+  <!-- A — drawn first (behind) -->
+  <text
+    x="35"
+    y="64"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="46"
+    font-style="italic"
+    fill="#F0DCC8"
+  >A</text>
+  <!-- S — drawn on top, overlapping A to create monogram effect -->
+  <text
+    x="57"
+    y="64"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="46"
+    font-style="italic"
+    fill="#F0DCC8"
+  >S</text>
+</svg>

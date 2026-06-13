@@ -1,23 +1,15 @@
 "use client";
 
-import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { qualities } from "@/content/qualities";
-import {
-  Compass,
-  Award,
-  Layers,
-  Users,
-  MapPin,
-} from "lucide-react";
+import { Compass, Award, Layers, Users } from "lucide-react";
 
 const iconMap = {
   compass: Compass,
   award: Award,
   layers: Layers,
   users: Users,
-  "map-pin": MapPin,
 };
 
 export function UniqueQualities() {
@@ -28,47 +20,39 @@ export function UniqueQualities() {
     >
       <Container>
 
-        {/* ── Section heading — centered ── */}
+        {/* Section heading — grey (warm-grey) at size 20, same size as PHILOSOPHY */}
         <FadeIn className="text-center mb-12 md:mb-16">
-          <span className="font-sans text-micro tracking-widest text-burgundy uppercase mb-5 block">
-            Why this practice
-          </span>
-          <h2 className="font-serif text-[34px] md:text-[52px] leading-tight text-charcoal">
-            The convictions behind
-            <br />
-            <span className="italic">the practice.</span>
+          <h2
+            className="font-sans font-medium uppercase tracking-widest"
+            style={{ fontSize: "20px", color: "#8C8579" }}
+          >
+            Convictions behind the Studio
           </h2>
         </FadeIn>
 
-        {/* ── Logo seal — centered centerpiece ── */}
+        {/* Logo seal — centred centerpiece */}
         <FadeIn delay={0.18} className="flex flex-col items-center mb-16 md:mb-28">
-
-          {/* Ornamental diamond */}
-          <div className="w-1.5 h-1.5 rotate-45 bg-burgundy/40 mb-8" />
-
           {/* Logo flanked by thin rules */}
           <div className="flex items-center w-full max-w-[480px] gap-8">
-            <div className="flex-1 h-px bg-charcoal/18" style={{ backgroundColor: "rgba(28,28,28,0.18)" }} />
+            <div className="flex-1 h-px" style={{ backgroundColor: "rgba(28,28,28,0.18)" }} />
             <div className="relative w-36 h-36 md:w-48 md:h-48 flex-shrink-0">
-              <Image
+              <img
                 src="/Shreenu logo maroon.jpeg"
                 alt="Atelier Shreenu monogram"
-                fill
-                className="object-contain"
-                sizes="(max-width: 768px) 144px, 192px"
+                draggable={false}
+                className="object-contain w-full h-full select-none"
               />
             </div>
             <div className="flex-1 h-px" style={{ backgroundColor: "rgba(28,28,28,0.18)" }} />
           </div>
 
-          {/* Caption */}
           <p className="font-sans text-micro tracking-widest text-charcoal/40 text-center uppercase mt-6">
             Est. 2012 &ensp;·&ensp; Gurugram, India
           </p>
         </FadeIn>
 
-        {/* ── Qualities grid ── */}
-        <div className="grid grid-cols-1 gap-px bg-charcoal/15 md:grid-cols-2 lg:grid-cols-3">
+        {/* Four convictions grid */}
+        <div className="grid grid-cols-1 gap-px bg-charcoal/15 md:grid-cols-2">
           {qualities.map((q, i) => {
             const Icon = iconMap[q.icon as keyof typeof iconMap];
             return (
@@ -86,23 +70,6 @@ export function UniqueQualities() {
               </FadeIn>
             );
           })}
-
-          {/* 6th cell — studio pull quote */}
-          <FadeIn delay={0.28 + qualities.length * 0.06}>
-            <div
-              className="flex flex-col justify-center h-full min-h-[280px] p-8 md:p-10"
-              style={{ backgroundColor: "#F5F1E8" }}
-            >
-              <div className="h-px w-8 bg-burgundy mb-7" />
-              <blockquote className="font-serif text-[22px] md:text-[24px] italic leading-snug text-charcoal/65">
-                &ldquo;We design not for the moment of arrival, but for the decade of living within.&rdquo;
-              </blockquote>
-              <cite className="mt-5 block font-sans text-micro not-italic tracking-widest text-charcoal/38 uppercase"
-                style={{ color: "rgba(28,28,28,0.38)" }}>
-                — Ranjeet &amp; Shreenu Mukherjee
-              </cite>
-            </div>
-          </FadeIn>
         </div>
 
       </Container>

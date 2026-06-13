@@ -100,7 +100,7 @@ export function Hero() {
             <FadeIn>
               <div className="mb-4 flex items-center gap-3 text-micro text-burgundy">
                 <span>ATELIER SHREENU</span>
-                <span>—</span>
+                <span>·</span>
                 <span>EST. 2025</span>
               </div>
               <div className="text-xs font-sans font-light tracking-[0.06em] text-charcoal/65">
@@ -110,10 +110,11 @@ export function Hero() {
           </div>
 
           {/* Watermark behind h1 — centred vertically in the column */}
+          {/* Font: Desirable Calligraphy — place /public/fonts/DesirableCalligraphy.woff2 to activate */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 -z-0 select-none font-serif leading-none text-charcoal/[0.04]"
-            style={{ fontSize: "clamp(140px, 18vw, 240px)" }}
+            className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 -z-0 select-none leading-none text-charcoal/[0.04]"
+            style={{ fontSize: "clamp(140px, 18vw, 240px)", fontFamily: "'Desirable Calligraphy', var(--font-cormorant), Georgia, serif" }}
           >
             Atelier
             <br />
@@ -139,7 +140,7 @@ export function Hero() {
           {/* BOTTOM — description + buttons pinned to carousel bottom */}
           <FadeIn delay={0.15}>
             <p className="max-w-md text-base leading-relaxed text-charcoal/75 md:text-lg">
-              Architecture and interiors rooted in place — by Shreenu & Ranjeet Mukherjee,
+              Architecture and interiors rooted in place, by Shreenu & Ranjeet Mukherjee,
               practising across India since 2012.
             </p>
           </FadeIn>

@@ -48,7 +48,7 @@ export function Testimonials() {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.25 }}
                 >
-                  <div className="text-micro text-ink">{t.author}</div>
+                  <div className="text-micro text-burgundy">{t.author}</div>
                   {t.role && (
                     <div className="mt-1 text-sm text-ink/55">{t.role}</div>
                   )}

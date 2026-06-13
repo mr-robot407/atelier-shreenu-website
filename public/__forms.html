@@ -5,50 +5,45 @@
     <title>Netlify Forms — detection skeleton</title>
   </head>
   <body>
-    <!-- Client enquiry form -->
-    <form name="client-enquiry" data-netlify="true" netlify-honeypot="bot-field" hidden>
-      <input type="hidden" name="form-name" value="client-enquiry" />
-      <input type="hidden" name="enquiry_type" value="client" />
+    <!-- Project enquiry form (Tab 1: Start a Project) -->
+    <form name="project-enquiry" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="project-enquiry" />
       <input name="bot-field" />
       <input name="name" />
       <input name="email" type="email" />
       <input name="phone" type="tel" />
       <input name="location" />
-      <select name="projectType">
-        <option value="residential">Residential</option>
-        <option value="commercial">Commercial</option>
-        <option value="hospitality">Hospitality</option>
-        <option value="heritage">Heritage Restoration</option>
-      </select>
-      <select name="consultationType">
-        <option value="studio">Studio Consultation</option>
-        <option value="gurugram">On-Site Visit (Within Gurugram)</option>
-        <option value="ncr">On-Site Regional Visit (Within NCR)</option>
-        <option value="outstation">On-Site Overnight Visit (Outside NCR)</option>
-      </select>
+      <input name="project_type" type="checkbox" />
+      <input name="consultation_type" type="radio" />
       <textarea name="message"></textarea>
     </form>
 
-    <!-- Vendor enquiry form -->
+    <!-- Vendor enquiry form (Tab 2: Vendors) -->
     <form name="vendor-enquiry" data-netlify="true" netlify-honeypot="bot-field" hidden>
       <input type="hidden" name="form-name" value="vendor-enquiry" />
-      <input type="hidden" name="enquiry_type" value="vendor" />
       <input name="bot-field" />
       <input name="company_name" />
       <input name="contact_person" />
       <input name="email" type="email" />
       <input name="phone" type="tel" />
-      <select name="category">
-        <option value="materials">Materials Supplier</option>
-        <option value="furniture">Furniture Manufacturer</option>
-        <option value="contractor">Contractor / Builder</option>
-        <option value="artisan">Artisan / Craftsperson</option>
-        <option value="technology">Technology / Lighting</option>
-        <option value="other">Other</option>
-      </select>
+      <input name="category" type="checkbox" />
       <textarea name="services"></textarea>
       <input name="website_url" type="url" />
       <input name="showroom_location" />
+    </form>
+
+    <!-- Careers enquiry form (Tab 3: Careers) -->
+    <form name="careers-enquiry" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="careers-enquiry" />
+      <input name="bot-field" />
+      <input name="name" />
+      <input name="email" type="email" />
+      <input name="phone" type="tel" />
+      <input name="career_type" type="checkbox" />
+      <input name="experience_level" type="radio" />
+      <input name="portfolio_url" type="url" />
+      <input name="portfolio_pdf" type="file" />
+      <textarea name="message"></textarea>
     </form>
   </body>
 </html>

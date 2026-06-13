@@ -10,7 +10,10 @@ export function SectionLabel({
   className?: string;
 }) {
   return (
-    <span className={cn("text-micro text-terracotta", className)}>
+    <span
+      className={cn("font-sans font-medium uppercase tracking-widest text-burgundy", className)}
+      style={{ fontSize: "20px", lineHeight: 1 }}
+    >
       {children}
     </span>
   );

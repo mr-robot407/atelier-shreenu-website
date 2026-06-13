@@ -88,7 +88,7 @@ export function Nav() {
           Begin a conversation
         </Link>
 
-        <div className="relative flex items-center py-5 md:py-6 px-6 md:px-20 w-full">
+        <div className="relative flex items-center py-2 md:py-2 px-6 md:px-20 w-full">
 
           {/* ── Logo lockup — left ── */}
           <Link
@@ -102,13 +102,13 @@ export function Nav() {
               width={120}
               height={120}
               priority
-              className="w-12 h-12 md:w-[64px] md:h-[64px] object-contain flex-shrink-0"
+              className="w-16 h-16 md:w-[80px] md:h-[80px] object-contain flex-shrink-0"
             />
             <span className="hidden md:flex flex-col gap-1">
-              <span className="font-sans font-normal text-[15px] tracking-[0.04em] text-charcoal/85 leading-none">
+              <span className="font-sans font-normal text-[18px] tracking-[0.04em] text-charcoal/85 leading-none">
                 Atelier Shreenu
               </span>
-              <span className="font-sans font-normal text-[11px] tracking-[0.05em] text-charcoal/45 leading-none">
+              <span className="font-sans font-normal text-[14px] tracking-[0.05em] text-charcoal/45 leading-none">
                 by The Vrindavan Project
               </span>
             </span>

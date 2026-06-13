@@ -14,17 +14,20 @@ export function FoundersNote() {
         </FadeIn>
 
         <div className="mt-12 grid grid-cols-12 gap-8 md:mt-16 md:gap-12">
-          {/* Photo - full width on mobile, spans 5 cols on desktop */}
+          {/* Photo — maroon border, full width on mobile, 5 cols on desktop */}
           <FadeIn delay={0.1} className="col-span-12 md:col-span-5">
-            <div className="relative aspect-[4/5] overflow-hidden md:aspect-[3/4]">
+            <div
+              className="relative aspect-[4/5] overflow-hidden md:aspect-[3/4]"
+              style={{ border: "3px solid #7D2027" }}
+            >
               <Image
                 src="/images/team/A+D.jpg"
-                alt="Shreenu and Ranjeet Mukherjee — Founders of Atelier Shreenu"
+                alt="Shreenu and Ranjeet Mukherjee, founders of Atelier Shreenu"
                 fill
-                className="object-cover grayscale-[15%] transition-all duration-700 hover:grayscale-0"
+                draggable={false}
+                className="object-cover grayscale-[15%] transition-all duration-700 hover:grayscale-0 select-none"
                 sizes="(max-width: 768px) 100vw, 42vw"
               />
-              {/* Subtle vignette */}
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/5 to-transparent" />
             </div>
           </FadeIn>
@@ -41,35 +44,13 @@ export function FoundersNote() {
             <div className="mt-8 space-y-6 text-base leading-relaxed text-ink/75 md:mt-10 md:text-[17px]">
               <FadeIn delay={0.2}>
                 <p>
-                  Shreenu is an interior designer trained at L.S. Raheja School of
-                  Architecture, Mumbai. She spent seven years working in Bombay before
-                  co-founding the practice in 2012. She leads operations and interior
-                  design, bringing material sensitivity and considered detail to every
-                  interior.
+                  Founded from a decade of thoughtful practice and acclaimed work, Atelier Shreenu builds on the legacy of The Vrindavan Project, established in 2012. Led by interior designer Shreenu Mukherjee and architect Ranjeet Mukherjee, the original practice earned recognition for sensitive heritage restorations, refined hospitality interiors, luxurious farmhouses, and elegant residential projects.
                 </p>
               </FadeIn>
 
               <FadeIn delay={0.25}>
                 <p>
-                  Ranjeet attended The Doon School before graduating from the Faculty of
-                  Architecture, CEPT University, Ahmedabad. He is the business head and
-                  architecture lead of the practice, bringing rigour and spatial clarity
-                  to every project.
-                </p>
-              </FadeIn>
-
-              <FadeIn delay={0.3}>
-                <p className="text-ink/65">
-                  In 2012, they embarked upon a journey to explore ecologically appropriate
-                  design and construction techniques. Their practice is one that grows
-                  organically and adapts to each task with considered intent.
-                </p>
-              </FadeIn>
-
-              <FadeIn delay={0.35}>
-                <p className="text-ink/80">
-                  Today, that practice continues as Atelier Shreenu —{" "}
-                  <span className="italic">The Cultivated Practice.</span>
+                  Atelier Shreenu is the next chapter: a more advanced, future-ready studio formed to meet a rising demand for commercial engagements and residential design spanning contemporary aesthetics to classical sensibilities. Combining Shreenu's signature eye for refined detailing in materiality with Ranjeet's strategic architectural leadership, the studio brings together a skilled, multidisciplinary team that balances technology, practicality, and lasting beauty.
                 </p>
               </FadeIn>
 

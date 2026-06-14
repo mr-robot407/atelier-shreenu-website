@@ -106,8 +106,8 @@ export function Nav() {
             </span>
           </Link>
 
-          {/* ── Desktop navigation — truly centred in the header bar ── */}
-          <nav className="absolute left-1/2 -translate-x-1/2 hidden items-center gap-14 md:flex" aria-label="Main navigation">
+          {/* ── Desktop navigation — left edge aligns with carousel start (50% + 3rem) ── */}
+          <nav className="absolute left-[calc(50%+3rem)] hidden items-center gap-14 md:flex" aria-label="Main navigation">
             {site.nav.map((item) => {
               const isActive = activeSection === item.href;
               return (

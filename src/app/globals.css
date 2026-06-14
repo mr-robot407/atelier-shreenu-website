@@ -39,8 +39,14 @@
     @apply border-ink/15;
   }
 
+  /* Canonical site container — used by every section for equal L/R margins */
+  .site-container {
+    @apply mx-auto w-full max-w-7xl px-6 md:px-12 lg:px-20;
+  }
+
+  /* Alias kept for backwards compatibility */
   .container-editorial {
-    @apply mx-auto max-w-7xl px-6 md:px-12 lg:px-20;
+    @apply site-container;
   }
 }
 @keyframes fadeIn {

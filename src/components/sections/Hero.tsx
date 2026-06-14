@@ -126,7 +126,7 @@ export function Hero() {
 
           {/* MIDDLE — h1 floats centred between label and bottom group */}
           <FadeIn className="relative pt-32 md:pt-0">
-            <h1 className="font-serif text-[56px] leading-[1.04] tracking-tight md:text-[96px]">
+            <h1 className="font-serif text-[59px] leading-[1.04] tracking-tight md:text-[99px]">
               Design for those
               <br />
               who live with{" "}
@@ -146,16 +146,18 @@ export function Hero() {
           </FadeIn>
 
           <FadeIn delay={0.3} className="mt-6 flex items-center gap-8">
+            {/* site-hover-maroon = reference hover style: text turns #7D2027, reused site-wide */}
             <a
               href="#work"
-              className="inline-flex min-h-[44px] items-center text-micro border border-charcoal/60 px-7 transition-all duration-200 hover:bg-burgundy hover:border-burgundy hover:text-warm-ivory"
+              style={{ touchAction: "manipulation" }}
+              className="inline-flex min-h-[44px] items-center text-micro border border-charcoal/60 px-7 transition-colors duration-200 hover:text-burgundy hover:border-burgundy active:text-burgundy"
             >
               See the work
             </a>
             <a
               href="#approach"
               style={{ touchAction: "manipulation" }}
-              className="inline-flex min-h-[44px] items-center text-micro border-b border-charcoal/40 pb-1 transition-all hover:border-burgundy"
+              className="inline-flex min-h-[44px] items-center text-micro border-b border-charcoal/40 pb-1 transition-colors duration-200 hover:text-burgundy hover:border-burgundy active:text-burgundy"
             >
               Our approach
             </a>

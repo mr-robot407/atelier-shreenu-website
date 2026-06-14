@@ -80,14 +80,6 @@ export function Nav() {
             : "bg-warm-ivory border-b border-stone/30"
         )}
       >
-        {/* ── CTA button — pinned to viewport right edge, matching carousel padding-right ── */}
-        <Link
-          href="#contact"
-          className="absolute right-[2.5rem] top-1/2 -translate-y-1/2 hidden md:inline-flex cursor-pointer items-center min-h-[44px] text-micro border border-burgundy text-burgundy px-5 transition-all duration-200 hover:bg-burgundy hover:text-warm-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy focus-visible:ring-offset-2"
-        >
-          Begin a conversation
-        </Link>
-
         <div className="relative flex items-center py-2 md:py-2 px-6 md:px-20 w-full">
 
           {/* ── Logo lockup — left ── */}
@@ -105,17 +97,17 @@ export function Nav() {
               className="w-16 h-16 md:w-[80px] md:h-[80px] object-contain flex-shrink-0"
             />
             <span className="hidden md:flex flex-col gap-1">
-              <span className="font-sans font-normal text-[18px] tracking-[0.04em] text-charcoal/85 leading-none">
+              <span className="font-sans font-normal text-[21px] tracking-[0.04em] text-charcoal/85 leading-none">
                 Atelier Shreenu
               </span>
-              <span className="font-sans font-normal text-[14px] tracking-[0.05em] text-charcoal/45 leading-none">
+              <span className="font-sans font-normal text-[17px] tracking-[0.05em] text-charcoal/45 leading-none">
                 by The Vrindavan Project
               </span>
             </span>
           </Link>
 
-          {/* ── Desktop navigation — absolutely centred ── */}
-          <nav className="absolute left-[calc(50%+3rem)] hidden items-center gap-14 md:flex" aria-label="Main navigation">
+          {/* ── Desktop navigation — truly centred in the header bar ── */}
+          <nav className="absolute left-1/2 -translate-x-1/2 hidden items-center gap-14 md:flex" aria-label="Main navigation">
             {site.nav.map((item) => {
               const isActive = activeSection === item.href;
               return (
@@ -136,8 +128,16 @@ export function Nav() {
             })}
           </nav>
 
-          {/* ── Right group: hamburger (mobile only) ── */}
-          <div className="ml-auto flex items-center">
+          {/* ── Right group: CTA (desktop) + hamburger (mobile) ── */}
+          <div className="ml-auto flex items-center gap-4">
+            {/* CTA — desktop only, inside the flex row so nothing can cover it */}
+            <Link
+              href="#contact"
+              style={{ touchAction: "manipulation" }}
+              className="hidden md:inline-flex cursor-pointer items-center min-h-[44px] text-micro border border-burgundy text-burgundy px-5 transition-colors duration-200 hover:bg-burgundy hover:text-warm-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy focus-visible:ring-offset-2"
+            >
+              Begin a conversation
+            </Link>
             <button
               onClick={() => setMenuOpen((o) => !o)}
               aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}

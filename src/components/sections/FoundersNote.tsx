@@ -25,7 +25,7 @@ export function FoundersNote() {
                 alt="Shreenu and Ranjeet Mukherjee, founders of Atelier Shreenu"
                 fill
                 draggable={false}
-                className="object-cover grayscale-[15%] transition-all duration-700 hover:grayscale-0 select-none"
+                className="object-cover scale-[1.06] grayscale-[15%] transition-all duration-700 hover:grayscale-0 select-none"
                 sizes="(max-width: 768px) 100vw, 42vw"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/5 to-transparent" />

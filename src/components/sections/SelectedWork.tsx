@@ -25,39 +25,56 @@ export function SelectedWork() {
           </div>
           <a
             href="#contact"
-            className="text-micro border-b border-ink/40 pb-1 transition-colors duration-200 hover:text-burgundy hover:border-burgundy"
+            style={{ touchAction: "manipulation" }}
+            className="inline-flex items-center min-h-[44px] px-5 text-micro border border-burgundy text-burgundy transition-colors duration-200 hover:bg-burgundy hover:text-warm-ivory"
           >
             Enquire about a project
           </a>
         </div>
 
-        {/* Equal 2-col grid — no stagger so all images share the same vertical baseline */}
-        <div className="grid grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-2">
+        {/* Projects — each row: name + two images side by side */}
+        <div className="flex flex-col gap-20 md:gap-28">
           {projects.map((p, i) => (
-            <FadeIn key={p.slug} delay={i * 0.1}>
-              <div className="group">
-                {/* Image wrapper — consistent aspect ratio; overlay blocks Google Lens icon */}
-                <div className="relative aspect-[4/5] overflow-hidden bg-stone/20">
-                  <Image
-                    src={p.image}
-                    alt={`${p.title}, ${p.location}`}
-                    fill
-                    draggable={false}
-                    className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03] select-none"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  {/* Transparent overlay — prevents browser image-search UI from appearing */}
-                  <div className="absolute inset-0 z-[1]" aria-hidden="true" />
-                </div>
+            <FadeIn key={p.slug} delay={i * 0.08}>
+              <div>
+                {/* Project name */}
+                <h3 className="font-serif text-xl text-charcoal mb-5">{p.title}</h3>
 
-                <div className="mt-6">
-                  <h3 className="font-serif text-2xl md:text-3xl text-charcoal">{p.title}</h3>
-                  <p
-                    className="mt-2 font-sans font-medium uppercase tracking-widest text-burgundy"
-                    style={{ fontSize: "20px" }}
-                  >
-                    {p.category}
-                  </p>
+                {/* Architecture + Interior side by side */}
+                <div className="group grid grid-cols-2 gap-4 md:gap-8">
+
+                  {/* Architecture */}
+                  <div>
+                    <div className="relative aspect-[4/5] overflow-hidden bg-stone/20">
+                      <Image
+                        src={p.architectureImage}
+                        alt={`${p.title} — Architecture`}
+                        fill
+                        draggable={false}
+                        className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.02] select-none"
+                        sizes="(max-width: 768px) 50vw, 33vw"
+                      />
+                      <div className="absolute inset-0 z-[1]" aria-hidden="true" />
+                    </div>
+                    <p className="mt-3 text-micro text-ink/50">Architecture</p>
+                  </div>
+
+                  {/* Interior */}
+                  <div>
+                    <div className="relative aspect-[4/5] overflow-hidden bg-stone/20">
+                      <Image
+                        src={p.interiorImage}
+                        alt={`${p.title} — Interior`}
+                        fill
+                        draggable={false}
+                        className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.02] select-none"
+                        sizes="(max-width: 768px) 50vw, 33vw"
+                      />
+                      <div className="absolute inset-0 z-[1]" aria-hidden="true" />
+                    </div>
+                    <p className="mt-3 text-micro text-ink/50">Interior</p>
+                  </div>
+
                 </div>
               </div>
             </FadeIn>

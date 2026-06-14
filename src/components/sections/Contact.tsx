@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { SectionLabel } from "@/components/ui/SectionHeading";
@@ -114,6 +115,54 @@ function RadioGroup({
   );
 }
 
+function SelectField({
+  label,
+  name,
+  options,
+  placeholder,
+  required,
+}: {
+  label: string;
+  name: string;
+  options: string[];
+  placeholder?: string;
+  required?: boolean;
+}) {
+  return (
+    <div>
+      <label htmlFor={name} className={labelClass}>
+        {label}
+        {required && <span className="ml-1 text-burgundy">*</span>}
+      </label>
+      <div className="relative mt-3">
+        <select
+          id={name}
+          name={name}
+          required={required}
+          defaultValue=""
+          className="w-full cursor-pointer appearance-none border-b border-bone/25 bg-transparent py-3 pr-8 text-[15px] text-bone/80 outline-none transition-colors duration-200 focus:border-burgundy [&>option]:bg-[#1c140e] [&>option]:text-bone"
+        >
+          <option value="" disabled className="text-bone/40">
+            {placeholder ?? "Select an option"}
+          </option>
+          {options.map((opt) => (
+            <option
+              key={opt}
+              value={opt.toLowerCase().replace(/[\s()/]+/g, "-")}
+            >
+              {opt}
+            </option>
+          ))}
+        </select>
+        <ChevronDown
+          className="pointer-events-none absolute right-1 top-1/2 h-4 w-4 -translate-y-1/2 text-bone/45 transition-colors duration-200"
+          strokeWidth={1.5}
+        />
+      </div>
+    </div>
+  );
+}
+
 export function Contact() {
   const [activeTab, setActiveTab] = useState<Tab>("project");
   const [projectStatus, setProjectStatus] = useState<SubmitStatus>("idle");
@@ -151,6 +200,15 @@ export function Contact() {
     { id: "careers", label: "Careers" },
   ];
 
+  const tabDescriptions: Record<Tab, string> = {
+    project:
+      "Tell us about your project: its site, its nature, and the kind of life you want to live within it. We reply to all enquiries personally.",
+    vendor:
+      "Tell us about what you offer: materials, craft, manufacture, or specialist services. We review every submission and reach out when there's a fit.",
+    careers:
+      "Tell us who you are, what drives your practice, and the kind of work you want to be a part of. We read every application personally.",
+  };
+
   return (
     <section id="contact" className="relative overflow-hidden bg-ink py-24 text-bone md:py-36">
       {/* Background */}
@@ -174,9 +232,8 @@ export function Contact() {
                 <br />
                 <span className="italic text-sandstone">conversation.</span>
               </h2>
-              <p className="mt-8 max-w-md text-[15px] leading-relaxed text-bone/70">
-                Tell us about your project: its site, its nature, and the kind of life you
-                want to live within it. We reply to all enquiries personally.
+              <p className="mt-8 max-w-md text-[15px] leading-relaxed text-bone/70 transition-opacity duration-300">
+                {tabDescriptions[activeTab]}
               </p>
             </FadeIn>
 
@@ -205,19 +262,6 @@ export function Contact() {
                     className="mt-1 block hover:text-burgundy"
                   >
                     {site.contact.phone}
-                  </a>
-                  <a
-                    href={`whatsapp://send?phone=${site.contact.whatsapp}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.location.href = `whatsapp://send?phone=${site.contact.whatsapp}`;
-                      setTimeout(() => {
-                        window.open(`https://wa.me/${site.contact.whatsapp}`, "_blank");
-                      }, 300);
-                    }}
-                    className="mt-1 block hover:text-burgundy"
-                  >
-                    WhatsApp
                   </a>
                 </div>
               </div>
@@ -260,7 +304,7 @@ export function Contact() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   style={{ touchAction: "manipulation" }}
-                  className={`-mb-px cursor-pointer pb-4 text-[15px] tracking-wide transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy ${
+                  className={`-mb-px cursor-pointer pb-4 text-[15px] tracking-wide transition-all duration-200 focus:outline-none active:scale-[0.95] active:opacity-70 ${
                     activeTab === tab.id
                       ? "border-b-2 border-burgundy text-bone"
                       : "text-bone/45 hover:text-bone/70"
@@ -291,15 +335,17 @@ export function Contact() {
                 <FormField label="Phone" name="phone" type="tel" placeholder="+91 98765 43210" autoComplete="tel" inputMode="tel" />
                 <FormField label="Project Location" name="location" placeholder="City, state" autoComplete="address-level2" />
 
-                <CheckGroup
-                  legend="Project Type"
+                <SelectField
+                  label="Project Type"
                   name="project_type"
+                  placeholder="Select project type"
                   options={["Residential", "Commercial", "Hospitality", "Other"]}
                 />
 
-                <RadioGroup
-                  legend="Select Consultation Type"
+                <SelectField
+                  label="Select Consultation Type"
                   name="consultation_type"
+                  placeholder="Select consultation type"
                   required
                   options={[
                     "Free Discovery Phone Call (10 min)",
@@ -351,9 +397,10 @@ export function Contact() {
                 <FormField label="Email" name="email" type="email" placeholder="your@company.com" autoComplete="email" required />
                 <FormField label="Phone" name="phone" type="tel" placeholder="+91 98765 43210" autoComplete="tel" inputMode="tel" required />
 
-                <CheckGroup
-                  legend="Category"
+                <SelectField
+                  label="Category"
                   name="category"
+                  placeholder="Select category"
                   options={[
                     "Materials Supplier",
                     "Furniture Manufacturer",
@@ -406,15 +453,17 @@ export function Contact() {
                 <FormField label="Email" name="email" type="email" placeholder="your@email.com" autoComplete="email" required />
                 <FormField label="Phone" name="phone" type="tel" placeholder="+91 98765 43210" autoComplete="tel" inputMode="tel" />
 
-                <CheckGroup
-                  legend="Career Type"
+                <SelectField
+                  label="Career Type"
                   name="career_type"
+                  placeholder="Select career type"
                   options={["Architect", "Interior Designer", "Specialist", "Intern"]}
                 />
 
-                <RadioGroup
-                  legend="Experience Level"
+                <SelectField
+                  label="Experience Level"
                   name="experience_level"
+                  placeholder="Select experience level"
                   required
                   options={[
                     "Student",

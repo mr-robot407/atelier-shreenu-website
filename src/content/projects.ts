@@ -3,9 +3,8 @@ export type Project = {
   title: string;
   location: string;
   year: string;
-  description: string;
-  image: string;
-  category: string;
+  architectureImage: string;
+  interiorImage: string;
 };
 
 export const projects: Project[] = [
@@ -14,26 +13,23 @@ export const projects: Project[] = [
     title: "City House",
     location: "Gurugram",
     year: "2022",
-    description: "A quiet, light-filled home where material honesty shapes every corner.",
-    image: "/images/projects/apartment-interior/01.jpg",
-    category: "Architecture  Interior",
+    architectureImage: "/images/projects/city-house/City%20House%20Architecture.jpg",
+    interiorImage: "/images/projects/city-house/City%20House%20Interior.jpg",
   },
   {
     slug: "luxury-home",
     title: "Luxury Home",
     location: "Delhi NCR",
     year: "2023",
-    description: "A tapestry of jewel tones across five thousand square feet.",
-    image: "/images/projects/luxury-home/01.jpg",
-    category: "Architecture  Interior",
+    architectureImage: "/images/projects/luxury-home/Luxury%20Home%20Architecture.jpg",
+    interiorImage: "/images/projects/luxury-home/Luxury%20Homes%20Interior.jpg",
   },
   {
     slug: "garden-home",
     title: "Garden Home",
     location: "Sohna, Haryana",
     year: "2023",
-    description: "A home built to withstand disaster and carry light through every season.",
-    image: "/images/projects/garden-home/01.jpg",
-    category: "Architecture  Interior",
+    architectureImage: "/images/projects/garden-home/Garden%20Home%20Architecture.jpg",
+    interiorImage: "/images/projects/garden-home/Garden%20Home%20Interior.jpg",
   },
 ];

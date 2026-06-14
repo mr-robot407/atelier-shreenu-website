@@ -109,23 +109,22 @@ export function Hero() {
             </FadeIn>
           </div>
 
-          {/* Watermark behind h1 — centred vertically in the column */}
-          {/* Font: Desirable Calligraphy — place /public/fonts/DesirableCalligraphy.woff2 to activate */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 -z-0 select-none leading-none text-charcoal/[0.04]"
-            style={{ fontSize: "clamp(140px, 18vw, 240px)", fontFamily: "'Desirable Calligraphy', var(--font-cormorant), Georgia, serif" }}
-          >
-            Atelier
-            <br />
-            Shreenu
-          </div>
+
 
           {/* Equal spacer — pushes h1 to vertical centre */}
           <div className="flex-1 hidden md:block" />
 
           {/* MIDDLE — h1 floats centred between label and bottom group */}
           <FadeIn className="relative pt-32 md:pt-0">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 -z-0 select-none leading-none text-charcoal/[0.045] font-serif italic"
+              style={{ fontSize: "clamp(100px, 14vw, 200px)" }}
+            >
+              Atelier
+              <br />
+              Shreenu
+            </div>
             <h1 className="font-serif text-[59px] leading-[1.04] tracking-tight md:text-[99px]">
               Design for those
               <br />
@@ -141,23 +140,30 @@ export function Hero() {
           <FadeIn delay={0.15}>
             <p className="max-w-md text-base leading-relaxed text-charcoal/75 md:text-lg">
               Architecture and interiors rooted in place, by Shreenu & Ranjeet Mukherjee,
-              practising across India since 2012.
+              practising across India.
             </p>
           </FadeIn>
 
-          <FadeIn delay={0.3} className="mt-6 flex items-center gap-8">
-            {/* site-hover-maroon = reference hover style: text turns #7D2027, reused site-wide */}
+          <FadeIn delay={0.3} className="mt-6 flex items-center gap-6">
             <a
               href="#work"
               style={{ touchAction: "manipulation" }}
-              className="inline-flex min-h-[44px] items-center text-micro border border-charcoal/60 px-7 transition-colors duration-200 hover:text-burgundy hover:border-burgundy active:text-burgundy"
+              className="inline-flex min-h-[44px] items-center text-micro text-charcoal border border-charcoal/60 px-7 rounded-lg
+                shadow-[0_1px_4px_rgba(28,20,14,0.10),0_0_0_0.5px_rgba(28,20,14,0.04)]
+                transition-all duration-200
+                hover:bg-burgundy hover:text-warm-ivory hover:border-burgundy hover:shadow-[0_6px_20px_rgba(125,32,39,0.28),0_2px_6px_rgba(125,32,39,0.14)]
+                active:scale-[0.97] active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.18)]"
             >
               See the work
             </a>
             <a
               href="#approach"
               style={{ touchAction: "manipulation" }}
-              className="inline-flex min-h-[44px] items-center text-micro border-b border-charcoal/40 pb-1 transition-colors duration-200 hover:text-burgundy hover:border-burgundy active:text-burgundy"
+              className="inline-flex min-h-[44px] items-center text-micro text-charcoal/70 border border-charcoal/25 px-7 rounded-lg
+                shadow-[0_1px_3px_rgba(28,20,14,0.06)]
+                transition-all duration-200
+                hover:bg-burgundy hover:text-warm-ivory hover:border-burgundy hover:shadow-[0_6px_20px_rgba(125,32,39,0.28),0_2px_6px_rgba(125,32,39,0.14)]
+                active:scale-[0.97] active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.18)]"
             >
               Our approach
             </a>

@@ -8,8 +8,8 @@ import { FadeIn } from "@/components/ui/FadeIn";
 
 const FILMS = [
   { id: "Sb0wXYPINFY", title: "The Vrindavan Project — Studio Film" },
-  { id: "WP1i5JgiveE", title: "Atelier Shreenu — Process" },
   { id: "NGTnmmrGiIM", title: "Atelier Shreenu — A Home Considered" },
+  { id: "WP1i5JgiveE", title: "Atelier Shreenu — Process" },
   { id: "FIWUjKLDFL8", title: "Atelier Shreenu — Material & Making" },
 ];
 
@@ -91,7 +91,7 @@ export function Film() {
                 onClick={prev}
                 aria-label="Previous video"
                 style={{ touchAction: "manipulation" }}
-                className="flex h-11 w-11 cursor-pointer items-center justify-center border border-bone/30 transition-colors duration-200 hover:bg-bone hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-bone"
+                className="flex h-11 w-11 cursor-pointer items-center justify-center border border-bone/30 transition-all duration-200 hover:bg-burgundy hover:border-burgundy hover:text-warm-ivory active:scale-[0.96] focus:outline-none"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
@@ -99,7 +99,7 @@ export function Film() {
                 onClick={next}
                 aria-label="Next video"
                 style={{ touchAction: "manipulation" }}
-                className="flex h-11 w-11 cursor-pointer items-center justify-center border border-bone/30 transition-colors duration-200 hover:bg-bone hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-bone"
+                className="flex h-11 w-11 cursor-pointer items-center justify-center border border-bone/30 transition-all duration-200 hover:bg-burgundy hover:border-burgundy hover:text-warm-ivory active:scale-[0.96] focus:outline-none"
               >
                 <ChevronRight className="h-4 w-4" />
               </button>

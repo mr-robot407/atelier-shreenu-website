@@ -1,43 +1,50 @@
-// TODO: Add logo field (monochrome SVG/PNG path) to each entry when assets are provided by client
 export const press = [
   {
     name: "Architectural Digest",
     url: "https://www.architecturaldigest.in/story/this-5000-square-foot-farmhouse-in-delhi-is-a-tapestry-of-jewel-tones/",
-    logo: null, // TODO: /images/press/architectural-digest.svg
+    logo: "/images/press/architectural-digest.png",
+    square: false,
   },
   {
     name: "ArchDaily",
     url: "https://www.archdaily.com/975260/entheogenic-house-the-vrindavan-project",
-    logo: null, // TODO: /images/press/archdaily.svg
+    logo: "/images/press/archdaily.png",
+    square: true,
   },
   {
     name: "Architecture + Design",
     url: "https://www.architectureplusdesign.in/ad-exclusives/shreenu-and-ranjeet-mukherjee-of-the-vrindavan-project-take-us-through-their-explorations-in-design/",
-    logo: null, // TODO: /images/press/architecture-and-design.svg
+    logo: "/images/press/architecture-and-design.jpg",
+    square: true,
   },
   {
     name: "Habitus Living",
     url: "https://www.habitusliving.com/projects/the-vrindavan-project",
-    logo: null, // TODO: /images/press/habitus-living.svg
+    logo: "/images/press/habitus-living.svg",
+    square: false,
   },
   {
     name: "Yellowtrace",
     url: "https://www.yellowtrace.com.au/the-vrindavan-project-farm-house-india/",
-    logo: null, // TODO: /images/press/yellowtrace.svg
+    logo: "/images/press/yellow-trace.png",
+    square: false,
   },
   {
     name: "Indesignlive",
-    url: "https://www.indesignlive.in/", // TODO: replace with specific article URL when provided
-    logo: null, // TODO: /images/press/indesignlive.svg
+    url: "https://www.indesignlive.in/",
+    logo: "/images/press/indesignlive.jpg",
+    square: true,
   },
   {
     name: "Houzz",
     url: "https://www.houzz.in/magazine/jammu-houzz-this-expansive-home-shows-off-its-unique-ceilings-and-roofs-stsetivw-vs~157933236",
-    logo: null, // TODO: /images/press/houzz.svg
+    logo: "/images/press/houzz.jpg",
+    square: true,
   },
   {
     name: "India Today",
     url: "https://www.indiatoday.in/magazine/supplement/story/20241223-interior-design-simple-living-2648254-2024-12-13",
-    logo: null, // TODO: /images/press/india-today.svg
+    logo: "/images/press/india-today.png",
+    square: false,
   },
 ];

@@ -25,8 +25,8 @@ export default function HomePage() {
         <UniqueQualities />
         <Film />
         <Testimonials />
-        <Press />
         <FoundersNote />
+        <Press />
         <Contact />
       </main>
       <Footer />

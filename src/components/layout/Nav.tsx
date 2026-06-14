@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
@@ -11,6 +12,7 @@ export function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
   const firstMobileNavRef = useRef<HTMLAnchorElement>(null);
+  const clickLockRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -19,25 +21,24 @@ export function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // IntersectionObserver — track which section is in view for active nav state
+  // Scroll-based section tracker — reliable in both scroll directions
   useEffect(() => {
     const ids = site.nav.map((item) => item.href.slice(1));
-    const observers: IntersectionObserver[] = [];
 
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveSection(`#${id}`);
-        },
-        { threshold: 0.2, rootMargin: "-80px 0px -50% 0px" }
-      );
-      obs.observe(el);
-      observers.push(obs);
-    });
+    const updateActive = () => {
+      if (clickLockRef.current) return;
+      const scrollY = window.scrollY + 120;
+      let current = "";
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= scrollY) current = `#${id}`;
+      }
+      setActiveSection(current);
+    };
 
-    return () => observers.forEach((o) => o.disconnect());
+    updateActive();
+    window.addEventListener("scroll", updateActive, { passive: true });
+    return () => window.removeEventListener("scroll", updateActive);
   }, []);
 
   // Close on ESC
@@ -80,7 +81,7 @@ export function Nav() {
             : "bg-warm-ivory border-b border-stone/30"
         )}
       >
-        <div className="relative flex items-center py-2 md:py-2 px-6 md:px-20 w-full">
+        <div className="relative flex items-center py-2 md:py-2 pl-0 pr-6 md:pl-2 md:pr-20 w-full">
 
           {/* ── Logo lockup — left ── */}
           <Link
@@ -97,10 +98,10 @@ export function Nav() {
               className="w-16 h-16 md:w-[80px] md:h-[80px] object-contain flex-shrink-0"
             />
             <span className="hidden md:flex flex-col gap-1">
-              <span className="font-sans font-normal text-[21px] tracking-[0.04em] text-charcoal/85 leading-none">
+              <span className="font-sans font-normal text-[20px] tracking-[0.04em] text-charcoal/85 leading-none">
                 Atelier Shreenu
               </span>
-              <span className="font-sans font-normal text-[17px] tracking-[0.05em] text-charcoal/45 leading-none">
+              <span className="font-sans font-normal text-[16px] tracking-[0.05em] text-charcoal/45 leading-none">
                 by The Vrindavan Project
               </span>
             </span>
@@ -114,15 +115,25 @@ export function Nav() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={() => {
+                    setActiveSection(item.href);
+                    if (clickLockRef.current) clearTimeout(clickLockRef.current);
+                    clickLockRef.current = setTimeout(() => { clickLockRef.current = null; }, 900);
+                  }}
                   aria-current={isActive ? "page" : undefined}
                   className={cn(
-                    "cursor-pointer text-micro rounded-sm transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy focus-visible:ring-offset-2",
-                    isActive
-                      ? "text-burgundy border-b border-burgundy pb-px"
-                      : "text-charcoal/70 hover:text-burgundy"
+                    "relative cursor-pointer text-micro pb-2 rounded-sm transition-colors duration-200 focus:outline-none",
+                    isActive ? "text-burgundy" : "text-charcoal/70 hover:text-burgundy"
                   )}
                 >
                   {item.label}
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-bar"
+                      className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-burgundy"
+                      transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                    />
+                  )}
                 </Link>
               );
             })}
@@ -178,7 +189,12 @@ export function Nav() {
                       key={item.href}
                       href={item.href}
                       ref={idx === 0 ? firstMobileNavRef : undefined}
-                      onClick={() => setMenuOpen(false)}
+                      onClick={() => {
+                        setMenuOpen(false);
+                        setActiveSection(item.href);
+                        if (clickLockRef.current) clearTimeout(clickLockRef.current);
+                        clickLockRef.current = setTimeout(() => { clickLockRef.current = null; }, 900);
+                      }}
                       aria-current={isActive ? "page" : undefined}
                       style={{ touchAction: "manipulation" }}
                       className={cn(

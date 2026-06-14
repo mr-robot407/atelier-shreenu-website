@@ -65,14 +65,6 @@ export function Nav() {
 
   return (
     <>
-      {/* Skip to main content — keyboard accessibility */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-warm-ivory focus:px-4 focus:py-2 focus:text-charcoal focus:border focus:border-charcoal focus:outline-none"
-      >
-        Skip to main content
-      </a>
-
       <header
         className={cn(
           "fixed inset-x-0 top-0 z-40 transition-all duration-300",

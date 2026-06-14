@@ -37,9 +37,6 @@ export function SelectedWork() {
           {projects.map((p, i) => (
             <FadeIn key={p.slug} delay={i * 0.08}>
               <div>
-                {/* Project name */}
-                <h3 className="font-serif text-xl text-charcoal mb-5">{p.title}</h3>
-
                 {/* Architecture + Interior side by side */}
                 <div className="group grid grid-cols-2 gap-4 md:gap-8">
 
@@ -56,7 +53,10 @@ export function SelectedWork() {
                       />
                       <div className="absolute inset-0 z-[1]" aria-hidden="true" />
                     </div>
-                    <p className="mt-3 text-micro text-ink/50">Architecture</p>
+                    <div className="mt-3 flex items-baseline justify-between">
+                      <h3 className="font-serif text-xl text-charcoal">{p.title}</h3>
+                      <span className="text-micro text-ink/50">Architecture</span>
+                    </div>
                   </div>
 
                   {/* Interior */}
@@ -72,7 +72,9 @@ export function SelectedWork() {
                       />
                       <div className="absolute inset-0 z-[1]" aria-hidden="true" />
                     </div>
-                    <p className="mt-3 text-micro text-ink/50">Interior</p>
+                    <div className="mt-3 flex justify-end">
+                      <span className="text-micro text-ink/50">Interior</span>
+                    </div>
                   </div>
 
                 </div>

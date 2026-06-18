@@ -55,7 +55,7 @@ export function SelectedWork() {
                     </div>
                     <div className="mt-3 flex items-baseline justify-between">
                       <h3 className="font-serif text-xl text-charcoal">{p.title}</h3>
-                      <span className="text-micro text-ink/50">Architecture</span>
+                      <span className="text-micro text-ink/50">EXTERIOR</span>
                     </div>
                   </div>
 

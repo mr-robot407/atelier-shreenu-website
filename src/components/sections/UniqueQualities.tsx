@@ -46,9 +46,6 @@ export function UniqueQualities() {
             <div className="flex-1 h-px" style={{ backgroundColor: "rgba(28,28,28,0.18)" }} />
           </div>
 
-          <p className="font-sans text-micro tracking-widest text-charcoal/40 text-center uppercase mt-6">
-            Est. 2012 &ensp;·&ensp; Gurugram, India
-          </p>
         </FadeIn>
 
         {/* Four convictions grid */}

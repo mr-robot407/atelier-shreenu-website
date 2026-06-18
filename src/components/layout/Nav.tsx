@@ -73,7 +73,7 @@ export function Nav() {
             : "bg-warm-ivory border-b border-stone/30"
         )}
       >
-        <div className="relative flex items-center py-2 md:py-2 pl-0 pr-6 md:pl-2 md:pr-20 w-full">
+        <div className="relative flex items-center w-full pl-0 pr-4 md:pl-2 md:pr-6 xl:pr-20">
 
           {/* ── Logo lockup — left ── */}
           <Link
@@ -89,7 +89,7 @@ export function Nav() {
               priority
               className="w-16 h-16 md:w-[80px] md:h-[80px] object-contain flex-shrink-0"
             />
-            <span className="hidden md:flex flex-col gap-1">
+            <span className="hidden xl:flex flex-col gap-1">
               <span className="font-sans font-normal text-[20px] tracking-[0.04em] text-charcoal/85 leading-none">
                 Atelier Shreenu
               </span>
@@ -99,8 +99,14 @@ export function Nav() {
             </span>
           </Link>
 
-          {/* ── Desktop navigation — left edge aligns with carousel start (50% + 3rem) ── */}
-          <nav className="absolute left-[calc(50%+3rem)] hidden items-center gap-14 md:flex" aria-label="Main navigation">
+          {/*
+            md–lg (768–1279 px): flex-1 centred — prevents any collision with CTA
+            xl+   (1280 px+):   absolute, left-edge aligned with carousel start
+          */}
+          <nav
+            className="hidden md:flex md:flex-1 md:justify-center xl:flex-none xl:absolute xl:left-[calc(50%+3rem)] xl:justify-start items-center gap-8 xl:gap-6 2xl:gap-10"
+            aria-label="Main navigation"
+          >
             {site.nav.map((item) => {
               const isActive = activeSection === item.href;
               return (
@@ -114,7 +120,7 @@ export function Nav() {
                   }}
                   aria-current={isActive ? "page" : undefined}
                   className={cn(
-                    "relative cursor-pointer text-micro pb-2 rounded-sm transition-colors duration-200 focus:outline-none",
+                    "relative cursor-pointer text-micro pb-2 whitespace-nowrap rounded-sm transition-colors duration-200 focus:outline-none",
                     isActive ? "text-burgundy" : "text-charcoal/70 hover:text-burgundy"
                   )}
                 >
@@ -132,12 +138,11 @@ export function Nav() {
           </nav>
 
           {/* ── Right group: CTA (desktop) + hamburger (mobile) ── */}
-          <div className="ml-auto flex items-center gap-4">
-            {/* CTA — desktop only, inside the flex row so nothing can cover it */}
+          <div className="ml-auto flex-shrink-0 flex items-center gap-4">
             <Link
               href="#contact"
               style={{ touchAction: "manipulation" }}
-              className="hidden md:inline-flex cursor-pointer items-center min-h-[44px] text-micro border border-burgundy text-burgundy px-5 transition-colors duration-200 hover:bg-burgundy hover:text-warm-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy focus-visible:ring-offset-2"
+              className="hidden md:inline-flex cursor-pointer items-center min-h-[44px] text-micro border border-burgundy text-burgundy px-5 transition-colors duration-200 hover:bg-burgundy hover:text-warm-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy focus-visible:ring-offset-2 whitespace-nowrap"
             >
               Begin a conversation
             </Link>

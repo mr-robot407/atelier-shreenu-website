@@ -11,7 +11,7 @@ export function Philosophy() {
         {/* PHILOSOPHY label — horizontal, above the paragraph block */}
         <FadeIn>
           <span
-            className="block mb-8 md:mb-10 font-sans font-medium uppercase text-burgundy tracking-widest"
+            className="block mb-8 md:mb-10 font-sans font-medium uppercase text-ink/40 tracking-widest"
             style={{ fontSize: "20px", lineHeight: 1 }}
           >
             Philosophy

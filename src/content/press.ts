@@ -31,7 +31,7 @@ export const press = [
   },
   {
     name: "Indesignlive",
-    url: "https://www.indesignlive.in/",
+    url: "https://www.indesignlive.com/ideas/women-india-construction",
     logo: "/images/press/indesignlive.jpg",
     square: true,
   },

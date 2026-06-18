@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
@@ -204,7 +205,7 @@ export function Contact() {
     project:
       "Tell us about your project: its site, its nature, and the kind of life you want to live within it. We reply to all enquiries personally.",
     vendor:
-      "Tell us about what you offer: materials, craft, manufacture, or specialist services. We review every submission and reach out when there's a fit.",
+      "Tell us what you offer: materials, craft, or specialist services. We review every submission and reach out when there's a fit.",
     careers:
       "Tell us who you are, what drives your practice, and the kind of work you want to be a part of. We read every application personally.",
   };
@@ -232,9 +233,18 @@ export function Contact() {
                 <br />
                 <span className="italic text-sandstone">conversation.</span>
               </h2>
-              <p className="mt-8 max-w-md text-[15px] leading-relaxed text-bone/70 transition-opacity duration-300">
-                {tabDescriptions[activeTab]}
-              </p>
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={activeTab}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                  className="mt-8 max-w-md text-[15px] leading-relaxed text-bone/70"
+                >
+                  {tabDescriptions[activeTab]}
+                </motion.p>
+              </AnimatePresence>
             </FadeIn>
 
             <FadeIn delay={0.2} className="mt-14 space-y-5 border-t border-bone/15 pt-10">
@@ -245,6 +255,9 @@ export function Contact() {
                 </div>
                 <div className="text-sm text-bone/75">
                   {site.contact.address.city}, {site.contact.address.postal}
+                </div>
+                <div className="text-sm text-bone/75">
+                  By appointment only
                 </div>
               </div>
 
@@ -343,6 +356,17 @@ export function Contact() {
                 />
 
                 <SelectField
+                  label="Service Type"
+                  name="service_type"
+                  placeholder="Select service type"
+                  options={[
+                    "Architecture Design Consultancy",
+                    "Interior Design Consultancy",
+                    "Architecture + Design Consultancy",
+                  ]}
+                />
+
+                <SelectField
                   label="Select Consultation Type"
                   name="consultation_type"
                   placeholder="Select consultation type"
@@ -350,7 +374,6 @@ export function Contact() {
                   options={[
                     "Free Discovery Phone Call (10 min)",
                     "Google Meet Discussion (25 min)",
-                    "On Site Visit (within Gurugram)",
                     "On Site Regional Visit (within NCR)",
                     "On Site Overnight Visit (Outside NCR)",
                   ]}

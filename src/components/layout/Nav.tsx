@@ -135,6 +135,16 @@ export function Nav() {
                 </Link>
               );
             })}
+
+            <Link
+              href="/blog"
+              className={cn(
+                "relative cursor-pointer font-sans text-micro pb-2 whitespace-nowrap rounded-sm transition-colors duration-200 focus:outline-none",
+                "text-charcoal/70 hover:text-burgundy"
+              )}
+            >
+              Blog
+            </Link>
           </nav>
 
           {/* ── Right group: CTA (desktop) + hamburger (mobile) ── */}
@@ -204,6 +214,17 @@ export function Nav() {
                   );
                 })}
 
+                <Link
+                  href="/blog"
+                  onClick={() => setMenuOpen(false)}
+                  style={{ touchAction: "manipulation" }}
+                  className={cn(
+                    "flex cursor-pointer items-center min-h-[52px] border-b border-stone/20 font-sans text-micro transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy rounded-sm",
+                    "text-charcoal/70 hover:text-burgundy"
+                  )}
+                >
+                  Blog
+                </Link>
                 <Link
                   href="#contact"
                   onClick={() => setMenuOpen(false)}

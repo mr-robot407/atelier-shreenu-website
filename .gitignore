@@ -8,3 +8,15 @@ node_modules
 .netlify
 coverage
 dist
+
+# Build output
+out/
+tsconfig.tsbuildinfo
+
+# Terraform — contains hardcoded temp passwords and may contain state
+infrastructure/
+
+# Planning / internal docs
+ATELIER_SHREENU_IMPLEMENTATION_GUIDE.md
+As design update 2.0.MD
+MOBILE_FIX_PROMPT.md

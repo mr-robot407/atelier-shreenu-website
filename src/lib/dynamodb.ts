@@ -9,20 +9,21 @@ import {
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { randomUUID } from "crypto";
+import { awsRegion, awsAccessKeyId, awsSecretAccessKey, dynamodbTableName } from "./aws-runtime-config";
 
 const client = new DynamoDBClient({
-  region: process.env.BLOG_REGION ?? "ap-south-1",
-  ...(process.env.BLOG_ACCESS_KEY_ID
+  region: awsRegion,
+  ...(awsAccessKeyId
     ? {
         credentials: {
-          accessKeyId: process.env.BLOG_ACCESS_KEY_ID,
-          secretAccessKey: process.env.BLOG_SECRET_ACCESS_KEY!,
+          accessKeyId: awsAccessKeyId,
+          secretAccessKey: awsSecretAccessKey,
         },
       }
     : {}),
 });
 const db = DynamoDBDocumentClient.from(client);
-const TABLE = process.env.DYNAMODB_TABLE_NAME ?? "atelier-shreenu-blog-posts";
+const TABLE = dynamodbTableName;
 
 export type Post = {
   postId: string;

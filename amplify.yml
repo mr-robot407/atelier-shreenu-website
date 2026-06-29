@@ -4,7 +4,12 @@ frontend:
     preBuild:
       commands:
         - echo "BLOG_ACCESS_KEY_ID present=$([ -n "$BLOG_ACCESS_KEY_ID" ] && echo YES || echo NO)"
-        - echo "BLOG_SECRET_ACCESS_KEY present=$([ -n "$BLOG_SECRET_ACCESS_KEY" ] && echo YES || echo NO)"
+        - echo "export const awsRegion = \"${BLOG_REGION:-ap-south-1}\";" > src/lib/aws-runtime-config.ts
+        - echo "export const awsAccessKeyId = \"${BLOG_ACCESS_KEY_ID}\";" >> src/lib/aws-runtime-config.ts
+        - echo "export const awsSecretAccessKey = \"${BLOG_SECRET_ACCESS_KEY}\";" >> src/lib/aws-runtime-config.ts
+        - echo "export const dynamodbTableName = \"${DYNAMODB_TABLE_NAME:-atelier-shreenu-blog-posts}\";" >> src/lib/aws-runtime-config.ts
+        - echo "export const s3BucketName = \"${S3_BUCKET_NAME:-atelier-shreenu-blog-images}\";" >> src/lib/aws-runtime-config.ts
+        - echo "export const cdnUrl = \"${NEXT_PUBLIC_CDN_URL:-https://d3j5o298uybf9b.cloudfront.net}\";" >> src/lib/aws-runtime-config.ts
         - npm ci --loglevel=error
     build:
       commands:

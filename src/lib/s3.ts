@@ -1,20 +1,21 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { randomUUID } from "crypto";
+import { awsRegion, awsAccessKeyId, awsSecretAccessKey, s3BucketName, cdnUrl } from "./aws-runtime-config";
 
 const s3 = new S3Client({
-  region: process.env.BLOG_REGION ?? "ap-south-1",
-  ...(process.env.BLOG_ACCESS_KEY_ID
+  region: awsRegion,
+  ...(awsAccessKeyId
     ? {
         credentials: {
-          accessKeyId: process.env.BLOG_ACCESS_KEY_ID,
-          secretAccessKey: process.env.BLOG_SECRET_ACCESS_KEY!,
+          accessKeyId: awsAccessKeyId,
+          secretAccessKey: awsSecretAccessKey,
         },
       }
     : {}),
 });
-const BUCKET = process.env.S3_BUCKET_NAME ?? "atelier-shreenu-blog-images";
-const CDN = process.env.NEXT_PUBLIC_CDN_URL ?? "https://d3j5o298uybf9b.cloudfront.net";
+const BUCKET = s3BucketName;
+const CDN = cdnUrl;
 
 export async function getPresignedUploadUrl(
   filename: string,

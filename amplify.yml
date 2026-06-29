@@ -3,6 +3,8 @@ frontend:
   phases:
     preBuild:
       commands:
+        - echo "BLOG_ACCESS_KEY_ID present=$([ -n "$BLOG_ACCESS_KEY_ID" ] && echo YES || echo NO)"
+        - echo "BLOG_SECRET_ACCESS_KEY present=$([ -n "$BLOG_SECRET_ACCESS_KEY" ] && echo YES || echo NO)"
         - npm ci --loglevel=error
     build:
       commands:

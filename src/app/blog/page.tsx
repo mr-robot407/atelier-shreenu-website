@@ -17,7 +17,12 @@ export default async function BlogPage({
 }: {
   searchParams: { category?: string };
 }) {
-  const allPosts = await listPublishedPosts();
+  let allPosts = [];
+  try {
+    allPosts = await listPublishedPosts();
+  } catch (err) {
+    console.error("DynamoDB error:", err);
+  }
   const activeCategory = searchParams.category ?? "";
 
   const posts = activeCategory

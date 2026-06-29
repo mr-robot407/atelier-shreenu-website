@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { serif, sans } from "@/styles/fonts";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -64,6 +65,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${serif.variable} ${sans.variable} font-sans antialiased`}>
         {children}
         <WhatsAppButton />
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-GN7NVMP4TN"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-GN7NVMP4TN');
+          `}
+        </Script>
         {/* Structured data: Architect / LocalBusiness */}
         <script
           type="application/ld+json"

@@ -55,46 +55,17 @@ export function Hero() {
   const crossfadeDuration = reducedMotion ? "duration-0" : "duration-[1200ms]";
 
   return (
-    <section id="main-content" className="relative min-h-dvh w-full overflow-hidden bg-warm-ivory">
+    <section id="main-content" className="relative min-h-[100svh] w-full overflow-x-hidden bg-warm-ivory">
 
       {/* Screen-reader carousel announcement */}
       <div aria-live="polite" aria-atomic="true" className="sr-only">
         Image {current + 1} of {HERO_IMAGES.length}
       </div>
 
-      {/* ── MOBILE: soft-tinted full-bleed background ── */}
-      <div className="absolute inset-0 md:hidden">
-        {HERO_IMAGES.map((src, i) => (
-          <div
-            key={src}
-            style={{ transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)" }}
-            className={`absolute inset-0 transition-opacity ${crossfadeDuration} ${
-              i === current ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <Image
-              src={src}
-              alt={`Interior view ${i + 1}`}
-              fill
-              priority={i === 0}
-              loading={i === 0 ? "eager" : "lazy"}
-              className="object-cover"
-              sizes="100vw"
-            />
-          </div>
-        ))}
-        <div className="absolute inset-0 bg-warm-ivory/80" />
-        {/* vignette */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: "radial-gradient(ellipse 90% 90% at 50% 50%, transparent 65%, rgba(20,14,10,0.24) 100%)" }}
-        />
-      </div>
-
       {/* ── Content (both breakpoints) ── */}
-      <div className="relative z-10 grid min-h-dvh md:grid-cols-2">
+      <div className="relative z-10 grid min-h-[100svh] md:grid-cols-2">
 
-        <div className="flex flex-col px-6 pb-10 pt-0 md:px-20 md:pb-[2.5rem]">
+        <div className="flex flex-col px-6 pb-10 pt-20 md:pt-0 md:px-20 md:pb-[2.5rem]">
           {/* Label — desktop only, sits at carousel-top height via pt-[9rem] */}
           <div className="hidden md:block" style={{ paddingTop: "9rem" }}>
             <FadeIn>
@@ -109,17 +80,29 @@ export function Hero() {
             </FadeIn>
           </div>
 
+          {/* Mobile label — visible below nav clearance */}
+          <div className="md:hidden mb-6">
+            <FadeIn>
+              <div className="mb-2 flex items-center gap-3 text-micro text-burgundy">
+                <span>ATELIER SHREENU</span>
+                <span>·</span>
+                <span>EST. 2025</span>
+              </div>
+              <div className="text-xs font-sans font-light tracking-[0.06em] text-charcoal/65">
+                by The Vrindavan Project · Est. 2012
+              </div>
+            </FadeIn>
+          </div>
 
-
-          {/* Equal spacer — pushes h1 to vertical centre */}
+          {/* Equal spacer — pushes h1 to vertical centre on desktop */}
           <div className="flex-1 hidden md:block" />
 
           {/* MIDDLE — h1 floats centred between label and bottom group */}
-          <FadeIn className="relative pt-32 md:pt-0">
+          <FadeIn className="relative md:pt-0">
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 -z-0 select-none leading-none text-charcoal/[0.045] font-serif italic"
-              style={{ fontSize: "clamp(100px, 14vw, 200px)" }}
+              className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 -z-0 select-none leading-[1.1] text-charcoal/[0.08] md:text-charcoal/[0.045]"
+              style={{ fontSize: "clamp(60px, 20vw, 168px)", fontFamily: "'DesirableCalligraphy', serif" }}
             >
               Atelier
               <br />
@@ -133,10 +116,11 @@ export function Hero() {
             </h1>
           </FadeIn>
 
-          {/* Equal spacer — separates h1 from bottom group */}
+          {/* Spacer — desktop: separates h1 from bottom group; mobile: small fixed gap */}
+          <div className="h-6 md:hidden" />
           <div className="flex-1 hidden md:block" />
 
-          {/* BOTTOM — description + buttons pinned to carousel bottom */}
+          {/* BOTTOM — description + buttons */}
           <FadeIn delay={0.15}>
             <p className="max-w-md text-base leading-relaxed text-charcoal/75 md:text-lg">
               Architecture and interiors rooted in place, by Shreenu & Ranjeet Mukherjee,
@@ -167,6 +151,62 @@ export function Hero() {
             >
               Our approach
             </a>
+          </FadeIn>
+
+          {/* ── MOBILE only: framed image carousel below buttons ── */}
+          <FadeIn delay={0.4} className="mt-8 pb-10 md:hidden">
+            <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl border border-charcoal/20 shadow-[0_4px_40px_-8px_rgba(28,28,28,0.12)]">
+              {HERO_IMAGES.map((src, i) => (
+                <div
+                  key={src}
+                  style={{ transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)" }}
+                  className={`absolute inset-0 transition-opacity ${crossfadeDuration} ${
+                    i === current ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  <Image
+                    src={src}
+                    alt={`Interior view ${i + 1}`}
+                    fill
+                    priority={i === 0}
+                    loading={i === 0 ? "eager" : "lazy"}
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
+              ))}
+              {/* vignette */}
+              <div
+                className="absolute inset-0 z-[1] pointer-events-none"
+                style={{ background: "radial-gradient(ellipse 85% 85% at 50% 50%, transparent 60%, rgba(20,14,10,0.28) 100%)" }}
+              />
+              {/* slide counter — top-right */}
+              <div className="absolute right-4 top-4 z-10 font-sans text-[10px] tracking-widest text-warm-ivory/60 uppercase" aria-hidden="true">
+                {String(current + 1).padStart(2, "0")} / {String(HERO_IMAGES.length).padStart(2, "0")}
+              </div>
+              {/* dash indicators — bottom-centre */}
+              <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-1" role="tablist" aria-label="Carousel slides">
+                {HERO_IMAGES.map((_, i) => (
+                  <button
+                    key={i}
+                    role="tab"
+                    aria-selected={i === current}
+                    aria-label={`Go to slide ${i + 1}`}
+                    onClick={() => handleDot(i)}
+                    style={{ touchAction: "manipulation" }}
+                    className="flex min-h-[44px] min-w-[20px] items-center justify-center"
+                  >
+                    <span
+                      className={`block h-[1.5px] transition-all duration-500 ${
+                        i === current
+                          ? "w-8 bg-warm-ivory"
+                          : "w-3 bg-warm-ivory/40"
+                      }`}
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
           </FadeIn>
         </div>
 

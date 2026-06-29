@@ -7,7 +7,7 @@ import { projects } from "@/content/projects";
 
 export function SelectedWork() {
   return (
-    <section id="work" className="border-t border-ink/10 py-24 md:py-36">
+    <section id="work" className="border-t border-ink/10 pt-16 pb-24 md:py-36">
       <Container>
         <div className="mb-16 flex flex-col gap-6 md:mb-24 md:flex-row md:items-end md:justify-between">
           <div>
@@ -17,7 +17,7 @@ export function SelectedWork() {
             >
               Selected Work
             </span>
-            <h2 className="font-serif text-[34px] leading-tight text-charcoal md:text-[52px]">
+            <h2 className="font-serif leading-tight text-charcoal md:text-[52px]" style={{ fontSize: "clamp(30px, 8vw, 34px)" }}>
               Projects rooted
               <br />
               <span className="italic">in place.</span>
@@ -33,12 +33,12 @@ export function SelectedWork() {
         </div>
 
         {/* Projects — each row: name + two images side by side */}
-        <div className="flex flex-col gap-20 md:gap-28">
+        <div className="flex flex-col gap-16 md:gap-28">
           {projects.map((p, i) => (
             <FadeIn key={p.slug} delay={i * 0.08}>
               <div>
                 {/* Architecture + Interior side by side */}
-                <div className="group grid grid-cols-2 gap-4 md:gap-8">
+                <div className="group grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-8">
 
                   {/* Architecture */}
                   <div>
@@ -49,7 +49,7 @@ export function SelectedWork() {
                         fill
                         draggable={false}
                         className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.02] select-none"
-                        sizes="(max-width: 768px) 50vw, 33vw"
+                        sizes="(max-width: 768px) 100vw, 33vw"
                       />
                       <div className="absolute inset-0 z-[1]" aria-hidden="true" />
                     </div>
@@ -68,7 +68,7 @@ export function SelectedWork() {
                         fill
                         draggable={false}
                         className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.02] select-none"
-                        sizes="(max-width: 768px) 50vw, 33vw"
+                        sizes="(max-width: 768px) 100vw, 33vw"
                       />
                       <div className="absolute inset-0 z-[1]" aria-hidden="true" />
                     </div>

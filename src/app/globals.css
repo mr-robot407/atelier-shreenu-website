@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "DesirableCalligraphy";
+  src:
+    url("/fonts/DesirableCalligraphy.woff2") format("woff2"),
+    url("/fonts/DesirableCalligraphy.woff") format("woff"),
+    url("/fonts/DesirableCalligraphy.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 
 @layer base {
   html {
@@ -11,6 +22,7 @@
   body {
     @apply bg-bone text-ink font-sans antialiased;
     font-feature-settings: "ss01", "cv01", "cv02";
+    overflow-x: hidden;
   }
 
   ::selection {

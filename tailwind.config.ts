@@ -18,7 +18,7 @@ const config: Config = {
         "muted-brass": "#A68B5B",
         stone: "#D4C4B8",
         "warm-grey": "#8C8579",
-        
+
         // Legacy aliases (mapped to new brand colors)
         bone: "#FAF7F2", // warm-ivory
         ink: "#1C1C1C", // charcoal

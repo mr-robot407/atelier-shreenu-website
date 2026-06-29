@@ -5,7 +5,7 @@ import { FadeIn } from "@/components/ui/FadeIn";
 
 export function Philosophy() {
   return (
-    <section className="border-t border-ink/10 py-32 md:py-48">
+    <section className="border-t border-ink/10 py-20 md:py-48">
       <Container>
 
         {/* PHILOSOPHY label — horizontal, above the paragraph block */}

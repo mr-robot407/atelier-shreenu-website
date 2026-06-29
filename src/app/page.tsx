@@ -10,6 +10,7 @@ import { Film } from "@/components/sections/Film";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { Press } from "@/components/sections/Press";
 import { FoundersNote } from "@/components/sections/FoundersNote";
+import { FAQ } from "@/components/sections/FAQ";
 import { Contact } from "@/components/sections/Contact";
 
 export default function HomePage() {
@@ -27,6 +28,7 @@ export default function HomePage() {
         <Testimonials />
         <FoundersNote />
         <Press />
+        <FAQ />
         <Contact />
       </main>
       <Footer />

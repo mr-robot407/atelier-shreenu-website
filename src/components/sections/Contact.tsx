@@ -373,8 +373,8 @@ export function Contact() {
                   required
                   options={[
                     "Free Discovery Phone Call (10 min)",
-                    "Google Meet Discussion (25 min)",
-                    "On Site Regional Visit (within NCR)",
+                    "Google Meet Discussion (30 min)",
+                    "On Site Regional Visit (Within NCR)",
                     "On Site Overnight Visit (Outside NCR)",
                   ]}
                 />

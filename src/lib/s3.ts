@@ -3,11 +3,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { randomUUID } from "crypto";
 
 const s3 = new S3Client({
-  region: process.env.BLOG_REGION,
-  credentials: {
-    accessKeyId: process.env.BLOG_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.BLOG_SECRET_ACCESS_KEY!,
-  },
+  region: process.env.BLOG_REGION ?? process.env.AWS_REGION ?? "ap-south-1",
 });
 const BUCKET = process.env.S3_BUCKET_NAME!;
 const CDN = process.env.NEXT_PUBLIC_CDN_URL!;

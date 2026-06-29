@@ -11,11 +11,7 @@ import {
 import { randomUUID } from "crypto";
 
 const client = new DynamoDBClient({
-  region: process.env.BLOG_REGION,
-  credentials: {
-    accessKeyId: process.env.BLOG_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.BLOG_SECRET_ACCESS_KEY!,
-  },
+  region: process.env.BLOG_REGION ?? process.env.AWS_REGION ?? "ap-south-1",
 });
 const db = DynamoDBDocumentClient.from(client);
 const TABLE = process.env.DYNAMODB_TABLE_NAME!;

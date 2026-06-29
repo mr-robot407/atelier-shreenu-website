@@ -13,8 +13,8 @@ const s3 = new S3Client({
       }
     : {}),
 });
-const BUCKET = process.env.S3_BUCKET_NAME!;
-const CDN = process.env.NEXT_PUBLIC_CDN_URL!;
+const BUCKET = process.env.S3_BUCKET_NAME ?? "atelier-shreenu-blog-images";
+const CDN = process.env.NEXT_PUBLIC_CDN_URL ?? "https://d3j5o298uybf9b.cloudfront.net";
 
 export async function getPresignedUploadUrl(
   filename: string,

@@ -22,7 +22,7 @@ const client = new DynamoDBClient({
     : {}),
 });
 const db = DynamoDBDocumentClient.from(client);
-const TABLE = process.env.DYNAMODB_TABLE_NAME!;
+const TABLE = process.env.DYNAMODB_TABLE_NAME ?? "atelier-shreenu-blog-posts";
 
 export type Post = {
   postId: string;

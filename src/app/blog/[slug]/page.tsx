@@ -1,10 +1,11 @@
-import { getPostBySlug, listPublishedPosts } from "@/lib/dynamodb";
+import { getPostBySlug } from "@/lib/dynamodb";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { BlogNav } from "@/components/blog/BlogNav";
 import { BlogFooter } from "@/components/blog/BlogFooter";
 
 export const revalidate = 60;
+export const dynamicParams = true;
 
 const CATEGORY_LABELS: Record<string, string> = {
   design: "Design",
@@ -12,11 +13,6 @@ const CATEGORY_LABELS: Record<string, string> = {
   "studio-life": "Studio Life",
   references: "References",
 };
-
-export async function generateStaticParams() {
-  const posts = await listPublishedPosts();
-  return posts.map((p) => ({ slug: p.slug }));
-}
 
 export async function generateMetadata({
   params,

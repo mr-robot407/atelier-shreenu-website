@@ -36,9 +36,10 @@ export function Philosophy() {
           <div className="col-span-12 md:col-span-4 md:col-start-9 md:pt-3">
             <FadeIn delay={0.2}>
               <p className="leading-relaxed text-ink/60" style={{ fontSize: "19px" }}>
-                A practice based in Delhi NCR, working across residential, hospitality
-                and commercial spaces across India with roots that reach back to 2012.
-                Today, that Design Firm continues as Atelier Shreenu.
+                An Architecture and Interior Design practice based in Delhi NCR, working
+                across residential, hospitality and commercial spaces across India with
+                roots that reach back to 2012. Today, that Design Firm continues as
+                Atelier Shreenu.
               </p>
             </FadeIn>
           </div>

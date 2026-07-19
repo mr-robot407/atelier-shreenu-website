@@ -138,6 +138,8 @@ export function Nav() {
 
             <Link
               href="/blog"
+              target="_blank"
+              rel="noopener noreferrer"
               className={cn(
                 "relative cursor-pointer font-sans text-micro pb-2 whitespace-nowrap rounded-sm transition-colors duration-200 focus:outline-none",
                 "text-charcoal/70 hover:text-burgundy"
@@ -216,6 +218,8 @@ export function Nav() {
 
                 <Link
                   href="/blog"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => setMenuOpen(false)}
                   style={{ touchAction: "manipulation" }}
                   className={cn(

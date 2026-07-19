@@ -74,3 +74,23 @@
 .animate-fade-in {
   animation: fadeIn 0.8s ease-out;
 }
+
+/* ProseMirror — ensure text is selectable (overrides any UA/library user-select: none) */
+.ProseMirror,
+.ProseMirror * {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
+/* TipTap text-align inside prose (editor + published blog) */
+.prose [style*="text-align: left"]    { text-align: left    !important; }
+.prose [style*="text-align: center"]  { text-align: center  !important; }
+.prose [style*="text-align: right"]   { text-align: right   !important; }
+.prose [style*="text-align: justify"] { text-align: justify !important; }
+/* TipTap font-family — ensure brand fonts render in published prose */
+.prose span[style*="font-family: Cormorant Garamond"] {
+  font-family: var(--font-cormorant), "Cormorant Garamond", Georgia, serif !important;
+}
+.prose span[style*="font-family: Jost"] {
+  font-family: var(--font-jost), "Jost", system-ui, sans-serif !important;
+}

@@ -74,7 +74,16 @@ export default function NewPostPage() {
 
       <div>
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-serif text-stone-900">New post</h1>
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={() => router.push("/shreenu-editor/posts")}
+              className="text-sm text-stone-400 hover:text-stone-700 transition-colors flex items-center gap-1"
+            >
+              ← Dashboard
+            </button>
+            <h1 className="text-2xl font-serif text-stone-900">New post</h1>
+          </div>
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -137,9 +146,8 @@ export default function NewPostPage() {
               >
                 <option value="">— No category —</option>
                 <option value="design">Design</option>
-                <option value="architecture">Architecture</option>
-                <option value="studio-life">Studio Life</option>
-                <option value="references">References</option>
+                <option value="lifestyle">Lifestyle</option>
+                <option value="insights">Insights</option>
               </select>
             </div>
           </div>

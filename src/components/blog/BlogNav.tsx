@@ -87,13 +87,15 @@ export function BlogNav() {
         <div className="relative flex items-center w-full pl-0 pr-4 md:pl-2 md:pr-6 xl:pr-20">
 
           {/* LHS — Logo + wordmark (same scale as main nav) */}
-          <Link
-            href="/blog"
-            aria-label="The Blog — home"
+          <a
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Atelier Shreenu — main website"
             className="flex items-center gap-3 flex-shrink-0 rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy focus-visible:ring-offset-2"
           >
             <Image
-              src="/Shreenu logo maroon.jpeg"
+              src="/Shreenu logo beige.jpeg"
               alt="Atelier Shreenu"
               width={120}
               height={120}
@@ -101,14 +103,14 @@ export function BlogNav() {
               className="w-16 h-16 md:w-[80px] md:h-[80px] object-contain flex-shrink-0"
             />
             <span className="flex flex-col gap-1">
-              <span className="font-sans font-normal text-[20px] tracking-[0.04em] text-charcoal/85 leading-none">
+              <span className="font-sans font-normal text-[20px] tracking-[0.04em] text-burgundy leading-none">
                 The Blog
               </span>
-              <span className="font-sans font-normal text-[16px] tracking-[0.05em] text-charcoal/45 leading-none">
+              <span className="font-sans font-normal text-[16px] tracking-[0.05em] text-burgundy/60 leading-none">
                 by Atelier Shreenu
               </span>
             </span>
-          </Link>
+          </a>
 
           {/* Centre — Category nav (desktop) */}
           <nav className="hidden md:flex md:flex-1 md:justify-center items-center gap-8 xl:gap-6">
@@ -121,13 +123,21 @@ export function BlogNav() {
             </Suspense>
           </nav>
 
-          {/* RHS — Visit Studio (desktop) + Hamburger (mobile) */}
-          <div className="ml-auto flex-shrink-0 flex items-center gap-4">
+          {/* RHS — CTAs (desktop) + Hamburger (mobile) */}
+          <div className="ml-auto flex-shrink-0 flex items-center gap-3">
             <a
               href="/"
-              className="hidden md:inline-flex items-center min-h-[44px] font-sans text-[11px] uppercase tracking-[0.12em] border border-burgundy text-burgundy px-5 transition-colors duration-200 hover:bg-burgundy hover:text-warm-ivory whitespace-nowrap"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:inline-flex items-center min-h-[44px] font-sans text-[11px] uppercase tracking-[0.12em] text-charcoal/60 px-5 transition-all duration-200 hover:bg-burgundy hover:text-warm-ivory whitespace-nowrap"
             >
               Visit Studio
+            </a>
+            <a
+              href="#contact"
+              className="hidden md:inline-flex items-center min-h-[44px] font-sans text-[11px] uppercase tracking-[0.12em] border border-burgundy text-burgundy px-5 transition-colors duration-200 hover:bg-burgundy hover:text-warm-ivory whitespace-nowrap"
+            >
+              Begin a Conversation
             </a>
 
             {/* Hamburger */}
@@ -162,10 +172,19 @@ export function BlogNav() {
                 </Suspense>
                 <a
                   href="/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => setMenuOpen(false)}
-                  className="mt-5 mb-2 inline-flex items-center justify-center min-h-[48px] font-sans text-[11px] uppercase tracking-[0.12em] border border-burgundy text-burgundy transition-all duration-200 hover:bg-burgundy hover:text-warm-ivory"
+                  className="mt-5 flex items-center min-h-[52px] border-b border-stone/20 font-sans text-[11px] uppercase tracking-[0.12em] text-charcoal/60 hover:text-burgundy transition-colors duration-200"
                 >
                   Visit Studio →
+                </a>
+                <a
+                  href="#contact"
+                  onClick={() => setMenuOpen(false)}
+                  className="mt-4 mb-2 inline-flex items-center justify-center min-h-[48px] font-sans text-[11px] uppercase tracking-[0.12em] border border-burgundy text-burgundy transition-all duration-200 hover:bg-burgundy hover:text-warm-ivory"
+                >
+                  Begin a Conversation
                 </a>
               </nav>
             </div>

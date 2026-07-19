@@ -112,7 +112,9 @@ export async function updatePost(
   createdAt: string,
   updates: UpdatePostInput
 ): Promise<void> {
-  const entries = Object.entries(updates).filter(([, v]) => v !== undefined);
+  const entries = Object.entries(updates).filter(
+    ([, v]) => v !== undefined && v !== ""
+  );
   if (!entries.length) return;
 
   const ExpressionAttributeNames: Record<string, string> = {};

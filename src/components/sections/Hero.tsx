@@ -101,8 +101,8 @@ export function Hero() {
           <FadeIn className="relative md:pt-0">
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 -z-0 select-none leading-[1.1] text-charcoal/[0.08] md:text-charcoal/[0.045]"
-              style={{ fontSize: "clamp(60px, 20vw, 168px)", fontFamily: "'DesirableCalligraphy', serif" }}
+              className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 -z-0 select-none leading-[1.1] text-charcoal/[0.11] md:text-charcoal/[0.05]"
+              style={{ fontSize: "clamp(52px, 16vw, 168px)", fontFamily: "'DesirableCalligraphy', serif" }}
             >
               Atelier
               <br />

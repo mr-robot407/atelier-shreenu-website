@@ -23,10 +23,10 @@ export const site = {
   },
 
   social: {
-    instagram: "https://www.instagram.com/ateliershreenu/",
-    facebook: "https://www.facebook.com/The.Vrindavan.Project",
-    linkedin: "https://www.linkedin.com/company/the-vrindavan-project/",
-    youtube: "https://www.youtube.com/@RanjeetMukherjeeArchitect",
+    instagram: "https://www.instagram.com/ateliershreenu?igsh=eDBsY25iZ3VtaW1r",
+    facebook: "https://www.facebook.com/share/1DUhNAnMMQ/",
+    linkedin: "https://www.linkedin.com/company/atelier-shreenu/",
+    youtube: "https://www.youtube.com/@AtelierShreenu",
   },
 
   nav: [

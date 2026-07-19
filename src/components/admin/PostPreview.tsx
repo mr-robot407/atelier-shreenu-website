@@ -84,14 +84,6 @@ export default function PostPreview({
 
         {/* RHS — Full post detail */}
         <div className="flex-1 bg-parchment overflow-y-auto">
-          {/* Fake nav */}
-          <div className="sticky top-0 bg-parchment/90 backdrop-blur-sm border-b border-charcoal/10 px-8 h-14 flex items-center justify-between">
-            <div className="flex flex-col leading-none">
-              <span className="font-serif text-[18px] text-charcoal">The Blog</span>
-              <span className="font-sans text-[10px] uppercase tracking-widest text-warm-grey">by Atelier Shreenu</span>
-            </div>
-          </div>
-
           <div className="max-w-[680px] mx-auto px-8 py-12">
             {/* Cover image */}
             {coverImage && (
@@ -115,7 +107,7 @@ export default function PostPreview({
             {/* Body */}
             {content ? (
               <article
-                className="prose prose-stone prose-lg max-w-none prose-headings:font-serif prose-headings:font-normal prose-a:text-burgundy"
+                className="prose prose-stone prose-lg max-w-none font-sans prose-headings:font-serif prose-headings:font-normal prose-a:text-burgundy prose-a:no-underline hover:prose-a:underline"
                 dangerouslySetInnerHTML={{ __html: content }}
               />
             ) : (

@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     siteName: "Atelier Shreenu",
     title: "Atelier Shreenu — Architecture and Interior Design",
     description:
-      "Contextual, conscious and soulful design. Architecture and interiors rooted in place.",
+      "Design for those who live with intention. Architecture and interiors rooted in place, by Shreenu & Ranjeet Mukherjee.",
     images: [
       {
         url: "/og-image.jpg",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Atelier Shreenu",
     description:
-      "Contextual, conscious and soulful design. Architecture and interiors rooted in place.",
+      "Design for those who live with intention. Architecture and interiors rooted in place, by Shreenu & Ranjeet Mukherjee.",
     images: ["/og-image.jpg"],
   },
   robots: {
@@ -53,9 +53,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon-beige.jpg", sizes: "any" },
+      { url: "/favicon.ico",   sizes: "32x32",  type: "image/x-icon" },
+      { url: "/icon-192.png",  sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png",  sizes: "512x512", type: "image/png" },
     ],
-    apple: "/favicon-beige.jpg",
+    apple: { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
   },
 };
 
@@ -87,7 +89,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "@type": ["Architect", "LocalBusiness"],
               name: "Atelier Shreenu",
               url: "https://ateliershreenu.com",
-              telephone: "+91-95601-07193",
+              telephone: "+91-95602-06195",
               email: "info@ateliershreenu.com",
               address: {
                 "@type": "PostalAddress",
@@ -102,10 +104,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 { "@type": "Person", name: "Shreenu Mukherjee" },
               ],
               sameAs: [
-                "https://www.instagram.com/thevrindavanproject/",
-                "https://www.facebook.com/The.Vrindavan.Project",
-                "https://www.linkedin.com/company/the-vrindavan-project/",
-                "https://www.youtube.com/@RanjeetMukherjeeArchitect",
+                "https://www.instagram.com/ateliershreenu",
+                "https://www.youtube.com/@AtelierShreenu",
+                "https://www.linkedin.com/company/atelier-shreenu/",
+                "https://www.facebook.com/share/1DUhNAnMMQ/",
               ],
             }),
           }}

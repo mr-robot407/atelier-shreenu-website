@@ -7,11 +7,12 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { FadeIn } from "@/components/ui/FadeIn";
 
 const frames = [
-  { src: "/images/texture/01.jpg", alt: "Material, weathered wood detail", label: "Material" },
-  { src: "/images/texture/02.jpg", alt: "Light, morning through a courtyard", label: "Light" },
-  { src: "/images/texture/04.jpg", alt: "Texture, handwoven linen", label: "Texture" },
-  { src: "/images/texture/03.jpg", alt: "Craft, hand-finished ceramic", label: "Craft" },
-  { src: "/images/texture/05.jpg", alt: "Structure, stone and shadow", label: "Structure" },
+  { src: "/images/texture/material.jpg", alt: "Material", label: "Material" },
+  { src: "/images/texture/water.jpg", alt: "Water", label: "Water" },
+  { src: "/images/texture/geometry.jpg", alt: "Geometry", label: "Geometry" },
+  { src: "/images/texture/light.jpg", alt: "Light", label: "Light" },
+  { src: "/images/texture/luxury.jpg", alt: "Luxury", label: "Luxury" },
+  { src: "/images/texture/vertical.jpg", alt: "Vertical", label: "Vertical" },
 ];
 
 const loop = [...frames, ...frames];

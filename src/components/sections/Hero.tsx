@@ -10,7 +10,10 @@ const HERO_IMAGES = [
   "/images/hero2/3.jpg",
   "/images/hero2/4.jpg",
   "/images/hero2/5.jpg",
-  "/images/hero2/6.jpg",
+  "/images/hero2/11.jpg",
+  "/images/hero2/44.jpg",
+  "/images/hero2/66.jpg",
+  "/images/hero2/77.jpg",
 ];
 
 const INTERVAL = 2750;
@@ -99,15 +102,6 @@ export function Hero() {
 
           {/* MIDDLE — h1 floats centred between label and bottom group */}
           <FadeIn className="relative md:pt-0">
-            <div
-              aria-hidden="true"
-              className="hidden md:block pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 -z-0 select-none leading-[1.1] text-charcoal/[0.05]"
-              style={{ fontSize: "clamp(52px, 16vw, 168px)", fontFamily: "'DesirableCalligraphy', serif" }}
-            >
-              Atelier
-              <br />
-              Shreenu
-            </div>
             <h1 className="font-serif text-[59px] leading-[1.04] tracking-tight md:text-[99px]">
               Design for those
               <br />

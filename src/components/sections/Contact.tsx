@@ -330,6 +330,8 @@ export function Contact() {
                 onSubmit={makeSubmitHandler(setProjectStatus, "project")}
                 className="space-y-8"
               >
+                {/* Honeypot — hidden from humans, bots fill it */}
+                <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" />
 
                 <FormField label="Name" name="name" placeholder="Your full name" autoComplete="name" required />
                 <FormField label="Email" name="email" type="email" placeholder="your@email.com" autoComplete="email" required />
@@ -394,6 +396,7 @@ export function Contact() {
                 onSubmit={makeSubmitHandler(setVendorStatus, "vendor")}
                 className="space-y-8"
               >
+                <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" />
 
                 <FormField label="Company Name" name="company_name" placeholder="Your company name" required />
                 <FormField label="Contact Person" name="contact_person" placeholder="Your full name" autoComplete="name" required />
@@ -443,6 +446,7 @@ export function Contact() {
                 onSubmit={makeSubmitHandler(setCareersStatus, "careers")}
                 className="space-y-8"
               >
+                <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" />
 
                 <FormField label="Name" name="name" placeholder="Your full name" autoComplete="name" required />
                 <FormField label="Email" name="email" type="email" placeholder="your@email.com" autoComplete="email" required />

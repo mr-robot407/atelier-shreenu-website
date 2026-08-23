@@ -137,7 +137,31 @@ function formatEmailBody(
   return lines.join("\n");
 }
 
+const ALLOWED_ORIGINS = [
+  "https://ateliershreenu.com",
+  "https://www.ateliershreenu.com",
+  "http://localhost:3000",
+];
+
+const MAX_FIELD_LENGTH = 2000;
+const MAX_FIELDS = 20;
+
+function validateFields(fields: Record<string, string>): boolean {
+  if (Object.keys(fields).length > MAX_FIELDS) return false;
+  for (const value of Object.values(fields)) {
+    if (typeof value !== "string") return false;
+    if (value.length > MAX_FIELD_LENGTH) return false;
+  }
+  return true;
+}
+
 export async function POST(req: NextRequest) {
+  // Origin check
+  const origin = req.headers.get("origin") ?? "";
+  if (!ALLOWED_ORIGINS.includes(origin)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   const ip = getClientIp(req);
   const allowed = await checkRateLimit(ip);
 
@@ -155,10 +179,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
 
+  // Honeypot — bots fill this, humans don't
+  if (data.website) {
+    return NextResponse.json({ success: true }); // silent reject
+  }
+
   const { formType, ...fields } = data;
 
   if (!formType || !["project", "vendor", "careers"].includes(formType)) {
     return NextResponse.json({ error: "Invalid form type" }, { status: 400 });
+  }
+
+  // Input validation
+  if (!validateFields(fields)) {
+    return NextResponse.json({ error: "Invalid input" }, { status: 400 });
   }
 
   const submissionId = randomUUID();

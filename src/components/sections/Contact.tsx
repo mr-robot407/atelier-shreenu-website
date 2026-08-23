@@ -10,7 +10,7 @@ import { SectionLabel } from "@/components/ui/SectionHeading";
 import { site } from "@/content/site";
 
 type Tab = "project" | "vendor" | "careers";
-type SubmitStatus = "idle" | "submitting" | "success" | "error";
+type SubmitStatus = "idle" | "submitting" | "success" | "error" | "rate_limited";
 
 const inputClass =
   "mt-3 w-full border-b border-bone/25 bg-transparent py-3 text-[15px] placeholder:text-bone/40 outline-none focus:border-burgundy";
@@ -189,6 +189,7 @@ export function Contact() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
         });
+        if (res.status === 429) { setStatus("rate_limited"); return; }
         if (!res.ok) throw new Error();
         router.push("/thank-you");
       } catch {
@@ -533,6 +534,17 @@ function FormFeedback({
     return (
       <p role="status" className="text-sm text-bone/80">
         {successMsg}
+      </p>
+    );
+  }
+  if (status === "rate_limited") {
+    return (
+      <p role="alert" className="text-sm text-terracotta">
+        You've submitted too many times. Please wait an hour or email us at{" "}
+        <a href={`mailto:${email}`} className="underline">
+          {email}
+        </a>
+        .
       </p>
     );
   }

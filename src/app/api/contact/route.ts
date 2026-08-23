@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
+import {
+  DynamoDBDocumentClient,
+  PutCommand,
+  GetCommand,
+  UpdateCommand,
+} from "@aws-sdk/lib-dynamodb";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { randomUUID } from "crypto";
 import {
@@ -27,7 +32,10 @@ const sesClient = new SESClient({
 });
 
 const CONTACT_TABLE = contactTableName;
+const RATE_LIMIT_TABLE = "atelier-shreenu-rate-limits";
 const NOTIFY_EMAIL = "info@ateliershreenu.com";
+const RATE_LIMIT_MAX = 5;        // max submissions
+const RATE_LIMIT_WINDOW = 3600;  // per hour (seconds)
 
 const FORM_LABELS: Record<string, string> = {
   project: "New Project Enquiry",
@@ -55,6 +63,55 @@ const FIELD_LABELS: Record<string, string> = {
   portfolio_url: "Portfolio Link",
 };
 
+function getClientIp(req: NextRequest): string {
+  return (
+    req.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
+    req.headers.get("x-real-ip") ??
+    "unknown"
+  );
+}
+
+async function checkRateLimit(ip: string): Promise<boolean> {
+  const now = Math.floor(Date.now() / 1000);
+  const ttl = now + RATE_LIMIT_WINDOW;
+
+  try {
+    const existing = await db.send(
+      new GetCommand({ TableName: RATE_LIMIT_TABLE, Key: { ip } })
+    );
+
+    if (!existing.Item) {
+      // First request from this IP — create record
+      await db.send(
+        new PutCommand({
+          TableName: RATE_LIMIT_TABLE,
+          Item: { ip, count: 1, ttl },
+        })
+      );
+      return true;
+    }
+
+    if (existing.Item.count >= RATE_LIMIT_MAX) {
+      return false;
+    }
+
+    // Increment count, refresh TTL
+    await db.send(
+      new UpdateCommand({
+        TableName: RATE_LIMIT_TABLE,
+        Key: { ip },
+        UpdateExpression: "SET #c = #c + :inc, #t = :ttl",
+        ExpressionAttributeNames: { "#c": "count", "#t": "ttl" },
+        ExpressionAttributeValues: { ":inc": 1, ":ttl": ttl },
+      })
+    );
+    return true;
+  } catch (err) {
+    console.error("Rate limit check failed:", err);
+    return true; // fail open — don't block legit users if DynamoDB has issues
+  }
+}
+
 function formatEmailBody(
   formType: string,
   fields: Record<string, string>
@@ -81,6 +138,16 @@ function formatEmailBody(
 }
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const allowed = await checkRateLimit(ip);
+
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "Too many submissions. Please try again later." },
+      { status: 429 }
+    );
+  }
+
   let data: Record<string, string>;
   try {
     data = await req.json();
@@ -101,12 +168,7 @@ export async function POST(req: NextRequest) {
     await db.send(
       new PutCommand({
         TableName: CONTACT_TABLE,
-        Item: {
-          submissionId,
-          submittedAt,
-          formType,
-          ...fields,
-        },
+        Item: { submissionId, submittedAt, formType, ...fields },
       })
     );
   } catch (err) {
@@ -131,7 +193,6 @@ export async function POST(req: NextRequest) {
     );
   } catch (err) {
     console.error("SES email failed:", err);
-    // Submission is already saved — don't fail the response
   }
 
   return NextResponse.json({ success: true });

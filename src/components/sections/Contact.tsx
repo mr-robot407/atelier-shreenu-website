@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { Container } from "@/components/ui/Container";
@@ -165,31 +166,31 @@ function SelectField({
 }
 
 export function Contact() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>("project");
   const [projectStatus, setProjectStatus] = useState<SubmitStatus>("idle");
   const [vendorStatus, setVendorStatus] = useState<SubmitStatus>("idle");
   const [careersStatus, setCareersStatus] = useState<SubmitStatus>("idle");
 
   const makeSubmitHandler =
-    (setStatus: (s: SubmitStatus) => void) =>
+    (setStatus: (s: SubmitStatus) => void, formType: Tab) =>
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       const form = event.currentTarget;
       const formData = new FormData(form);
-      const body = new URLSearchParams();
-      formData.forEach((value, key) =>
-        body.append(key, typeof value === "string" ? value : "")
-      );
+      const body: Record<string, string> = { formType };
+      formData.forEach((value, key) => {
+        if (typeof value === "string") body[key] = value;
+      });
       setStatus("submitting");
       try {
-        const res = await fetch("/__forms.html", {
+        const res = await fetch("/api/contact", {
           method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: body.toString(),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
         });
         if (!res.ok) throw new Error();
-        form.reset();
-        setStatus("success");
+        router.push("/thank-you");
       } catch {
         setStatus("error");
       }
@@ -251,7 +252,7 @@ export function Contact() {
               <div>
                 <div className="text-micro text-bone/50">Studio</div>
                 <div className="mt-2 font-serif text-xl italic">
-                  {site.contact.address.line1}
+                  Celebrity Homes, {site.contact.address.line1}
                 </div>
                 <div className="text-sm text-bone/75">
                   {site.contact.address.city}, {site.contact.address.postal}
@@ -269,12 +270,6 @@ export function Contact() {
                     className="block hover:text-burgundy"
                   >
                     {site.contact.email}
-                  </a>
-                  <a
-                    href={`tel:+${site.contact.phoneIntl}`}
-                    className="mt-1 block hover:text-burgundy"
-                  >
-                    {site.contact.phone}
                   </a>
                 </div>
               </div>
@@ -331,21 +326,13 @@ export function Contact() {
             {/* ── Tab 1: Start a Project ── */}
             {activeTab === "project" && (
               <form
-                name="project-enquiry"
-                method="POST"
-                data-netlify="true"
-                netlify-honeypot="bot-field"
-                onSubmit={makeSubmitHandler(setProjectStatus)}
+                onSubmit={makeSubmitHandler(setProjectStatus, "project")}
                 className="space-y-8"
               >
-                <input type="hidden" name="form-name" value="project-enquiry" />
-                <p className="hidden">
-                  <label>Don&apos;t fill this out: <input name="bot-field" /></label>
-                </p>
 
                 <FormField label="Name" name="name" placeholder="Your full name" autoComplete="name" required />
                 <FormField label="Email" name="email" type="email" placeholder="your@email.com" autoComplete="email" required />
-                <FormField label="Phone" name="phone" type="tel" placeholder="+91 98765 43210" autoComplete="tel" inputMode="tel" />
+                <FormField label="Phone" name="phone" type="tel" placeholder="+91 98765 43210" autoComplete="tel" inputMode="tel" required />
                 <FormField label="Project Location" name="location" placeholder="City, state" autoComplete="address-level2" />
 
                 <SelectField
@@ -403,17 +390,9 @@ export function Contact() {
             {/* ── Tab 2: Vendors ── */}
             {activeTab === "vendor" && (
               <form
-                name="vendor-enquiry"
-                method="POST"
-                data-netlify="true"
-                netlify-honeypot="bot-field"
-                onSubmit={makeSubmitHandler(setVendorStatus)}
+                onSubmit={makeSubmitHandler(setVendorStatus, "vendor")}
                 className="space-y-8"
               >
-                <input type="hidden" name="form-name" value="vendor-enquiry" />
-                <p className="hidden">
-                  <label>Don&apos;t fill this out: <input name="bot-field" /></label>
-                </p>
 
                 <FormField label="Company Name" name="company_name" placeholder="Your company name" required />
                 <FormField label="Contact Person" name="contact_person" placeholder="Your full name" autoComplete="name" required />
@@ -460,21 +439,13 @@ export function Contact() {
             {/* ── Tab 3: Careers ── */}
             {activeTab === "careers" && (
               <form
-                name="careers-enquiry"
-                method="POST"
-                data-netlify="true"
-                netlify-honeypot="bot-field"
-                onSubmit={makeSubmitHandler(setCareersStatus)}
+                onSubmit={makeSubmitHandler(setCareersStatus, "careers")}
                 className="space-y-8"
               >
-                <input type="hidden" name="form-name" value="careers-enquiry" />
-                <p className="hidden">
-                  <label>Don&apos;t fill this out: <input name="bot-field" /></label>
-                </p>
 
                 <FormField label="Name" name="name" placeholder="Your full name" autoComplete="name" required />
                 <FormField label="Email" name="email" type="email" placeholder="your@email.com" autoComplete="email" required />
-                <FormField label="Phone" name="phone" type="tel" placeholder="+91 98765 43210" autoComplete="tel" inputMode="tel" />
+                <FormField label="Phone" name="phone" type="tel" placeholder="+91 98765 43210" autoComplete="tel" inputMode="tel" required />
 
                 <SelectField
                   label="Career Type"

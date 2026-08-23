@@ -16,7 +16,7 @@ const frames = [
 ];
 
 const loop = [...frames, ...frames];
-const SPEED = 0.055; // px per ms ≈ 55 px/s (matches original 30s feel)
+const SPEED = 0.0605; // px per ms ≈ 60.5 px/s (+10% faster)
 
 export function MaterialStrip() {
   const x = useMotionValue(0);

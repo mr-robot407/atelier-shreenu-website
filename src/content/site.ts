@@ -19,7 +19,7 @@ export const site = {
       postal: "122017",
       country: "India",
     },
-    mapsUrl: "https://g.page/The-Vrindavan-Project?share",
+    mapsUrl: "https://maps.app.goo.gl/r5N5uGP7yKWBGSdh7",
   },
 
   social: {

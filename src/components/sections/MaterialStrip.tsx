@@ -13,10 +13,13 @@ const frames = [
   { src: "/images/texture/light.jpg", alt: "Light", label: "Light" },
   { src: "/images/texture/luxury.jpg", alt: "Luxury", label: "Luxury" },
   { src: "/images/texture/vertical.jpg", alt: "Vertical", label: "Vertical" },
+  { src: "/images/texture/craft.jpg", alt: "Craft", label: "Craft" },
+  { src: "/images/texture/texture.jpg", alt: "Texture", label: "Texture" },
+  { src: "/images/texture/structure.jpg", alt: "Structure", label: "Structure" },
 ];
 
 const loop = [...frames, ...frames];
-const SPEED = 0.0605; // px per ms ≈ 60.5 px/s (+10% faster)
+const SPEED = 0.0635; // px per ms ≈ 63.5 px/s (+5% for 9 frames)
 
 export function MaterialStrip() {
   const x = useMotionValue(0);

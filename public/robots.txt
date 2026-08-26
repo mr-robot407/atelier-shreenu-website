@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://thevrindavanproject.com/sitemap.xml
+Disallow: /shreenu-editor/
+Disallow: /thank-you/
+
+Sitemap: https://ateliershreenu.com/sitemap.xml

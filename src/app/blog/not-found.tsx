@@ -1,4 +1,10 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Post not found — The Blog",
+  robots: { index: false, follow: false },
+};
 
 export default function BlogNotFound() {
   return (
@@ -15,7 +21,7 @@ export default function BlogNotFound() {
           renamed, or unpublished.
         </p>
         <Link
-          href="/blog"
+          href="/blog/"
           className="font-sans text-[11px] uppercase tracking-[0.12em] mt-10 inline-flex border border-burgundy text-burgundy px-7 py-3.5 transition-all hover:bg-burgundy hover:text-warm-ivory"
         >
           Back to the Blog

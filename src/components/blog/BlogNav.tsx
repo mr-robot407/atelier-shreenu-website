@@ -15,7 +15,7 @@ function CategoryLinks({ onClose }: { onClose?: () => void }) {
       {CATEGORIES.map((c) => (
         <Link
           key={c.value}
-          href={c.value ? `/blog?category=${c.value}` : "/blog"}
+          href={c.value ? `/blog/?category=${c.value}` : "/blog/"}
           onClick={onClose}
           className={`font-sans text-[11px] uppercase tracking-[0.12em] transition-colors duration-200 ${
             active === c.value
@@ -39,7 +39,7 @@ function MobileCategoryLinks({ onClose }: { onClose: () => void }) {
       {CATEGORIES.map((c) => (
         <Link
           key={c.value}
-          href={c.value ? `/blog?category=${c.value}` : "/blog"}
+          href={c.value ? `/blog/?category=${c.value}` : "/blog/"}
           onClick={onClose}
           style={{ touchAction: "manipulation" }}
           className={`flex items-center min-h-[52px] border-b border-stone/20 font-sans text-[11px] uppercase tracking-[0.12em] transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy rounded-sm ${
@@ -134,7 +134,7 @@ export function BlogNav() {
               Visit Studio
             </a>
             <a
-              href="#contact"
+              href="/#contact"
               className="hidden md:inline-flex items-center min-h-[44px] font-sans text-[11px] uppercase tracking-[0.12em] border border-burgundy text-burgundy px-5 transition-colors duration-200 hover:bg-burgundy hover:text-warm-ivory whitespace-nowrap"
             >
               Begin a Conversation
@@ -180,7 +180,7 @@ export function BlogNav() {
                   Visit Studio →
                 </a>
                 <a
-                  href="#contact"
+                  href="/#contact"
                   onClick={() => setMenuOpen(false)}
                   className="mt-4 mb-2 inline-flex items-center justify-center min-h-[48px] font-sans text-[11px] uppercase tracking-[0.12em] border border-burgundy text-burgundy transition-all duration-200 hover:bg-burgundy hover:text-warm-ivory"
                 >

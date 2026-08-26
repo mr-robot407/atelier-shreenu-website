@@ -24,7 +24,7 @@ export function SelectedWork() {
             </h2>
           </div>
           <a
-            href="#contact"
+            href="/#contact"
             style={{ touchAction: "manipulation" }}
             className="inline-flex items-center min-h-[44px] px-5 text-micro border border-burgundy text-burgundy transition-colors duration-200 hover:bg-burgundy hover:text-warm-ivory"
           >

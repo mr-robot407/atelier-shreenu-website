@@ -4,7 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { site } from "@/content/site";
 
 export const metadata = {
-  title: "Thank You — Atelier Shreenu",
+  title: "Thank You",
   robots: { index: false },
 };
 
@@ -36,7 +36,7 @@ export default function ThankYouPage() {
               Back to Studio
             </Link>
             <Link
-              href="/blog"
+              href="/blog/"
               className="inline-flex min-h-[44px] items-center border border-bone/30 px-8 text-xs uppercase tracking-widest text-bone/70 transition-colors duration-200 hover:border-bone hover:text-bone"
             >
               Visit the Blog

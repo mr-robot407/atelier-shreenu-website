@@ -1,5 +1,5 @@
-import { getPostBySlug } from "@/lib/dynamodb";
-import { notFound } from "next/navigation";
+import { getPostBySlug, listPublishedPosts } from "@/lib/dynamodb";
+import { notFound, permanentRedirect } from "next/navigation";
 import Image from "next/image";
 
 export const revalidate = 60;
@@ -21,6 +21,7 @@ export async function generateMetadata({
   return {
     title: `${post.title} — The Blog`,
     description: post.excerpt,
+    alternates: { canonical: `/blog/${post.slug}/` },
     openGraph: {
       title: post.title,
       description: post.excerpt,
@@ -37,6 +38,10 @@ export default async function PostPage({
   const post = await getPostBySlug(params.slug);
   if (!post || post.status !== "published") notFound();
 
+  if (params.slug !== post.slug) {
+    permanentRedirect(`/blog/${post.slug}/`);
+  }
+
   const date = post.publishedAt
     ? new Date(post.publishedAt).toLocaleDateString("en-IN", {
         day: "numeric",
@@ -47,8 +52,43 @@ export default async function PostPage({
 
   const category = (post.tags?.[0] ?? "") as string;
 
+  const allPosts = await listPublishedPosts();
+  const currentIndex = allPosts.findIndex((p) => p.slug === post.slug);
+  const nextPost =
+    currentIndex >= 0 && currentIndex < allPosts.length - 1
+      ? allPosts[currentIndex + 1]
+      : null;
+
+  const blogPostingSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    ...(post.coverImage ? { image: post.coverImage } : {}),
+    datePublished: post.publishedAt ?? post.createdAt,
+    dateModified: post.publishedAt ?? post.createdAt,
+    author: {
+      "@type": "Organization",
+      name: "Atelier Shreenu",
+      url: "https://ateliershreenu.com",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Atelier Shreenu",
+      url: "https://ateliershreenu.com",
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://ateliershreenu.com/blog/${post.slug}/`,
+    },
+  };
+
   return (
     <main className="pt-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }}
+      />
       {post.coverImage && (
         <div
           className="relative w-full bg-bone"
@@ -95,15 +135,24 @@ export default async function PostPage({
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
 
-        <div className="mt-12 pt-6 border-t border-charcoal/10">
+        <div className="mt-12 pt-6 border-t border-charcoal/10 flex items-center justify-between gap-4">
           <a
-            href="/blog"
+            href="/blog/"
             target="_blank"
             rel="noopener noreferrer"
             className="font-sans text-[11px] uppercase tracking-[0.12em] text-burgundy hover:underline underline-offset-2"
           >
             ← Back to all posts
           </a>
+          {nextPost && (
+            <a
+              href={`/blog/${nextPost.slug}/`}
+              className="font-sans text-[11px] uppercase tracking-[0.12em] text-burgundy hover:underline underline-offset-2 text-right"
+              title={nextPost.title}
+            >
+              Next post →
+            </a>
+          )}
         </div>
       </div>
     </main>

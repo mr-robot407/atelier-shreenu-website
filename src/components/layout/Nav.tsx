@@ -137,7 +137,7 @@ export function Nav() {
             })}
 
             <Link
-              href="/blog"
+              href="/blog/"
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
@@ -152,7 +152,7 @@ export function Nav() {
           {/* ── Right group: CTA (desktop) + hamburger (mobile) ── */}
           <div className="ml-auto flex-shrink-0 flex items-center gap-4">
             <Link
-              href="#contact"
+              href="/#contact"
               style={{ touchAction: "manipulation" }}
               className="hidden md:inline-flex cursor-pointer items-center min-h-[44px] text-micro border border-burgundy text-burgundy px-5 transition-colors duration-200 hover:bg-burgundy hover:text-warm-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy focus-visible:ring-offset-2 whitespace-nowrap"
             >
@@ -217,7 +217,7 @@ export function Nav() {
                 })}
 
                 <Link
-                  href="/blog"
+                  href="/blog/"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setMenuOpen(false)}
@@ -230,7 +230,7 @@ export function Nav() {
                   Blog
                 </Link>
                 <Link
-                  href="#contact"
+                  href="/#contact"
                   onClick={() => setMenuOpen(false)}
                   style={{ touchAction: "manipulation" }}
                   className="mt-5 mb-2 inline-flex cursor-pointer items-center justify-center min-h-[48px] text-micro border border-burgundy text-burgundy transition-all duration-200 hover:bg-burgundy hover:text-warm-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy focus-visible:ring-offset-2"

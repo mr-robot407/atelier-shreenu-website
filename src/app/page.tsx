@@ -12,6 +12,7 @@ import { Press } from "@/components/sections/Press";
 import { FoundersNote } from "@/components/sections/FoundersNote";
 import { FAQ } from "@/components/sections/FAQ";
 import { Contact } from "@/components/sections/Contact";
+import { FaqJsonLd } from "@/components/seo/FaqJsonLd";
 
 export default function HomePage() {
   return (
@@ -32,6 +33,7 @@ export default function HomePage() {
         <Contact />
       </main>
       <Footer />
+      <FaqJsonLd />
     </>
   );
 }

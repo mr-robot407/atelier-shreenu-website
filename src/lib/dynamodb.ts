@@ -50,25 +50,33 @@ function slugify(title: string): string {
     .slice(0, 80);
 }
 
+function normalizeSlug(slug: string): string {
+  return slug
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 80);
+}
+
 export async function createPost(input: CreatePostInput): Promise<Post> {
   const postId = randomUUID();
   const createdAt = new Date().toISOString();
-  const slug = input.slug || slugify(input.title);
+  const slug = normalizeSlug(input.slug || slugify(input.title));
   const post: Post = { ...input, postId, createdAt, slug };
   await db.send(new PutCommand({ TableName: TABLE, Item: post }));
   return post;
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
+  const target = slug.toLowerCase();
   const result = await db.send(
     new ScanCommand({
       TableName: TABLE,
-      FilterExpression: "#slug = :slug",
-      ExpressionAttributeNames: { "#slug": "slug" },
-      ExpressionAttributeValues: { ":slug": slug },
     })
   );
-  return (result.Items?.[0] as Post) ?? null;
+  const items = (result.Items as Post[]) ?? [];
+  return items.find((p) => p.slug?.toLowerCase() === target) ?? null;
 }
 
 export async function getPostById(
@@ -112,7 +120,11 @@ export async function updatePost(
   createdAt: string,
   updates: UpdatePostInput
 ): Promise<void> {
-  const entries = Object.entries(updates).filter(
+  const normalized: UpdatePostInput = { ...updates };
+  if (typeof normalized.slug === "string" && normalized.slug !== "") {
+    normalized.slug = normalizeSlug(normalized.slug);
+  }
+  const entries = Object.entries(normalized).filter(
     ([, v]) => v !== undefined && v !== ""
   );
   if (!entries.length) return;

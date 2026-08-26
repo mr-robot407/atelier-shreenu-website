@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   },
   description:
     "Architecture and interior design studio based in Gurugram, specialising in residential, hospitality, and ecologically sensitive design across India. By Ranjeet & Shreenu Mukherjee.",
+  alternates: {
+    canonical: "/",
+  },
   keywords: [
     "architecture firm Gurugram",
     "interior designer Delhi NCR",

@@ -159,7 +159,7 @@ export default function AdminPostsPage() {
       {/* Quick link to blog */}
       <div className="mt-8 text-center">
         <a
-          href="/blog"
+          href="/blog/"
           target="_blank"
           className="text-xs text-stone-400 hover:text-stone-600 transition-colors underline underline-offset-2"
         >

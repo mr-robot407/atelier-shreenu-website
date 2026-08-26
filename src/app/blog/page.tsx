@@ -7,21 +7,21 @@ export const revalidate = 60;
 
 const CATEGORY_META: Record<string, { title: string; description: string; intro: string }> = {
   design: {
-    title: "Design — The Blog — Atelier Shreenu",
+    title: "Design — The Blog",
     description:
       "Explore design thinking from Atelier Shreenu — spatial decisions, material choices, and the reasoning behind every room we shape.",
     intro:
       "Design, at its most considered, is a conversation between a space and the people who inhabit it. In this category we unpack the decisions that shape Atelier Shreenu projects: why a wall opens instead of closes, why a palette leans warm rather than cool, how natural light is coaxed rather than forced. Each post traces the logic behind a material choice, a layout shift, or a detail that took weeks to resolve. Whether you are a future client looking to understand our process, a design student curious about practice-level decision-making, or simply someone who appreciates spaces built with intention — these essays are written for you.",
   },
   insights: {
-    title: "Insights — The Blog — Atelier Shreenu",
+    title: "Insights — The Blog",
     description:
       "Industry observations, research, and professional perspectives from the principals of Atelier Shreenu on architecture and interior design in India.",
     intro:
       "Architecture does not exist in isolation — it reflects the culture, economy, and aspirations of its moment. The Insights category is where Atelier Shreenu steps back from individual projects to examine larger forces shaping the built environment in India: how clients are thinking about home in 2025, what sustainable practice actually looks like beyond greenwashing, where traditional craft and contemporary detailing can coexist, and what a decade of running a design studio has taught us about the gap between vision and execution. These are longer, more reflective pieces — the kind of writing that does not date quickly because it is rooted in principle rather than trend.",
   },
   lifestyle: {
-    title: "Lifestyle — The Blog — Atelier Shreenu",
+    title: "Lifestyle — The Blog",
     description:
       "How Atelier Shreenu thinks about living well — travel references, objects of note, and the sensory details that inform our design practice.",
     intro:
@@ -39,12 +39,14 @@ export async function generateMetadata({
     return {
       title: CATEGORY_META[cat].title,
       description: CATEGORY_META[cat].description,
+      alternates: { canonical: `/blog/?category=${cat}` },
     };
   }
   return {
-    title: "The Blog — Atelier Shreenu",
+    title: "The Blog",
     description:
       "Ideas, references, and perspectives from the studio of Atelier Shreenu.",
+    alternates: { canonical: "/blog/" },
   };
 }
 

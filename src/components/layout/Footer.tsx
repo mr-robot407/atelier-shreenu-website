@@ -35,7 +35,7 @@ export function Footer() {
                   </li>
                 ))}
                 <li>
-                  <a href="/blog" target="_blank" rel="noopener noreferrer" className={linkClass}>
+                  <a href="/blog/" target="_blank" rel="noopener noreferrer" className={linkClass}>
                     Blog
                   </a>
                 </li>

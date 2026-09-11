@@ -14,6 +14,7 @@ import {
   awsSecretAccessKey,
   contactTableName,
 } from "@/lib/aws-runtime-config";
+import { renderAckEmail } from "@/lib/email-templates";
 
 const credentials =
   awsAccessKeyId
@@ -42,6 +43,13 @@ const FORM_LABELS: Record<string, string> = {
   vendor: "New Vendor Enquiry",
   careers: "New Career Application",
 };
+
+function firstNameFrom(fields: Record<string, string>): string {
+  const raw = (fields.name ?? fields.contact_person ?? "").trim();
+  if (!raw) return "there";
+  const first = raw.split(/\s+/)[0];
+  return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
+}
 
 const FIELD_LABELS: Record<string, string> = {
   name: "Name",
@@ -210,11 +218,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Failed to save submission" }, { status: 500 });
   }
 
+  const submitterEmail = fields.email?.trim();
+  const validSubmitter =
+    submitterEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(submitterEmail)
+      ? submitterEmail
+      : undefined;
+
+  // 1) Team notification — from info@ to info@; Reply-To → submitter so
+  //    hitting Reply in the inbox addresses the enquirer. The inbound Lambda
+  //    drops this because sender==info@ (self-loop guard).
   try {
     await sesClient.send(
       new SendEmailCommand({
         Source: NOTIFY_EMAIL,
         Destination: { ToAddresses: [NOTIFY_EMAIL] },
+        ...(validSubmitter ? { ReplyToAddresses: [validSubmitter] } : {}),
         Message: {
           Subject: {
             Data: `${FORM_LABELS[formType] ?? "Contact Form"} — Atelier Shreenu`,
@@ -226,7 +244,31 @@ export async function POST(req: NextRequest) {
       })
     );
   } catch (err) {
-    console.error("SES email failed:", err);
+    console.error("SES notification email failed:", err);
+  }
+
+  // 2) Acknowledgment to submitter — from info@ so any reply lands at info@
+  //    and gets processed autonomously by the inbound agent. HTML+text using
+  //    the studio's shared brand template.
+  if (validSubmitter) {
+    const ack = renderAckEmail(formType, firstNameFrom(fields));
+    try {
+      await sesClient.send(
+        new SendEmailCommand({
+          Source: NOTIFY_EMAIL,
+          Destination: { ToAddresses: [validSubmitter] },
+          Message: {
+            Subject: { Data: ack.subject, Charset: "UTF-8" },
+            Body: {
+              Html: { Data: ack.html, Charset: "UTF-8" },
+              Text: { Data: ack.text, Charset: "UTF-8" },
+            },
+          },
+        })
+      );
+    } catch (err) {
+      console.error("SES acknowledgment email failed:", err);
+    }
   }
 
   return NextResponse.json({ success: true });

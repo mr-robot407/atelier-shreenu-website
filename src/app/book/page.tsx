@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -70,6 +70,14 @@ function formatDateLabel(iso: string): string {
 }
 
 export default function BookPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-warm-ivory" />}>
+      <BookPageInner />
+    </Suspense>
+  );
+}
+
+function BookPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const kind = (searchParams.get("kind") as Kind) || "discovery_call";

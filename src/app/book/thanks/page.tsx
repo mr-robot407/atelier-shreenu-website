@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
@@ -23,6 +24,14 @@ const KIND_LABEL: Record<string, string> = {
 };
 
 export default function ThanksPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-warm-ivory" />}>
+      <ThanksPageInner />
+    </Suspense>
+  );
+}
+
+function ThanksPageInner() {
   const params = useSearchParams();
   const kind = params.get("kind") ?? "discovery_call";
   const slot = params.get("slot") ?? "";

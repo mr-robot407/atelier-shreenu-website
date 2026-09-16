@@ -12,6 +12,8 @@ import { site } from "@/content/site";
 type Tab = "project" | "vendor" | "careers";
 type SubmitStatus = "idle" | "submitting" | "success" | "error" | "rate_limited";
 
+const MAX_UPLOAD_BYTES = 5 * 1024 * 1024; // 5 MB
+
 const inputClass =
   "mt-3 w-full border-b border-bone/25 bg-transparent py-3 text-[15px] placeholder:text-bone/40 outline-none focus:border-burgundy";
 const labelClass = "text-micro block text-bone/55";
@@ -178,17 +180,36 @@ export function Contact() {
       event.preventDefault();
       const form = event.currentTarget;
       const formData = new FormData(form);
-      const body: Record<string, string> = { formType };
-      formData.forEach((value, key) => {
-        if (typeof value === "string") body[key] = value;
+
+      // Detect a non-empty file field; use multipart when present, JSON otherwise.
+      let file: File | null = null;
+      formData.forEach((value) => {
+        if (value instanceof File && value.size > 0 && !file) file = value;
       });
+
+      if (file && (file as File).size > MAX_UPLOAD_BYTES) {
+        setStatus("error");
+        return;
+      }
+
       setStatus("submitting");
       try {
-        const res = await fetch("/api/contact", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        });
+        let res: Response;
+        if (file) {
+          formData.set("formType", formType);
+          // Do NOT set Content-Type — the browser sets the multipart boundary.
+          res = await fetch("/api/contact", { method: "POST", body: formData });
+        } else {
+          const body: Record<string, string> = { formType };
+          formData.forEach((value, key) => {
+            if (typeof value === "string") body[key] = value;
+          });
+          res = await fetch("/api/contact", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          });
+        }
         if (res.status === 429) { setStatus("rate_limited"); return; }
         if (!res.ok) throw new Error();
         router.push("/thank-you");

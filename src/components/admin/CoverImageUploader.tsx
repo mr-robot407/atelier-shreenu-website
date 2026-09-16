@@ -164,8 +164,10 @@ export default function CoverImageUploader({ value, onChange }: Props) {
     });
     ctx.drawImage(img, srcX, srcY, srcW, srcH, 0, 0, OUTPUT_W, outH);
 
+    // Quality target matches src/lib/compress-image.ts (0.82) — visually
+    // indistinguishable at blog display sizes, ~30-40% smaller than 0.92.
     const blob = await new Promise<Blob>((res) =>
-      canvas.toBlob((b) => res(b!), "image/jpeg", 0.92)
+      canvas.toBlob((b) => res(b!), "image/jpeg", 0.82)
     );
     const croppedFile = new File(
       [blob],

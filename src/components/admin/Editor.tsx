@@ -8,6 +8,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { TextStyle, FontFamily } from "@tiptap/extension-text-style";
 import TextAlign from "@tiptap/extension-text-align";
 import { useRef, useState, useCallback } from "react";
+import { compressBlogImage } from "@/lib/compress-image";
 
 // Augment only the commands that aren't already declared by the extension packages
 declare module "@tiptap/core" {
@@ -126,11 +127,12 @@ export default function Editor({ content, onChange }: Props) {
 
   // ── Upload ────────────────────────────────────────────────────────────────
   async function uploadImage(file: File) {
+    const optimised = await compressBlogImage(file);
     const res = await fetch(
-      `/api/shreenu-editor/upload?filename=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`
+      `/api/shreenu-editor/upload?filename=${encodeURIComponent(optimised.name)}&contentType=${encodeURIComponent(optimised.type)}`
     );
     const { uploadUrl, publicUrl } = await res.json();
-    await fetch(uploadUrl, { method: "PUT", body: file, headers: { "Content-Type": file.type } });
+    await fetch(uploadUrl, { method: "PUT", body: optimised, headers: { "Content-Type": optimised.type } });
     editor?.chain().focus().setImage({ src: publicUrl }).run();
   }
 

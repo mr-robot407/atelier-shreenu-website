@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
     slot_iso?: string;
     booking_kind?: string;
     variant?: string;
+    terms_accepted_at?: string;
   };
   try {
     data = await req.json();
@@ -34,6 +35,14 @@ export async function POST(req: NextRequest) {
   const slotIso = (data.slot_iso ?? "").trim();
   const kind = (data.booking_kind ?? "").trim();
   const variant = (data.variant ?? "any").trim();
+  const termsAcceptedAt = (data.terms_accepted_at ?? "").trim();
+
+  if (!termsAcceptedAt || Number.isNaN(Date.parse(termsAcceptedAt))) {
+    return NextResponse.json(
+      { error: "terms must be accepted before payment" },
+      { status: 400 },
+    );
+  }
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: "invalid email" }, { status: 400 });
@@ -62,6 +71,7 @@ export async function POST(req: NextRequest) {
       slot_iso: slotIso,
       booking_kind: kind,
       variant,
+      terms_accepted_at: termsAcceptedAt,
     });
     if (statusCode === 200) {
       const parsed = body as { url?: string; reference_id?: string };

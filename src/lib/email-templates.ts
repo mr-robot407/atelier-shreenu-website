@@ -9,24 +9,73 @@ const CALENDAR_BOOKING_LINK = "https://ateliershreenu.com/book";
 const SITE_URL = "https://ateliershreenu.com";
 const IG_URL = "https://www.instagram.com/ateliershreenu/";
 
+// Deep-link the ack CTA based on the consultation type picked in the form.
+// Options mirror /book path keys (discovery_call / project_discussion /
+// site_walkthrough + variant). Unknown / missing values fall back to the
+// generic /book landing so the CTA never breaks.
+type BookingContext = { href: string; buttonLabel: string; ctaSentence: string };
+
+function bookingContextFor(consultationType?: string): BookingContext {
+  const c = (consultationType ?? "").toLowerCase();
+  if (c.includes("discovery")) {
+    return {
+      href: `${CALENDAR_BOOKING_LINK}?kind=discovery_call&lock=1`,
+      buttonLabel: "Book the discovery call",
+      ctaSentence:
+        "The studio offers a complimentary ten-minute discovery call with the founding partner — Architect Ranjeet Mukherjee. The booking link is below.",
+    };
+  }
+  if (c.includes("google meet") || c.includes("project discussion")) {
+    return {
+      href: `${CALENDAR_BOOKING_LINK}?kind=project_discussion&lock=1`,
+      buttonLabel: "Book the project discussion",
+      ctaSentence:
+        "The studio offers a thirty-minute Project Discussion on Google Meet with the founding partner — Architect Ranjeet Mukherjee. The booking link is below.",
+    };
+  }
+  if (c.includes("outside ncr") || c.includes("overnight")) {
+    return {
+      href: `${CALENDAR_BOOKING_LINK}?kind=site_walkthrough&variant=outside_ncr&lock=1`,
+      buttonLabel: "Book the site walkthrough",
+      ctaSentence:
+        "The studio offers an on-site walkthrough beyond NCR with the founding partner — Architect Ranjeet Mukherjee. The booking link is below.",
+    };
+  }
+  if (c.includes("within ncr") || c.includes("regional")) {
+    return {
+      href: `${CALENDAR_BOOKING_LINK}?kind=site_walkthrough&variant=ncr&lock=1`,
+      buttonLabel: "Book the site walkthrough",
+      ctaSentence:
+        "The studio offers an on-site walkthrough across Delhi NCR with the founding partner — Architect Ranjeet Mukherjee. The booking link is below.",
+    };
+  }
+  return {
+    href: CALENDAR_BOOKING_LINK,
+    buttonLabel: "Book a discovery call",
+    ctaSentence:
+      "The studio offers a complimentary ten-minute discovery call with the founding partner — Architect Ranjeet Mukherjee. The booking link is below.",
+  };
+}
+
 const SUBJECTS: Record<FormType, string> = {
   project: "Thank you for the enquiry — Atelier Shreenu",
   vendor: "Received — Atelier Shreenu",
   careers: "Application received — Atelier Shreenu",
 };
 
-function bodyText(formType: FormType, firstName: string): string {
+function bodyText(formType: FormType, firstName: string, consultationType?: string): string {
   const year = new Date().getFullYear();
   const footer =
     `Atelier Shreenu | Palam Vihar, Gurugram — 122017, Haryana, India\n` +
     `info@ateliershreenu.com | ateliershreenu.com | © ${year}`;
 
   if (formType === "project") {
+    const bk = bookingContextFor(consultationType);
     return (
       `Subject: ${SUBJECTS.project}\n\n` +
       `Dear ${firstName},\n\n` +
-      `Thank you for the message. The studio is glad to hear from you and will respond within the day. Should you wish to take the conversation forward immediately, the studio offers a complimentary ten-minute discovery call with the founding partner — Architect Ranjeet Mukherjee. The booking link is below.\n\n` +
-      `Book a discovery call:\n${CALENDAR_BOOKING_LINK}\n\n` +
+      `Thank you for the message. The studio is glad to hear from you and will respond within the day. Should you wish to take the conversation forward immediately, ${bk.ctaSentence.charAt(0).toLowerCase() + bk.ctaSentence.slice(1)}\n\n` +
+      `${bk.buttonLabel}:\n${bk.href}\n\n` +
       `View selected work:\n${SITE_URL}\n\n` +
       `The studio's Instagram — @ateliershreenu — carries selected projects, materials, and process notes:\n${IG_URL}\n\n` +
       `The studio is at your service.\n\n` +
@@ -116,16 +165,17 @@ ${body}
 </html>`;
 }
 
-function bodyHtml(formType: FormType, firstName: string): string {
+function bodyHtml(formType: FormType, firstName: string, consultationType?: string): string {
   if (formType === "project") {
+    const bk = bookingContextFor(consultationType);
     return `              <p style="margin:0 0 20px 0;">Dear ${firstName},</p>
 
-              <p style="margin:0 0 20px 0;">Thank you for the message. The studio is glad to hear from you and will respond within the day. Should you wish to take the conversation forward immediately, the studio offers a complimentary ten-minute discovery call with the founding partner &mdash; Architect Ranjeet Mukherjee. The booking link is below.</p>
+              <p style="margin:0 0 20px 0;">Thank you for the message. The studio is glad to hear from you and will respond within the day. Should you wish to take the conversation forward immediately, ${bk.ctaSentence.charAt(0).toLowerCase() + bk.ctaSentence.slice(1).replace(/—/g, "&mdash;")}</p>
 
               <table cellpadding="0" cellspacing="0" border="0" style="margin:28px 0 12px 0;">
                 <tr>
                   <td>
-                    <a href="${CALENDAR_BOOKING_LINK}" style="display:inline-block;padding:12px 28px;background:#2C2C2C;color:#fff;text-decoration:none;font-family:'Jost',Arial,sans-serif;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;">Book a discovery call &rarr;</a>
+                    <a href="${bk.href}" style="display:inline-block;padding:12px 28px;background:#2C2C2C;color:#fff;text-decoration:none;font-family:'Jost',Arial,sans-serif;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;">${bk.buttonLabel} &rarr;</a>
                   </td>
                 </tr>
               </table>
@@ -166,6 +216,7 @@ function bodyHtml(formType: FormType, firstName: string): string {
 export function renderAckEmail(
   formType: string,
   firstName: string,
+  consultationType?: string,
 ): { subject: string; html: string; text: string } {
   const ft: FormType = (["project", "vendor", "careers"] as const).includes(
     formType as FormType,
@@ -175,7 +226,7 @@ export function renderAckEmail(
   const subject = SUBJECTS[ft];
   return {
     subject,
-    html: shell(subject, bodyHtml(ft, firstName)),
-    text: bodyText(ft, firstName),
+    html: shell(subject, bodyHtml(ft, firstName, consultationType)),
+    text: bodyText(ft, firstName, consultationType),
   };
 }

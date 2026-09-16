@@ -6,7 +6,7 @@ import {
   GetCommand,
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import { SESClient, SendEmailCommand, SendRawEmailCommand } from "@aws-sdk/client-ses";
 import { randomUUID } from "crypto";
 import {
   awsRegion,
@@ -69,6 +69,8 @@ const FIELD_LABELS: Record<string, string> = {
   career_type: "Career Type",
   experience_level: "Experience Level",
   portfolio_url: "Portfolio Link",
+  resume_filename: "Attached Resume",
+  resume_size_kb: "Resume Size (KB)",
 };
 
 function getClientIp(req: NextRequest): string {
@@ -153,6 +155,54 @@ const ALLOWED_ORIGINS = [
 
 const MAX_FIELD_LENGTH = 2000;
 const MAX_FIELDS = 20;
+const MAX_UPLOAD_BYTES = 5 * 1024 * 1024; // 5 MB — must match Contact.tsx
+const ALLOWED_UPLOAD_MIME = new Set(["application/pdf"]);
+
+type Attachment = { filename: string; mime: string; bytes: Buffer };
+
+function base64Wrapped(buf: Buffer): string {
+  // Wrap at 76 chars per RFC 2045.
+  return buf.toString("base64").replace(/.{76}/g, "$&\r\n");
+}
+
+function buildRawEmail(opts: {
+  from: string;
+  to: string;
+  replyTo?: string;
+  subject: string;
+  text: string;
+  attachment: Attachment;
+}): string {
+  const boundary = `--=_AS_${randomUUID()}`;
+  const headers = [
+    `From: ${opts.from}`,
+    `To: ${opts.to}`,
+    ...(opts.replyTo ? [`Reply-To: ${opts.replyTo}`] : []),
+    `Subject: ${opts.subject}`,
+    "MIME-Version: 1.0",
+    `Content-Type: multipart/mixed; boundary="${boundary}"`,
+  ].join("\r\n");
+
+  const textPart = [
+    `--${boundary}`,
+    'Content-Type: text/plain; charset="UTF-8"',
+    "Content-Transfer-Encoding: 7bit",
+    "",
+    opts.text,
+  ].join("\r\n");
+
+  const safeName = opts.attachment.filename.replace(/["\r\n]/g, "_");
+  const filePart = [
+    `--${boundary}`,
+    `Content-Type: ${opts.attachment.mime}; name="${safeName}"`,
+    `Content-Disposition: attachment; filename="${safeName}"`,
+    "Content-Transfer-Encoding: base64",
+    "",
+    base64Wrapped(opts.attachment.bytes),
+  ].join("\r\n");
+
+  return [headers, "", textPart, filePart, `--${boundary}--`, ""].join("\r\n");
+}
 
 function validateFields(fields: Record<string, string>): boolean {
   if (Object.keys(fields).length > MAX_FIELDS) return false;
@@ -181,8 +231,36 @@ export async function POST(req: NextRequest) {
   }
 
   let data: Record<string, string>;
+  let attachment: Attachment | null = null;
+  const contentType = req.headers.get("content-type") ?? "";
+
   try {
-    data = await req.json();
+    if (contentType.startsWith("multipart/form-data")) {
+      const form = await req.formData();
+      const collected: Record<string, string> = {};
+      for (const [key, value] of form.entries()) {
+        if (typeof value === "string") {
+          collected[key] = value;
+          continue;
+        }
+        // File entry (careers resume). Enforce one file, size + MIME allowlist.
+        if (value.size === 0) continue;
+        if (attachment) {
+          return NextResponse.json({ error: "Only one file allowed" }, { status: 400 });
+        }
+        if (value.size > MAX_UPLOAD_BYTES) {
+          return NextResponse.json({ error: "File too large" }, { status: 413 });
+        }
+        if (!ALLOWED_UPLOAD_MIME.has(value.type)) {
+          return NextResponse.json({ error: "Unsupported file type" }, { status: 415 });
+        }
+        const bytes = Buffer.from(await value.arrayBuffer());
+        attachment = { filename: value.name || "resume.pdf", mime: value.type, bytes };
+      }
+      data = collected;
+    } else {
+      data = await req.json();
+    }
   } catch {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
@@ -193,6 +271,10 @@ export async function POST(req: NextRequest) {
   }
 
   const { formType, ...fields } = data;
+  if (attachment) {
+    fields.resume_filename = attachment.filename;
+    fields.resume_size_kb = String(Math.round(attachment.bytes.length / 1024));
+  }
 
   if (!formType || !["project", "vendor", "careers"].includes(formType)) {
     return NextResponse.json({ error: "Invalid form type" }, { status: 400 });
@@ -227,22 +309,38 @@ export async function POST(req: NextRequest) {
   // 1) Team notification — from info@ to info@; Reply-To → submitter so
   //    hitting Reply in the inbox addresses the enquirer. The inbound Lambda
   //    drops this because sender==info@ (self-loop guard).
+  const notifySubject = `${FORM_LABELS[formType] ?? "Contact Form"} — Atelier Shreenu`;
+  const notifyText = formatEmailBody(formType, fields);
   try {
-    await sesClient.send(
-      new SendEmailCommand({
-        Source: NOTIFY_EMAIL,
-        Destination: { ToAddresses: [NOTIFY_EMAIL] },
-        ...(validSubmitter ? { ReplyToAddresses: [validSubmitter] } : {}),
-        Message: {
-          Subject: {
-            Data: `${FORM_LABELS[formType] ?? "Contact Form"} — Atelier Shreenu`,
+    if (attachment) {
+      const raw = buildRawEmail({
+        from: NOTIFY_EMAIL,
+        to: NOTIFY_EMAIL,
+        replyTo: validSubmitter,
+        subject: notifySubject,
+        text: notifyText,
+        attachment,
+      });
+      await sesClient.send(
+        new SendRawEmailCommand({
+          Source: NOTIFY_EMAIL,
+          Destinations: [NOTIFY_EMAIL],
+          RawMessage: { Data: Buffer.from(raw, "utf-8") },
+        })
+      );
+    } else {
+      await sesClient.send(
+        new SendEmailCommand({
+          Source: NOTIFY_EMAIL,
+          Destination: { ToAddresses: [NOTIFY_EMAIL] },
+          ...(validSubmitter ? { ReplyToAddresses: [validSubmitter] } : {}),
+          Message: {
+            Subject: { Data: notifySubject },
+            Body: { Text: { Data: notifyText } },
           },
-          Body: {
-            Text: { Data: formatEmailBody(formType, fields) },
-          },
-        },
-      })
-    );
+        })
+      );
+    }
   } catch (err) {
     console.error("SES notification email failed:", err);
   }
@@ -251,7 +349,7 @@ export async function POST(req: NextRequest) {
   //    and gets processed autonomously by the inbound agent. HTML+text using
   //    the studio's shared brand template.
   if (validSubmitter) {
-    const ack = renderAckEmail(formType, firstNameFrom(fields));
+    const ack = renderAckEmail(formType, firstNameFrom(fields), fields.consultation_type);
     try {
       await sesClient.send(
         new SendEmailCommand({

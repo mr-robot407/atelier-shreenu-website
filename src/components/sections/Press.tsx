@@ -18,7 +18,7 @@ export function Press() {
           </h2>
 
           <p className="font-sans text-[13px] italic text-warm-grey mb-12">
-            Selected Media Article about our practice, formerly known as The Vrindavan Project
+            Selected Media Articles about our practice, formerly known as The Vrindavan Project
           </p>
 
           {/* Logo grid: 2 cols mobile → 4 cols desktop */}

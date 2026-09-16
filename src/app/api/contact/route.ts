@@ -45,8 +45,11 @@ const FORM_LABELS: Record<string, string> = {
 };
 
 function firstNameFrom(fields: Record<string, string>): string {
+  // v13 directive: use the plain first name when we have one; otherwise
+  // fall back to "Sir / Madam" so the salutation reads
+  // "Greetings Sir / Madam," rather than "Greetings there,".
   const raw = (fields.name ?? fields.contact_person ?? "").trim();
-  if (!raw) return "there";
+  if (!raw) return "Sir / Madam";
   const first = raw.split(/\s+/)[0];
   return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
 }

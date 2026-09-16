@@ -24,7 +24,7 @@ export const site = {
 
   social: {
     instagram: "https://www.instagram.com/ateliershreenu?igsh=eDBsY25iZ3VtaW1r",
-    facebook: "https://www.facebook.com/share/1DUhNAnMMQ/",
+    facebook: "https://www.facebook.com/profile.php?id=61593321457827",
     linkedin: "https://www.linkedin.com/company/atelier-shreenu/",
     youtube: "https://www.youtube.com/@AtelierShreenu",
   },

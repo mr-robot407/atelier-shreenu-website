@@ -73,12 +73,12 @@ function bodyText(formType: FormType, firstName: string, consultationType?: stri
     const bk = bookingContextFor(consultationType);
     return (
       `Subject: ${SUBJECTS.project}\n\n` +
-      `Dear ${firstName},\n\n` +
+      `Greetings ${firstName},\n\n` +
       `Thank you for the message. The studio is glad to hear from you and will respond within the day. Should you wish to take the conversation forward immediately, ${bk.ctaSentence.charAt(0).toLowerCase() + bk.ctaSentence.slice(1)}\n\n` +
       `${bk.buttonLabel}:\n${bk.href}\n\n` +
       `View selected work:\n${SITE_URL}\n\n` +
       `The studio's Instagram — @ateliershreenu — carries selected projects, materials, and process notes:\n${IG_URL}\n\n` +
-      `The studio is at your service.\n\n` +
+      `Looking forward to discussing further.\n\n` +
       `Atelier Shreenu | info@ateliershreenu.com | ateliershreenu.com\n\n` +
       footer
     );
@@ -95,7 +95,7 @@ function bodyText(formType: FormType, firstName: string, consultationType?: stri
   // careers
   return (
     `Subject: ${SUBJECTS.careers}\n\n` +
-    `Dear ${firstName},\n\n` +
+    `Greetings ${firstName},\n\n` +
     `Thank you for the interest in Atelier Shreenu. The application has been received and will be reviewed by the studio. Should there be a fit for a current or upcoming position, the studio will be in touch within three working days. The studio does not promise individual replies to every application.\n\n` +
     `Thank you.\n\n` +
     `Atelier Shreenu | info@ateliershreenu.com | ateliershreenu.com\n\n` +
@@ -168,7 +168,7 @@ ${body}
 function bodyHtml(formType: FormType, firstName: string, consultationType?: string): string {
   if (formType === "project") {
     const bk = bookingContextFor(consultationType);
-    return `              <p style="margin:0 0 20px 0;">Dear ${firstName},</p>
+    return `              <p style="margin:0 0 20px 0;">Greetings ${firstName},</p>
 
               <p style="margin:0 0 20px 0;">Thank you for the message. The studio is glad to hear from you and will respond within the day. Should you wish to take the conversation forward immediately, ${bk.ctaSentence.charAt(0).toLowerCase() + bk.ctaSentence.slice(1).replace(/—/g, "&mdash;")}</p>
 
@@ -190,7 +190,7 @@ function bodyHtml(formType: FormType, firstName: string, consultationType?: stri
 
               <p style="margin:0 0 20px 0;">The studio's Instagram &mdash; @ateliershreenu &mdash; carries selected projects, materials, and process notes: <a href="${IG_URL}" style="color:#2C2C2C;">${IG_URL}</a></p>
 
-              <p style="margin:0 0 20px 0;">The studio is at your service.</p>
+              <p style="margin:0 0 20px 0;">Looking forward to discussing further.</p>
 
               <p style="margin:0;">Atelier Shreenu | <a href="mailto:info@ateliershreenu.com" style="color:#2C2C2C;">info@ateliershreenu.com</a> | <a href="${SITE_URL}" style="color:#2C2C2C;">ateliershreenu.com</a></p>`;
   }
@@ -204,7 +204,7 @@ function bodyHtml(formType: FormType, firstName: string, consultationType?: stri
               <p style="margin:0;">Atelier Shreenu | <a href="mailto:info@ateliershreenu.com" style="color:#2C2C2C;">info@ateliershreenu.com</a> | <a href="${SITE_URL}" style="color:#2C2C2C;">ateliershreenu.com</a></p>`;
   }
   // careers
-  return `              <p style="margin:0 0 20px 0;">Dear ${firstName},</p>
+  return `              <p style="margin:0 0 20px 0;">Greetings ${firstName},</p>
 
               <p style="margin:0 0 20px 0;">Thank you for the interest in Atelier Shreenu. The application has been received and will be reviewed by the studio. Should there be a fit for a current or upcoming position, the studio will be in touch within three working days. The studio does not promise individual replies to every application.</p>
 

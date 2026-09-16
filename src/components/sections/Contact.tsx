@@ -373,7 +373,7 @@ export function Contact() {
                   options={[
                     "Architecture Design Consultancy",
                     "Interior Design Consultancy",
-                    "Architecture + Design Consultancy",
+                    "Architecture + Interior Design Consultancy",
                   ]}
                 />
 

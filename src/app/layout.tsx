@@ -182,7 +182,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 "https://www.instagram.com/ateliershreenu",
                 "https://www.youtube.com/@AtelierShreenu",
                 "https://www.linkedin.com/company/atelier-shreenu/",
-                "https://www.facebook.com/share/1DUhNAnMMQ/",
+                "https://www.facebook.com/profile.php?id=61593321457827",
               ],
             }),
           }}

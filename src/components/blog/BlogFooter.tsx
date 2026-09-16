@@ -8,7 +8,7 @@ const SOCIAL_LINKS = [
   { label: "Instagram", href: "https://www.instagram.com/ateliershreenu?igsh=eDBsY25iZ3VtaW1r", Icon: InstagramIcon },
   { label: "YouTube",   href: "https://www.youtube.com/@AtelierShreenu",                         Icon: YouTubeIcon   },
   { label: "LinkedIn",  href: "https://www.linkedin.com/company/atelier-shreenu/",               Icon: LinkedInIcon  },
-  { label: "Facebook",  href: "https://www.facebook.com/share/1DUhNAnMMQ/",                      Icon: FacebookIcon  },
+  { label: "Facebook",  href: "https://www.facebook.com/profile.php?id=61593321457827",                      Icon: FacebookIcon  },
 ];
 
 export function BlogFooter() {

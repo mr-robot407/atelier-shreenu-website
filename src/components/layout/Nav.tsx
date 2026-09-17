@@ -100,11 +100,11 @@ export function Nav() {
           </Link>
 
           {/*
-            md–lg (768–1279 px): flex-1 centred — prevents any collision with CTA
-            xl+   (1280 px+):   absolute, left-edge aligned with carousel start
+            md–<1800 px: flex-1 centred — prevents any collision with CTA
+            1800 px+:    absolute, left-edge aligned with carousel start
           */}
           <nav
-            className="hidden md:flex md:flex-1 md:justify-center xl:flex-none xl:absolute xl:left-[calc(50%+3rem)] xl:justify-start items-center gap-8 xl:gap-6 2xl:gap-10"
+            className="hidden md:flex md:flex-1 md:justify-center min-[1800px]:flex-none min-[1800px]:absolute min-[1800px]:left-[calc(50%+3rem)] min-[1800px]:justify-start items-center gap-6 lg:gap-8 min-[1800px]:gap-10"
             aria-label="Main navigation"
           >
             {site.nav.map((item) => {

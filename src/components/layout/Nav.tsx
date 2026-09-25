@@ -27,12 +27,18 @@ export function Nav() {
 
     const updateActive = () => {
       if (clickLockRef.current) return;
-      const scrollY = window.scrollY + 120;
+      const activationLine = window.scrollY + window.innerHeight * 0.4;
       let current = "";
       for (const id of ids) {
         const el = document.getElementById(id);
-        if (el && el.offsetTop <= scrollY) current = `#${id}`;
+        if (el && el.offsetTop <= activationLine) current = `#${id}`;
       }
+      // At the bottom of the document (footer visible) force the last section
+      // active so the underline doesn't hang on the previous one.
+      const nearBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 4;
+      if (nearBottom && ids.length) current = `#${ids[ids.length - 1]}`;
       setActiveSection(current);
     };
 

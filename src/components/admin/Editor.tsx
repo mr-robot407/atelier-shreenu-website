@@ -133,7 +133,11 @@ export default function Editor({ content, onChange }: Props) {
     );
     const { uploadUrl, publicUrl } = await res.json();
     await fetch(uploadUrl, { method: "PUT", body: optimised, headers: { "Content-Type": optimised.type } });
-    editor?.chain().focus().setImage({ src: publicUrl }).run();
+    const alt = window.prompt(
+      "Describe this image for screen readers and SEO (leave blank only if purely decorative):",
+      ""
+    ) ?? "";
+    editor?.chain().focus().setImage({ src: publicUrl, alt: alt.trim() }).run();
   }
 
   // ── Link popover ──────────────────────────────────────────────────────────
@@ -191,10 +195,18 @@ export default function Editor({ content, onChange }: Props) {
   function setImageWidth(width: string) {
     editor?.chain().focus().updateAttributes("image", { "data-width": width }).run();
   }
+  function editImageAlt() {
+    if (!editor) return;
+    const current = (editor.getAttributes("image").alt as string) ?? "";
+    const next = window.prompt("Alt text (leave blank if purely decorative):", current);
+    if (next === null) return;
+    editor.chain().focus().updateAttributes("image", { alt: next.trim() }).run();
+  }
 
   const isImageSelected = editor?.isActive("image") ?? false;
   const currentWidth   = editor?.getAttributes("image")["data-width"] ?? "100%";
   const currentAlign   = editor?.getAttributes("image")["data-align"] ?? "none";
+  const currentAlt     = (editor?.getAttributes("image").alt as string) ?? "";
   const currentFont    = editor?.getAttributes("textStyle").fontFamily ?? "";
 
   // Alignment: read from whichever block node is active
@@ -385,6 +397,14 @@ export default function Editor({ content, onChange }: Props) {
                 active={currentWidth === s.value}
                 onAction={() => setImageWidth(s.value)} />
             ))}
+            <Divider />
+            <Btn
+              ariaLabel="Edit alt text"
+              title={currentAlt ? `Alt: ${currentAlt}` : "Add alt text"}
+              active={!currentAlt}
+              onAction={editImageAlt}
+              label={<span className="text-[10px] font-semibold tracking-wide">ALT</span>}
+            />
           </>
         )}
 

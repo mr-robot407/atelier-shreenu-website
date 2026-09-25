@@ -1,6 +1,7 @@
 import { getPostBySlug, listPublishedPosts } from "@/lib/dynamodb";
 import { notFound, permanentRedirect } from "next/navigation";
 import Image from "next/image";
+import { ensureImageAlts } from "@/lib/utils";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -132,7 +133,7 @@ export default async function PostPage({
 
         <article
           className="prose prose-stone prose-lg max-w-[680px] prose-headings:font-serif prose-headings:font-normal prose-a:text-burgundy prose-a:no-underline hover:prose-a:underline"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: ensureImageAlts(post.content, post.title) }}
         />
 
         <div className="mt-12 pt-6 border-t border-charcoal/10 flex items-center justify-between gap-4">

@@ -6,6 +6,12 @@ export const press = [
     square: false,
   },
   {
+    name: "Elle Decor",
+    url: "https://elledecor.in/jammu-home-by-the-vrindavan-project/",
+    logo: "",
+    square: false,
+  },
+  {
     name: "ArchDaily",
     url: "https://www.archdaily.com/975260/entheogenic-house-the-vrindavan-project",
     logo: "/images/press/archdaily.png",

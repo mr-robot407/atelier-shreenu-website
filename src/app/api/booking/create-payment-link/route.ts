@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { invokeFunnel } from "@/lib/funnel-lambda";
+import {
+  bookingTermsFor,
+  renderBookingTermsHtml,
+  renderBookingTermsText,
+  type BookingKind,
+  type BookingVariant,
+} from "@/content/booking-terms";
 
 const ALLOWED_ORIGINS = [
   "https://ateliershreenu.com",
@@ -63,6 +70,10 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Forward the exact T&C blocks the client accepted at checkout so the
+  // as-email-funnel Lambda can quote them verbatim in the confirmation email.
+  const termsBlocks = bookingTermsFor(kind as BookingKind, variant as BookingVariant);
+
   try {
     const { statusCode, body } = await invokeFunnel({
       source: "booking_payment_link",
@@ -72,6 +83,9 @@ export async function POST(req: NextRequest) {
       booking_kind: kind,
       variant,
       terms_accepted_at: termsAcceptedAt,
+      terms_blocks: termsBlocks,
+      terms_html: renderBookingTermsHtml(termsBlocks),
+      terms_text: renderBookingTermsText(termsBlocks),
     });
     if (statusCode === 200) {
       const parsed = body as { url?: string; reference_id?: string };

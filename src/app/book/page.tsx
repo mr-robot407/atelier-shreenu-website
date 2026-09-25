@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { bookingTermsFor } from "@/content/booking-terms";
 
 type Kind = "discovery_call" | "project_discussion" | "site_walkthrough";
 type Variant = "any" | "ncr" | "outside_ncr";
@@ -467,20 +468,7 @@ function TermsModal(props: {
 }) {
   const { path, ackAll, setAckAll, submitting, onClose, onProceed } = props;
 
-  const isSite = path.kind === "site_walkthrough";
-  const isOutside = path.variant === "outside_ncr";
-
-  const travelHeading = !isSite
-    ? "Format"
-    : isOutside
-    ? "Travel & Accommodation, Outside NCR"
-    : "Travel & Expenses, Within NCR";
-
-  const travelCopy = !isSite
-    ? "The Project Discussion is conducted on Google Meet; no travel arrangements apply."
-    : isOutside
-    ? "Travel and accommodation outside NCR are arranged and billed separately to the Client at actuals. Airline flights are the Firm's preferred mode of transport where feasible; taxi fares are billed in addition. The Firm does not travel by train or bus. Accommodation is booked at a minimum 4-star business hotel; the Firm does not accept accommodation as a guest in the Client's home."
-    : "Travel and expenses within NCR are arranged and billed separately to the Client at actuals. Fares for Uber Black or an equivalent taxi service are quoted upon receipt of the site location and shall be cleared in full before departure.";
+  const blocks = bookingTermsFor(path.kind, path.variant);
 
   return (
     <div
@@ -506,45 +494,14 @@ function TermsModal(props: {
         </div>
 
         <div className="px-6 py-6 space-y-6">
-          <div>
-            <p className="font-serif text-sm uppercase tracking-wide">
-              90-Day Confirmation Credit
-            </p>
-            <p className="mt-2 text-sm leading-relaxed">
-              This fee is not simply an additional cost. If a Design
-              Consultancy Agreement for this project is signed, or treated as
-              accepted under its Implied Acceptance by Payment clause, within
-              ninety (90) calendar days of the date the fee was paid for a
-              Project Discussion (online meeting) or a Site &amp; Vision
-              Walkthrough (within or outside NCR), the full amount is credited
-              against the Stage 01 invoice under that Agreement.
-            </p>
-          </div>
-
-          <div>
-            <p className="font-serif text-sm uppercase tracking-wide">
-              Cancellation &amp; Refund
-            </p>
-            <p className="mt-2 text-sm leading-relaxed">
-              Where a Project Discussion or a Site &amp; Vision Walkthrough
-              (within or outside NCR) is cancelled or rescheduled by the
-              Client, the fee is refunded in full with more than 48 hours&apos;
-              notice; the Firm retains 50% of the fee with 24 to 48 hours&apos;
-              notice; and the full fee is retained for less than 24 hours&apos;
-              notice or a no-show. Any travel or accommodation cost already
-              arranged or incurred by the Firm in connection with the visit is
-              non-refundable in all circumstances, regardless of when notice of
-              cancellation is given, as set out in our Pre-Signing Fee
-              Schedule.
-            </p>
-          </div>
-
-          <div>
-            <p className="font-serif text-sm uppercase tracking-wide">
-              {travelHeading}
-            </p>
-            <p className="mt-2 text-sm leading-relaxed">{travelCopy}</p>
-          </div>
+          {blocks.map((block) => (
+            <div key={block.title}>
+              <p className="font-serif text-sm uppercase tracking-wide">
+                {block.title}
+              </p>
+              <p className="mt-2 text-sm leading-relaxed">{block.body}</p>
+            </div>
+          ))}
 
           <label className="flex items-start gap-3 cursor-pointer border-t border-stone/60 pt-5">
             <input

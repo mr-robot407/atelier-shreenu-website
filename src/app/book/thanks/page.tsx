@@ -1,8 +1,9 @@
 "use client";
 
 import { Suspense } from "react";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+
+const INSTAGRAM_URL = "https://www.instagram.com/ateliershreenu/";
 
 function formatDate(iso: string): string {
   const d = new Date(iso);
@@ -58,13 +59,15 @@ function ThanksPageInner() {
           looks forward to the conversation.
         </p>
 
-        <div className="mt-12 space-x-4">
-          <Link
-            href="/"
+        <div className="mt-12">
+          <a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-block bg-charcoal text-warm-ivory px-8 py-3 text-micro uppercase tracking-wide"
           >
-            Return to atelier
-          </Link>
+            Follow on Instagram
+          </a>
         </div>
       </div>
     </main>

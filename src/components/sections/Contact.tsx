@@ -167,6 +167,21 @@ function SelectField({
   );
 }
 
+// Map the "consultation_type" select value (slugged in SelectField) to the
+// /book URL contract. Fallback: land on /book with no tier selected so the
+// user can still pick — never a 404.
+function bookingUrlFor(consultationType: string): string {
+  const c = consultationType.toLowerCase();
+  if (c.includes("discovery")) return "/book?kind=discovery_call&lock=1";
+  if (c.includes("google-meet") || c.includes("project-discussion"))
+    return "/book?kind=project_discussion&lock=1";
+  if (c.includes("outside-ncr") || c.includes("overnight"))
+    return "/book?kind=site_walkthrough&variant=outside_ncr&lock=1";
+  if (c.includes("regional") || c.includes("within-ncr") || c.includes("ncr"))
+    return "/book?kind=site_walkthrough&variant=ncr&lock=1";
+  return "/book";
+}
+
 export function Contact() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>("project");
@@ -192,6 +207,13 @@ export function Contact() {
         return;
       }
 
+      // Consultation type is used post-submit to deep-link a Project enquirer
+      // straight into /book with the correct tier locked.
+      const consultationType =
+        formType === "project"
+          ? String(formData.get("consultation_type") ?? "")
+          : "";
+
       setStatus("submitting");
       try {
         let res: Response;
@@ -212,7 +234,11 @@ export function Contact() {
         }
         if (res.status === 429) { setStatus("rate_limited"); return; }
         if (!res.ok) throw new Error();
-        router.push("/thank-you");
+        if (formType === "project") {
+          router.push(bookingUrlFor(consultationType));
+        } else {
+          router.push("/thank-you");
+        }
       } catch {
         setStatus("error");
       }

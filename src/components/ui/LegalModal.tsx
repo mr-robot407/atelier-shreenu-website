@@ -6,7 +6,7 @@ import { X } from "lucide-react";
 export const LEGAL_CONTENT = `
 PRIVACY POLICY
 
-Effective date: [date of publication]
+Effective date: 17 September 2026
 
 Introduction
 

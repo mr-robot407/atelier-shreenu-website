@@ -1,110 +1,139 @@
 // Studio-branded ack email templates for /api/contact form submissions.
-// Structure mirrors as-email-agent/templates/html/*.ACK.html so the design
-// matches the studio's other transactional mail (Cormorant Garamond / Jost,
-// #FAF7F2 warm neutral, #2C2C2C ink).
+//
+// Voice, punctuation and shape follow the Atelier Shreenu Concierge Voice
+// Guidelines (September 2026 edition):
+//   • No em dashes or en dashes anywhere.
+//   • "Greetings <First>," salutation, never "Dear".
+//   • Fixed close: "With best wishes, / Team Atelier Shreenu / Atelier Shreenu
+//     by The Vrindavan Project / ateliershreenu.com".
+//   • Compact shape: three to four short paragraphs, never over 180 words.
+//   • Instagram invitation appears in every template.
+//
+// Design tokens mirror as-email-agent/templates/html/*.ACK.html: Cormorant
+// Garamond for the wordmark, Jost for the body, #FAF7F2 warm canvas, #2C2C2C
+// ink. Buttons: solid #2C2C2C for the primary CTA, hairline outline for the
+// secondary.
 
 type FormType = "project" | "vendor" | "careers";
 
-const CALENDAR_BOOKING_LINK = "https://ateliershreenu.com/book";
-const SITE_URL = "https://ateliershreenu.com";
+const BOOKING_URL = "https://ateliershreenu.com/book";
+const BLOG_URL = "https://ateliershreenu.com/blog/";
 const IG_URL = "https://www.instagram.com/ateliershreenu/";
+const IG_HANDLE = "@ateliershreenu";
+const CONTACT_EMAIL = "info@ateliershreenu.com";
+const SITE_LABEL = "ateliershreenu.com";
 
-// Deep-link the ack CTA based on the consultation type picked in the form.
-// Options mirror /book path keys (discovery_call / project_discussion /
-// site_walkthrough + variant). Unknown / missing values fall back to the
-// generic /book landing so the CTA never breaks.
-type BookingContext = { href: string; buttonLabel: string; ctaSentence: string };
+// Deep-link the primary CTA in the project ack based on the consultation
+// picked in the form. Kept in place even though /api/contact currently skips
+// project acks (project enquirers are redirected directly to /book), so the
+// template is ready if that flow is ever reactivated.
+type BookingContext = { href: string; buttonLabel: string; sentence: string };
 
 function bookingContextFor(consultationType?: string): BookingContext {
   const c = (consultationType ?? "").toLowerCase();
-  if (c.includes("discovery")) {
+  if (
+    c.includes("google meet") ||
+    c.includes("google-meet") ||
+    c.includes("project discussion") ||
+    c.includes("project-discussion")
+  ) {
     return {
-      href: `${CALENDAR_BOOKING_LINK}?kind=discovery_call&lock=1`,
-      buttonLabel: "Book the discovery call",
-      ctaSentence:
-        "The studio offers a complimentary ten-minute discovery call with the founding partner — Architect Ranjeet Mukherjee. The booking link is below.",
+      href: `${BOOKING_URL}?kind=project_discussion&lock=1`,
+      buttonLabel: "Book the Project Discussion",
+      sentence:
+        "The next step is a thirty-minute Project Discussion on Google Meet with the founding partner, Architect Ranjeet Mukherjee.",
     };
   }
-  if (c.includes("google meet") || c.includes("project discussion")) {
+  if (c.includes("outside ncr") || c.includes("outside-ncr") || c.includes("overnight")) {
     return {
-      href: `${CALENDAR_BOOKING_LINK}?kind=project_discussion&lock=1`,
-      buttonLabel: "Book the project discussion",
-      ctaSentence:
-        "The studio offers a thirty-minute Project Discussion on Google Meet with the founding partner — Architect Ranjeet Mukherjee. The booking link is below.",
+      href: `${BOOKING_URL}?kind=site_walkthrough&variant=outside_ncr&lock=1`,
+      buttonLabel: "Book the Site Walkthrough",
+      sentence:
+        "The next step is a Site and Vision Walkthrough beyond NCR with the founding partner, Architect Ranjeet Mukherjee.",
     };
   }
-  if (c.includes("outside ncr") || c.includes("overnight")) {
+  if (c.includes("within ncr") || c.includes("within-ncr") || c.includes("regional") || c.includes("ncr")) {
     return {
-      href: `${CALENDAR_BOOKING_LINK}?kind=site_walkthrough&variant=outside_ncr&lock=1`,
-      buttonLabel: "Book the site walkthrough",
-      ctaSentence:
-        "The studio offers an on-site walkthrough beyond NCR with the founding partner — Architect Ranjeet Mukherjee. The booking link is below.",
-    };
-  }
-  if (c.includes("within ncr") || c.includes("regional")) {
-    return {
-      href: `${CALENDAR_BOOKING_LINK}?kind=site_walkthrough&variant=ncr&lock=1`,
-      buttonLabel: "Book the site walkthrough",
-      ctaSentence:
-        "The studio offers an on-site walkthrough across Delhi NCR with the founding partner — Architect Ranjeet Mukherjee. The booking link is below.",
+      href: `${BOOKING_URL}?kind=site_walkthrough&variant=ncr&lock=1`,
+      buttonLabel: "Book the Site Walkthrough",
+      sentence:
+        "The next step is a Site and Vision Walkthrough across Delhi NCR with the founding partner, Architect Ranjeet Mukherjee.",
     };
   }
   return {
-    href: CALENDAR_BOOKING_LINK,
-    buttonLabel: "Book a discovery call",
-    ctaSentence:
-      "The studio offers a complimentary ten-minute discovery call with the founding partner — Architect Ranjeet Mukherjee. The booking link is below.",
+    href: `${BOOKING_URL}?kind=discovery_call&lock=1`,
+    buttonLabel: "Book the Discovery Call",
+    sentence:
+      "The next step is a complimentary ten-minute Discovery Call with the founding partner, Architect Ranjeet Mukherjee.",
   };
 }
 
 const SUBJECTS: Record<FormType, string> = {
-  project: "Thank you for the enquiry — Atelier Shreenu",
-  vendor: "Received — Atelier Shreenu",
-  careers: "Application received — Atelier Shreenu",
+  project: "Enquiry received",
+  vendor: "Note received",
+  careers: "Application received",
 };
 
-function bodyText(formType: FormType, firstName: string, consultationType?: string): string {
+const SIGN_OFF_LINES = [
+  "With best wishes,",
+  "Team Atelier Shreenu",
+  "Atelier Shreenu by The Vrindavan Project",
+  SITE_LABEL,
+];
+
+function footerText(): string {
   const year = new Date().getFullYear();
-  const footer =
-    `Atelier Shreenu | Palam Vihar, Gurugram — 122017, Haryana, India\n` +
-    `info@ateliershreenu.com | ateliershreenu.com | © ${year}`;
+  return (
+    `Atelier Shreenu | Palam Vihar, Gurugram 122017, Haryana, India\n` +
+    `${CONTACT_EMAIL} | ${SITE_LABEL} | © ${year}`
+  );
+}
+
+function bodyText(
+  formType: FormType,
+  firstName: string,
+  consultationType?: string,
+): string {
+  const footer = footerText();
+  const signOff = SIGN_OFF_LINES.join("\n");
 
   if (formType === "project") {
     const bk = bookingContextFor(consultationType);
     return (
-      `Subject: ${SUBJECTS.project}\n\n` +
       `Greetings ${firstName},\n\n` +
-      `Thank you for the message. The studio is glad to hear from you and will respond within the day. Should you wish to take the conversation forward immediately, ${bk.ctaSentence.charAt(0).toLowerCase() + bk.ctaSentence.slice(1)}\n\n` +
-      `${bk.buttonLabel}:\n${bk.href}\n\n` +
-      `View selected work:\n${SITE_URL}\n\n` +
-      `The studio's Instagram — @ateliershreenu — carries selected projects, materials, and process notes:\n${IG_URL}\n\n` +
-      `Looking forward to discussing further.\n\n` +
-      `Atelier Shreenu | info@ateliershreenu.com | ateliershreenu.com\n\n` +
+      `Thank you for the message. The studio has received it, and will respond within the day.\n\n` +
+      `Should you wish to move things forward immediately, ${bk.sentence
+        .charAt(0)
+        .toLowerCase() + bk.sentence.slice(1)}\n\n` +
+      `${bk.buttonLabel}: ${bk.href}\n\n` +
+      `Alongside, the studio's blog carries longer writing on materials, process, and built work: ${BLOG_URL}\n\n` +
+      `The studio's Instagram, ${IG_HANDLE}, carries selected projects and process notes: ${IG_URL}\n\n` +
+      `${signOff}\n\n` +
       footer
     );
   }
+
   if (formType === "vendor") {
     return (
-      `Subject: ${SUBJECTS.vendor}\n\n` +
       `Greetings ${firstName},\n\n` +
-      `Thank you for the note. The studio has received it and will be in touch directly should there be a fit with current or upcoming work.\n\n` +
-      `Follow on Instagram: ${IG_URL}\n\n` +
+      `Thank you for the note. The studio has received it, and will be in touch directly should there be a fit with current or upcoming work.\n\n` +
+      `The studio's Instagram, ${IG_HANDLE}, carries selected projects and process notes: ${IG_URL}\n\n` +
+      `${signOff}\n\n` +
       footer
     );
   }
+
   // careers
   return (
-    `Subject: ${SUBJECTS.careers}\n\n` +
     `Greetings ${firstName},\n\n` +
-    `Thank you for the interest in Atelier Shreenu. The application has been received and will be reviewed by the studio. Should there be a fit for a current or upcoming position, the studio will be in touch within three working days. The studio does not promise individual replies to every application.\n\n` +
-    `Thank you.\n\n` +
-    `Atelier Shreenu | info@ateliershreenu.com | ateliershreenu.com\n\n` +
+    `Thank you for writing. The application has been received and will be reviewed by the studio. Should there be a fit for a current or upcoming role, we will be in touch within three working days. The studio does not promise a reply to every application.\n\n` +
+    `While you wait, the studio's Instagram, ${IG_HANDLE}, carries selected projects and process notes: ${IG_URL}\n\n` +
+    `${signOff}\n\n` +
     footer
   );
 }
 
-// Studio email shell — Cormorant Garamond header + Jost body, #FAF7F2 canvas.
-// The {body} placeholder receives per-form-type inner HTML.
+// Studio email shell. #FAF7F2 canvas, hairline separators, small-caps wordmark.
 function shell(title: string, body: string): string {
   const year = new Date().getFullYear();
   return `<!DOCTYPE html>
@@ -152,7 +181,7 @@ ${body}
           <tr>
             <td align="center" style="padding:20px 32px 32px 32px;">
               <span style="font-family:'Jost',Arial,sans-serif;font-size:12px;color:#888;line-height:1.6;">
-                Atelier Shreenu | Palam Vihar, Gurugram &mdash; 122017, Haryana, India | <a href="mailto:info@ateliershreenu.com" style="color:#888;text-decoration:none;">info@ateliershreenu.com</a> | <a href="https://ateliershreenu.com" style="color:#888;text-decoration:none;">ateliershreenu.com</a> | &copy; ${year}
+                Atelier Shreenu | Palam Vihar, Gurugram 122017, Haryana, India | <a href="mailto:${CONTACT_EMAIL}" style="color:#888;text-decoration:none;">${CONTACT_EMAIL}</a> | <a href="https://ateliershreenu.com" style="color:#888;text-decoration:none;">${SITE_LABEL}</a> | &copy; ${year}
               </span>
             </td>
           </tr>
@@ -165,52 +194,78 @@ ${body}
 </html>`;
 }
 
-function bodyHtml(formType: FormType, firstName: string, consultationType?: string): string {
+function signOffHtml(): string {
+  return SIGN_OFF_LINES.map(
+    (line, i) =>
+      `              <p style="margin:${i === 0 ? "24px" : "0"} 0 ${i === SIGN_OFF_LINES.length - 1 ? "0" : "4px"} 0;">${line}</p>`,
+  ).join("\n");
+}
+
+function primaryButton(href: string, label: string): string {
+  return `              <table cellpadding="0" cellspacing="0" border="0" style="margin:24px 0 12px 0;">
+                <tr>
+                  <td>
+                    <a href="${href}" style="display:inline-block;padding:12px 28px;background:#2C2C2C;color:#fff;text-decoration:none;font-family:'Jost',Arial,sans-serif;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;">${label}</a>
+                  </td>
+                </tr>
+              </table>`;
+}
+
+function secondaryButton(href: string, label: string): string {
+  return `              <table cellpadding="0" cellspacing="0" border="0" style="margin:0 0 12px 0;">
+                <tr>
+                  <td>
+                    <a href="${href}" style="display:inline-block;padding:12px 28px;background:transparent;color:#2C2C2C;text-decoration:none;font-family:'Jost',Arial,sans-serif;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid #2C2C2C;">${label}</a>
+                  </td>
+                </tr>
+              </table>`;
+}
+
+function bodyHtml(
+  formType: FormType,
+  firstName: string,
+  consultationType?: string,
+): string {
   if (formType === "project") {
     const bk = bookingContextFor(consultationType);
     return `              <p style="margin:0 0 20px 0;">Greetings ${firstName},</p>
 
-              <p style="margin:0 0 20px 0;">Thank you for the message. The studio is glad to hear from you and will respond within the day. Should you wish to take the conversation forward immediately, ${bk.ctaSentence.charAt(0).toLowerCase() + bk.ctaSentence.slice(1).replace(/—/g, "&mdash;")}</p>
+              <p style="margin:0 0 20px 0;">Thank you for the message. The studio has received it, and will respond within the day.</p>
 
-              <table cellpadding="0" cellspacing="0" border="0" style="margin:28px 0 12px 0;">
-                <tr>
-                  <td>
-                    <a href="${bk.href}" style="display:inline-block;padding:12px 28px;background:#2C2C2C;color:#fff;text-decoration:none;font-family:'Jost',Arial,sans-serif;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;">${bk.buttonLabel} &rarr;</a>
-                  </td>
-                </tr>
-              </table>
+              <p style="margin:0 0 20px 0;">Should you wish to move things forward immediately, ${bk.sentence.charAt(0).toLowerCase() + bk.sentence.slice(1)}</p>
 
-              <table cellpadding="0" cellspacing="0" border="0" style="margin:0 0 28px 0;">
-                <tr>
-                  <td>
-                    <a href="${SITE_URL}" style="display:inline-block;padding:12px 28px;background:transparent;color:#2C2C2C;text-decoration:none;font-family:'Jost',Arial,sans-serif;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid #2C2C2C;">View selected work &rarr;</a>
-                  </td>
-                </tr>
-              </table>
+${primaryButton(bk.href, bk.buttonLabel)}
 
-              <p style="margin:0 0 20px 0;">The studio's Instagram &mdash; @ateliershreenu &mdash; carries selected projects, materials, and process notes: <a href="${IG_URL}" style="color:#2C2C2C;">${IG_URL}</a></p>
+              <p style="margin:24px 0 0 0;">Alongside, the studio's blog carries longer writing on materials, process, and built work.</p>
 
-              <p style="margin:0 0 20px 0;">Looking forward to discussing further.</p>
+${secondaryButton(BLOG_URL, "Read the blog")}
+${secondaryButton(IG_URL, `Follow on Instagram · ${IG_HANDLE}`)}
 
-              <p style="margin:0;">Atelier Shreenu | <a href="mailto:info@ateliershreenu.com" style="color:#2C2C2C;">info@ateliershreenu.com</a> | <a href="${SITE_URL}" style="color:#2C2C2C;">ateliershreenu.com</a></p>`;
+${signOffHtml()}`;
   }
+
   if (formType === "vendor") {
     return `              <p style="margin:0 0 20px 0;">Greetings ${firstName},</p>
 
-              <p style="margin:0 0 20px 0;">Thank you for the note. The studio has received it and will be in touch directly should there be a fit with current or upcoming work.</p>
+              <p style="margin:0 0 20px 0;">Thank you for the note. The studio has received it, and will be in touch directly should there be a fit with current or upcoming work.</p>
 
-              <p style="margin:0 0 20px 0;">Follow on Instagram: <a href="${IG_URL}" style="color:#2C2C2C;">${IG_URL}</a></p>
+              <p style="margin:0 0 12px 0;">The studio's Instagram carries selected projects and process notes.</p>
 
-              <p style="margin:0;">Atelier Shreenu | <a href="mailto:info@ateliershreenu.com" style="color:#2C2C2C;">info@ateliershreenu.com</a> | <a href="${SITE_URL}" style="color:#2C2C2C;">ateliershreenu.com</a></p>`;
+${primaryButton(IG_URL, `Follow on Instagram · ${IG_HANDLE}`)}
+
+${signOffHtml()}`;
   }
+
   // careers
   return `              <p style="margin:0 0 20px 0;">Greetings ${firstName},</p>
 
-              <p style="margin:0 0 20px 0;">Thank you for the interest in Atelier Shreenu. The application has been received and will be reviewed by the studio. Should there be a fit for a current or upcoming position, the studio will be in touch within three working days. The studio does not promise individual replies to every application.</p>
+              <p style="margin:0 0 20px 0;">Thank you for writing. The application has been received and will be reviewed by the studio. Should there be a fit for a current or upcoming role, we will be in touch within three working days. The studio does not promise a reply to every application.</p>
 
-              <p style="margin:0 0 20px 0;">Thank you.</p>
+              <p style="margin:0 0 12px 0;">While you wait, the studio's Instagram carries selected projects and process notes.</p>
 
-              <p style="margin:0;">Atelier Shreenu | <a href="mailto:info@ateliershreenu.com" style="color:#2C2C2C;">info@ateliershreenu.com</a> | <a href="${SITE_URL}" style="color:#2C2C2C;">ateliershreenu.com</a></p>`;
+${primaryButton(IG_URL, `Follow on Instagram · ${IG_HANDLE}`)}
+
+${signOffHtml()}`;
 }
 
 export function renderAckEmail(
@@ -222,7 +277,7 @@ export function renderAckEmail(
     formType as FormType,
   )
     ? (formType as FormType)
-    : "project";
+    : "vendor";
   const subject = SUBJECTS[ft];
   return {
     subject,

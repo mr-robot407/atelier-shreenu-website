@@ -348,10 +348,11 @@ export async function POST(req: NextRequest) {
     console.error("SES notification email failed:", err);
   }
 
-  // 2) Acknowledgment to submitter — from info@ so any reply lands at info@
-  //    and gets processed autonomously by the inbound agent. HTML+text using
-  //    the studio's shared brand template.
-  if (validSubmitter) {
+  // 2) Acknowledgment to submitter — sent for vendor/careers only. Project
+  //    enquiries no longer receive an ack email here: they are redirected to
+  //    /book to complete the flow, and the confirmation email is sent after
+  //    payment (or after Discovery Call slot confirmation).
+  if (validSubmitter && formType !== "project") {
     const ack = renderAckEmail(formType, firstNameFrom(fields), fields.consultation_type);
     try {
       await sesClient.send(

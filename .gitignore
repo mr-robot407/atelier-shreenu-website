@@ -20,3 +20,6 @@ infrastructure/
 ATELIER_SHREENU_IMPLEMENTATION_GUIDE.md
 As design update 2.0.MD
 MOBILE_FIX_PROMPT.md
+
+# Session summary docs — may contain HMAC secrets, IDs, credentials
+EMAIL_AGENT_SESSION_*.md

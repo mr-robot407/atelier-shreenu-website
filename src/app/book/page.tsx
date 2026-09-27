@@ -236,6 +236,25 @@ function BookPageInner() {
         setTermsOpen(false);
         return;
       }
+      // Stash the booking spec so /book/thanks can fire the client confirmation
+      // + studio notify emails on redirect back from Razorpay. The Lambda's
+      // webhook path is expected to send the same email; this is the safety
+      // net for the case where the webhook does not deliver (e.g. test mode).
+      try {
+        sessionStorage.setItem(
+          "as_pending_booking",
+          JSON.stringify({
+            email,
+            first_name: name,
+            slot_iso: selectedSlot,
+            booking_kind: path.kind,
+            variant: path.variant,
+          }),
+        );
+      } catch {
+        // sessionStorage may be blocked (private mode, embedded browsers).
+        // Silent fallback: the Lambda webhook remains responsible.
+      }
       window.location.href = data.url as string;
     } catch {
       setStatus("error");

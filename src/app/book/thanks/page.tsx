@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { InstagramIcon } from "@/components/ui/SocialIcons";
@@ -40,6 +40,55 @@ function ThanksPageInner() {
   const kind = params.get("kind") ?? "discovery_call";
   const slot = params.get("slot") ?? "";
   const label = KIND_LABEL[kind] ?? "Appointment";
+
+  // Post-payment safety net: for paid tiers, fire the client confirmation +
+  // studio notify from the browser once we land back from Razorpay. Uses the
+  // booking spec stashed in sessionStorage by /book before the redirect. Runs
+  // once per tab; sessionStorage key is cleared on success so a page refresh
+  // does not send a duplicate.
+  useEffect(() => {
+    if (kind !== "project_discussion" && kind !== "site_walkthrough") return;
+    if (typeof window === "undefined") return;
+
+    let pending: {
+      email?: string;
+      first_name?: string;
+      slot_iso?: string;
+      booking_kind?: string;
+      variant?: string;
+    } | null = null;
+    try {
+      const raw = sessionStorage.getItem("as_pending_booking");
+      if (!raw) return;
+      pending = JSON.parse(raw);
+    } catch {
+      return;
+    }
+    if (!pending || !pending.email || !pending.slot_iso || !pending.booking_kind) return;
+
+    // Guard against StrictMode double-invoke in dev.
+    const inflightKey = `${pending.email}|${pending.slot_iso}|${pending.booking_kind}`;
+    if (sessionStorage.getItem("as_confirm_paid_inflight") === inflightKey) return;
+    sessionStorage.setItem("as_confirm_paid_inflight", inflightKey);
+
+    fetch("/api/booking/confirm-paid", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(pending),
+    })
+      .then((res) => {
+        if (res.ok) {
+          sessionStorage.removeItem("as_pending_booking");
+        }
+      })
+      .catch(() => {
+        // Swallow — the Lambda webhook remains the authoritative sender and
+        // the user has already seen the thanks page. Nothing to surface.
+      })
+      .finally(() => {
+        sessionStorage.removeItem("as_confirm_paid_inflight");
+      });
+  }, [kind]);
 
   return (
     <main className="min-h-dvh bg-warm-ivory font-sans text-charcoal">

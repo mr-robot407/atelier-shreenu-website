@@ -11,6 +11,12 @@ export type IcsEvent = {
   location?: string;
   organizerEmail: string;
   organizerName?: string;
+  // Defaults to REQUEST (new invite). Use CANCEL to withdraw a previously
+  // sent invite — mail clients then remove the event from the calendar.
+  method?: "REQUEST" | "CANCEL";
+  // Bumped when the event is updated/cancelled. RFC 5545 §3.8.7.4: a CANCEL
+  // must have a sequence >= the original REQUEST.
+  sequence?: number;
 };
 
 function toIcsDate(iso: string): string {
@@ -47,6 +53,10 @@ function foldLine(line: string): string {
 }
 
 export function buildIcs(event: IcsEvent): string {
+  const method = event.method ?? "REQUEST";
+  const sequence = event.sequence ?? (method === "CANCEL" ? 1 : 0);
+  const status = method === "CANCEL" ? "CANCELLED" : "CONFIRMED";
+
   const dtStart = toIcsDate(event.startIso);
   const end = new Date(
     new Date(event.startIso).getTime() + event.durationMinutes * 60_000,
@@ -60,7 +70,7 @@ export function buildIcs(event: IcsEvent): string {
     "VERSION:2.0",
     "PRODID:-//Atelier Shreenu//Booking//EN",
     "CALSCALE:GREGORIAN",
-    "METHOD:REQUEST",
+    `METHOD:${method}`,
     "BEGIN:VEVENT",
     `UID:${event.uid}`,
     `DTSTAMP:${dtStamp}`,
@@ -70,8 +80,8 @@ export function buildIcs(event: IcsEvent): string {
     ...(event.description ? [`DESCRIPTION:${escapeText(event.description)}`] : []),
     ...(event.location ? [`LOCATION:${escapeText(event.location)}`] : []),
     `ORGANIZER;CN=${organizerCn}:mailto:${event.organizerEmail}`,
-    "SEQUENCE:0",
-    "STATUS:CONFIRMED",
+    `SEQUENCE:${sequence}`,
+    `STATUS:${status}`,
     "END:VEVENT",
     "END:VCALENDAR",
   ].map(foldLine);

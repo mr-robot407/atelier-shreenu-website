@@ -6,3 +6,5 @@ export const dynamodbTableName = process.env.DYNAMODB_TABLE_NAME ?? "atelier-shr
 export const s3BucketName = process.env.S3_BUCKET_NAME ?? "atelier-shreenu-blog-images";
 export const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL ?? "https://d3j5o298uybf9b.cloudfront.net";
 export const contactTableName = process.env.CONTACT_TABLE_NAME ?? "atelier-shreenu-contact-submissions";
+export const bookingActionSecret = process.env.BOOKING_ACTION_SECRET ?? "";
+export const siteUrl = process.env.SITE_URL ?? "https://ateliershreenu.com";

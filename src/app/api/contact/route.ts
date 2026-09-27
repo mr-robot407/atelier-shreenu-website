@@ -15,6 +15,7 @@ import {
   contactTableName,
 } from "@/lib/aws-runtime-config";
 import { renderAckEmail } from "@/lib/email-templates";
+import { classifySubmission, reasonLabels } from "@/lib/spam-filter";
 
 const credentials =
   awsAccessKeyId
@@ -291,11 +292,24 @@ export async function POST(req: NextRequest) {
   const submissionId = randomUUID();
   const submittedAt = new Date().toISOString();
 
+  // Spam / imposter classifier — never blocks submission, but flags the notify
+  // email (subject prefix + banner) and stores reasons on the DDB record for
+  // later review. See src/lib/spam-filter.ts for the rule set.
+  const spam = classifySubmission({ ...fields, formType });
+
   try {
     await db.send(
       new PutCommand({
         TableName: CONTACT_TABLE,
-        Item: { submissionId, submittedAt, formType, ...fields },
+        Item: {
+          submissionId,
+          submittedAt,
+          formType,
+          ...fields,
+          ...(spam.flagged
+            ? { flagged: true, flagReasons: spam.reasons }
+            : {}),
+        },
       })
     );
   } catch (err) {
@@ -312,8 +326,19 @@ export async function POST(req: NextRequest) {
   // 1) Team notification — from info@ to info@; Reply-To → submitter so
   //    hitting Reply in the inbox addresses the enquirer. The inbound Lambda
   //    drops this because sender==info@ (self-loop guard).
-  const notifySubject = `${FORM_LABELS[formType] ?? "Contact Form"} — Atelier Shreenu`;
-  const notifyText = formatEmailBody(formType, fields);
+  const baseSubject = `${FORM_LABELS[formType] ?? "Contact Form"} — Atelier Shreenu`;
+  const notifySubject = spam.flagged ? `[?SPAM] ${baseSubject}` : baseSubject;
+  const baseBody = formatEmailBody(formType, fields);
+  const notifyText = spam.flagged
+    ? [
+        `⚠ LIKELY SPAM — matched: ${reasonLabels(spam.reasons).join("; ")}`,
+        `Review carefully before responding. This banner is added automatically and`,
+        `does not block the enquiry from reaching you.`,
+        `────────────────────────────────────────`,
+        ``,
+        baseBody,
+      ].join("\n")
+    : baseBody;
   try {
     if (attachment) {
       const raw = buildRawEmail({
@@ -352,7 +377,9 @@ export async function POST(req: NextRequest) {
   //    enquiries no longer receive an ack email here: they are redirected to
   //    /book to complete the flow, and the confirmation email is sent after
   //    payment (or after Discovery Call slot confirmation).
-  if (validSubmitter && formType !== "project") {
+  //    Skip the ack when the submission was flagged as spam, so we don't
+  //    confirm receipt to obvious solicitors.
+  if (validSubmitter && formType !== "project" && !spam.flagged) {
     const ack = renderAckEmail(formType, firstNameFrom(fields), fields.consultation_type);
     try {
       await sesClient.send(

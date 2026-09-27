@@ -285,3 +285,139 @@ export function renderAckEmail(
     text: bodyText(ft, firstName, consultationType),
   };
 }
+
+// ---------------------------------------------------------------------------
+// Paid booking confirmation. Sent to the client after Razorpay redirects back
+// to /book/thanks, ensuring they receive the same T&C-inclusive receipt they
+// get in the Discovery Call flow (which is handled by the Lambda).
+// ---------------------------------------------------------------------------
+
+export type PaidBookingKind = "project_discussion" | "site_walkthrough";
+export type PaidBookingVariant = "any" | "ncr" | "outside_ncr";
+
+type PaidBookingLabels = {
+  formal: string;         // "Project Discussion on Google Meet"
+  subjectSuffix: string;  // "Project Discussion"
+  logistics: string;      // sentence explaining what happens before the meeting
+  duration: string;
+};
+
+function labelsFor(
+  kind: PaidBookingKind,
+  variant: PaidBookingVariant,
+): PaidBookingLabels {
+  if (kind === "project_discussion") {
+    return {
+      formal: "Project Discussion on Google Meet",
+      subjectSuffix: "Project Discussion",
+      logistics:
+        "A Google Meet link will be shared to this email address ahead of the call. Please keep a note of your project brief handy so the conversation can move quickly to substance.",
+      duration: "thirty minutes",
+    };
+  }
+  if (variant === "outside_ncr") {
+    return {
+      formal: "Site and Vision Walkthrough beyond NCR",
+      subjectSuffix: "Site Walkthrough beyond NCR",
+      logistics:
+        "Please reply to this email with the site address and any access instructions. The studio will follow separately with travel and accommodation coordination, billed at actuals as set out in the terms below.",
+      duration: "two hours on site",
+    };
+  }
+  return {
+    formal: "Site and Vision Walkthrough within NCR",
+    subjectSuffix: "Site Walkthrough within NCR",
+    logistics:
+      "Please reply to this email with the site address and any access instructions. Ground travel within NCR is billed at actuals as set out in the terms below.",
+    duration: "sixty minutes on site",
+  };
+}
+
+function paidConfirmationHtml(opts: {
+  firstName: string;
+  formalKind: string;
+  slotLabel: string;
+  duration: string;
+  logistics: string;
+  termsHtml: string;
+}): string {
+  return `              <p style="margin:0 0 20px 0;">Greetings ${opts.firstName},</p>
+
+              <p style="margin:0 0 20px 0;">The booking is confirmed. Your ${opts.formalKind}, ${opts.duration}, is scheduled for <strong>${opts.slotLabel} IST</strong>.</p>
+
+              <p style="margin:0 0 20px 0;">${opts.logistics}</p>
+
+              <p style="margin:0 0 12px 0;">Should you need to reschedule, please reply directly to this email. The studio's cancellation and refund window is set out in the terms below.</p>
+
+${opts.termsHtml}
+
+              <p style="margin:28px 0 12px 0;">While the studio prepares, the Instagram carries selected projects and process notes.</p>
+
+${primaryButton(IG_URL, `Follow on Instagram · ${IG_HANDLE}`)}
+
+${signOffHtml()}`;
+}
+
+function paidConfirmationText(opts: {
+  firstName: string;
+  formalKind: string;
+  slotLabel: string;
+  duration: string;
+  logistics: string;
+  termsText: string;
+}): string {
+  const signOff = SIGN_OFF_LINES.join("\n");
+  const parts = [
+    `Greetings ${opts.firstName},`,
+    ``,
+    `The booking is confirmed. Your ${opts.formalKind}, ${opts.duration}, is scheduled for ${opts.slotLabel} IST.`,
+    ``,
+    opts.logistics,
+    ``,
+    `Should you need to reschedule, please reply directly to this email. The studio's cancellation and refund window is set out in the terms below.`,
+    ``,
+  ];
+  if (opts.termsText) {
+    parts.push(opts.termsText, "");
+  }
+  parts.push(
+    `The studio's Instagram, ${IG_HANDLE}, carries selected projects and process notes: ${IG_URL}`,
+    ``,
+    signOff,
+    ``,
+    footerText(),
+  );
+  return parts.join("\n");
+}
+
+export function renderPaidBookingConfirmation(opts: {
+  firstName: string;
+  kind: PaidBookingKind;
+  variant: PaidBookingVariant;
+  slotLabel: string;
+  termsHtml: string;
+  termsText: string;
+}): { subject: string; html: string; text: string } {
+  const labels = labelsFor(opts.kind, opts.variant);
+  const subject = `Booking confirmed · ${labels.subjectSuffix}`;
+  const html = shell(
+    subject,
+    paidConfirmationHtml({
+      firstName: opts.firstName,
+      formalKind: labels.formal,
+      slotLabel: opts.slotLabel,
+      duration: labels.duration,
+      logistics: labels.logistics,
+      termsHtml: opts.termsHtml,
+    }),
+  );
+  const text = paidConfirmationText({
+    firstName: opts.firstName,
+    formalKind: labels.formal,
+    slotLabel: opts.slotLabel,
+    duration: labels.duration,
+    logistics: labels.logistics,
+    termsText: opts.termsText,
+  });
+  return { subject, html, text };
+}

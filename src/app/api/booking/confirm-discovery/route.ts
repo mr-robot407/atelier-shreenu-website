@@ -3,10 +3,12 @@ import { SESClient, SendRawEmailCommand } from "@aws-sdk/client-ses";
 import { randomUUID } from "crypto";
 import { invokeFunnel } from "@/lib/funnel-lambda";
 import { buildIcs } from "@/lib/ics";
+import { signAction } from "@/lib/booking-token";
 import {
   awsRegion,
   awsAccessKeyId,
   awsSecretAccessKey,
+  siteUrl,
 } from "@/lib/aws-runtime-config";
 
 const ALLOWED_ORIGINS = [
@@ -93,6 +95,21 @@ async function sendStudioNotification(opts: {
 }): Promise<void> {
   const slotLabel = formatIstSlot(opts.slotIso);
   const subject = `Discovery Call booked: ${opts.clientName} · ${slotLabel} IST`;
+
+  // Shared UID lets the CANCEL invite (from /api/booking/decline) reference
+  // the same event so mail clients drop it from the calendar cleanly.
+  const uid = `discovery-${randomUUID()}@ateliershreenu.com`;
+
+  const declineToken = signAction({
+    action: "decline_booking",
+    uid,
+    email: opts.clientEmail,
+    first_name: opts.clientName,
+    slot_iso: opts.slotIso,
+    kind: "discovery_call",
+  });
+  const declineUrl = `${siteUrl.replace(/\/+$/, "")}/api/booking/decline?token=${declineToken}`;
+
   const text = [
     `A Discovery Call has been booked through ateliershreenu.com/book.`,
     ``,
@@ -101,10 +118,15 @@ async function sendStudioNotification(opts: {
     `Slot:   ${slotLabel} IST (${DISCOVERY_DURATION_MIN} minutes)`,
     ``,
     `The .ics attachment adds the call to your calendar.`,
+    ``,
+    `──`,
+    `If this looks like spam or you cannot take the call, decline in one click:`,
+    declineUrl,
+    `(Sends a cancellation to the client and removes the entry from both calendars.)`,
   ].join("\n");
 
   const ics = buildIcs({
-    uid: `discovery-${randomUUID()}@ateliershreenu.com`,
+    uid,
     startIso: opts.slotIso,
     durationMinutes: DISCOVERY_DURATION_MIN,
     summary: `Discovery Call · ${opts.clientName}`,

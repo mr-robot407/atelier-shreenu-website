@@ -8,7 +8,7 @@ export const press = [
   {
     name: "Elle Decor",
     url: "https://elledecor.in/jammu-home-by-the-vrindavan-project/",
-    logo: "",
+    logo: "/images/press/elle%20decor.png",
     square: false,
   },
   {
@@ -51,6 +51,24 @@ export const press = [
     name: "India Today",
     url: "https://www.indiatoday.in/magazine/supplement/story/20241223-interior-design-simple-living-2648254-2024-12-13",
     logo: "/images/press/india-today.png",
+    square: false,
+  },
+  {
+    name: "Homeadore",
+    url: "https://homeadore.com/2022/02/19/entheogenic-design-by-the-vrindavan-project/",
+    logo: "",
+    square: false,
+  },
+  {
+    name: "Archello",
+    url: "https://archello.com/pt/project/home-interior-design",
+    logo: "/images/press/archhello.svg",
+    square: false,
+  },
+  {
+    name: "India Design ID",
+    url: "https://indiadesignid.com/between-delhi-and-gurugram-lies-the-heirloom-house-a-regal-retreat-by-the-vrindavan-project/",
+    logo: "/images/press/india%20design.png",
     square: false,
   },
 ];

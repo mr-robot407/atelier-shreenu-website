@@ -37,6 +37,7 @@ const ALLOWED_ORIGINS = [
   "https://ateliershreenu.com",
   "https://www.ateliershreenu.com",
   "http://localhost:3000",
+  "http://localhost:3001",
 ];
 
 const STUDIO_INBOX = "info@ateliershreenu.com";

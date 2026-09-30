@@ -5,6 +5,57 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { bookingTermsFor } from "@/content/booking-terms";
 
+type RazorpayResponse = {
+  razorpay_payment_id: string;
+  razorpay_order_id: string;
+  razorpay_signature: string;
+};
+type RazorpayInstance = {
+  open: () => void;
+  on: (event: string, callback: (payload: unknown) => void) => void;
+};
+declare global {
+  interface Window {
+    Razorpay?: new (options: {
+      key: string;
+      amount: number;
+      currency: string;
+      order_id: string;
+      name: string;
+      description?: string;
+      image?: string;
+      prefill?: { name?: string; email?: string; contact?: string };
+      notes?: Record<string, string>;
+      theme?: { color?: string };
+      handler: (resp: RazorpayResponse) => void;
+      modal?: { ondismiss?: () => void };
+    }) => RazorpayInstance;
+  }
+}
+
+const RAZORPAY_SRC = "https://checkout.razorpay.com/v1/checkout.js";
+
+async function ensureRazorpayLoaded(): Promise<void> {
+  if (typeof window === "undefined") return;
+  if (window.Razorpay) return;
+  await new Promise<void>((resolve, reject) => {
+    const existing = document.querySelector<HTMLScriptElement>(
+      `script[src="${RAZORPAY_SRC}"]`,
+    );
+    if (existing) {
+      existing.addEventListener("load", () => resolve(), { once: true });
+      existing.addEventListener("error", () => reject(new Error("checkout.js failed to load")), { once: true });
+      return;
+    }
+    const s = document.createElement("script");
+    s.src = RAZORPAY_SRC;
+    s.async = true;
+    s.onload = () => resolve();
+    s.onerror = () => reject(new Error("checkout.js failed to load"));
+    document.body.appendChild(s);
+  });
+}
+
 type Kind = "discovery_call" | "project_discussion" | "site_walkthrough";
 type Variant = "any" | "ncr" | "outside_ncr";
 type Path =
@@ -217,7 +268,10 @@ function BookPageInner() {
     setStatus("submitting");
     setErrMsg("");
     try {
-      const res = await fetch("/api/booking/create-payment-link", {
+      // 1. Ask the server for a Razorpay order — same validation as the old
+      //    create-payment-link path, but returns an order_id for on-page
+      //    checkout instead of a hosted redirect URL.
+      const res = await fetch("/api/booking/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -229,17 +283,17 @@ function BookPageInner() {
           terms_accepted_at: new Date().toISOString(),
         }),
       });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.url) {
+      const order = await res.json().catch(() => ({}));
+      if (!res.ok || !order.order_id) {
         setStatus("error");
-        setErrMsg(data.error || "Could not create the payment link.");
+        setErrMsg(order.error || "Could not initialise payment.");
         setTermsOpen(false);
         return;
       }
-      // Stash the booking spec so /book/thanks can fire the client confirmation
-      // + studio notify emails on redirect back from Razorpay. The Lambda's
-      // webhook path is expected to send the same email; this is the safety
-      // net for the case where the webhook does not deliver (e.g. test mode).
+
+      // 2. Stash the booking spec so /book/thanks can fire the client
+      //    confirmation + studio notify on load. Same safety-net semantics as
+      //    the Payment Link flow.
       try {
         sessionStorage.setItem(
           "as_pending_booking",
@@ -252,13 +306,93 @@ function BookPageInner() {
           }),
         );
       } catch {
-        // sessionStorage may be blocked (private mode, embedded browsers).
-        // Silent fallback: the Lambda webhook remains responsible.
+        // sessionStorage may be blocked (private mode); Lambda webhook is
+        // the primary confirmation path either way.
       }
-      window.location.href = data.url as string;
-    } catch {
+
+      // 3. Load checkout.js if not already present.
+      await ensureRazorpayLoaded();
+      if (!window.Razorpay) throw new Error("checkout.js unavailable");
+
+      // 4. Open the modal.
+      const razorpay = new window.Razorpay({
+        key: order.key_id,
+        amount: order.amount,
+        currency: order.currency,
+        order_id: order.order_id,
+        name: "Atelier Shreenu",
+        description: order.description ?? path.title,
+        prefill: { name, email },
+        notes: {
+          booking_kind: path.kind,
+          variant: path.variant,
+          slot_iso: selectedSlot,
+        },
+        theme: { color: "#63272C" },
+        handler: async (resp) => {
+          // 5. Verify the signature server-side. If verification fails we do
+          //    NOT send the client to thanks — surface the error instead.
+          try {
+            const verifyRes = await fetch("/api/verify-payment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                razorpay_order_id: resp.razorpay_order_id,
+                razorpay_payment_id: resp.razorpay_payment_id,
+                razorpay_signature: resp.razorpay_signature,
+              }),
+            });
+            const verifyJson = await verifyRes.json().catch(() => ({}));
+            if (!verifyRes.ok || !verifyJson.verified) {
+              throw new Error(verifyJson.error ?? "Signature verification failed");
+            }
+
+            // 6. Send them to the thanks page. Thanks-page load calls
+            //    /api/booking/confirm-paid which fires the client + studio
+            //    email. The Lambda's payment.captured webhook remains the
+            //    primary duplicate-suppressed source of truth.
+            const params = new URLSearchParams({
+              paid: "1",
+              kind: path.kind,
+              payment_id: resp.razorpay_payment_id,
+            });
+            if (path.kind === "site_walkthrough") {
+              params.set("variant", path.variant);
+            }
+            router.push(`/book/thanks?${params.toString()}`);
+          } catch (err) {
+            setStatus("error");
+            setErrMsg(
+              (err as Error).message ||
+                "We received a payment but could not verify it. Please contact us and we will sort it out.",
+            );
+            setTermsOpen(false);
+          }
+        },
+        modal: {
+          ondismiss: () => {
+            setStatus("idle");
+            setErrMsg("Payment cancelled — try again whenever you are ready.");
+          },
+        },
+      });
+
+      razorpay.on("payment.failed", (payload: unknown) => {
+        const reason =
+          (payload as { error?: { description?: string } })?.error?.description ??
+          "Payment failed. Please try again or reach us at info@ateliershreenu.com.";
+        setStatus("error");
+        setErrMsg(reason);
+      });
+
+      razorpay.open();
+    } catch (err) {
       setStatus("error");
-      setErrMsg("Network error — please try again.");
+      setErrMsg(
+        (err as Error).message === "checkout.js failed to load"
+          ? "Could not reach the payment provider — check your connection and try again."
+          : "Network error — please try again.",
+      );
       setTermsOpen(false);
     }
   }

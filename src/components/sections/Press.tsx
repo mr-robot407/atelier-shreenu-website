@@ -56,7 +56,7 @@ export function Press() {
                     />
                   )
                 ) : (
-                  <span className="font-serif text-sm italic text-ink/50 text-center transition-colors duration-300 group-hover:text-burgundy">
+                  <span className="font-serif text-lg md:text-xl italic text-ink/50 text-center transition-colors duration-300 group-hover:text-burgundy">
                     {p.name}
                   </span>
                 )}

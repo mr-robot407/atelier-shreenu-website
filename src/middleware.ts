@@ -17,7 +17,12 @@ export async function middleware(req: NextRequest) {
   if (pathname.startsWith("/shreenu-editor/login")) return NextResponse.next();
 
   const token = req.cookies.get(COOKIE)?.value;
-  if (!token) return NextResponse.redirect(new URL("/shreenu-editor/login", req.url));
+  const isApi = pathname.startsWith("/api/");
+  if (!token) {
+    return isApi
+      ? NextResponse.json({ error: "unauthorized" }, { status: 401 })
+      : NextResponse.redirect(new URL("/shreenu-editor/login", req.url));
+  }
 
   try {
     await jwtVerify(token, JWKS, {
@@ -25,10 +30,12 @@ export async function middleware(req: NextRequest) {
     });
     return NextResponse.next();
   } catch {
-    return NextResponse.redirect(new URL("/shreenu-editor/login", req.url));
+    return isApi
+      ? NextResponse.json({ error: "unauthorized" }, { status: 401 })
+      : NextResponse.redirect(new URL("/shreenu-editor/login", req.url));
   }
 }
 
 export const config = {
-  matcher: ["/shreenu-editor/:path*"],
+  matcher: ["/shreenu-editor/:path*", "/api/admin/:path*"],
 };

@@ -7,13 +7,7 @@ import {
   type BookingKind,
   type BookingVariant,
 } from "@/content/booking-terms";
-
-const ALLOWED_ORIGINS = [
-  "https://ateliershreenu.com",
-  "https://www.ateliershreenu.com",
-  "http://localhost:3000",
-  "http://localhost:3001",
-];
+import { ALLOWED_ORIGINS } from "@/lib/allowed-origins";
 
 const VALID_KINDS = new Set(["project_discussion", "site_walkthrough"]);
 const VALID_VARIANTS = new Set(["any", "ncr", "outside_ncr"]);

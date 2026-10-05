@@ -32,13 +32,7 @@ import {
   awsSecretAccessKey,
   siteUrl,
 } from "@/lib/aws-runtime-config";
-
-const ALLOWED_ORIGINS = [
-  "https://ateliershreenu.com",
-  "https://www.ateliershreenu.com",
-  "http://localhost:3000",
-  "http://localhost:3001",
-];
+import { ALLOWED_ORIGINS } from "@/lib/allowed-origins";
 
 const STUDIO_INBOX = "info@ateliershreenu.com";
 

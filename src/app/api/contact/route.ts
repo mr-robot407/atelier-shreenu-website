@@ -16,6 +16,7 @@ import {
 } from "@/lib/aws-runtime-config";
 import { renderAckEmail } from "@/lib/email-templates";
 import { classifySubmission, reasonLabels } from "@/lib/spam-filter";
+import { ALLOWED_ORIGINS } from "@/lib/allowed-origins";
 
 const credentials =
   awsAccessKeyId
@@ -150,13 +151,6 @@ function formatEmailBody(
 
   return lines.join("\n");
 }
-
-const ALLOWED_ORIGINS = [
-  "https://ateliershreenu.com",
-  "https://www.ateliershreenu.com",
-  "http://localhost:3000",
-  "http://localhost:3001",
-];
 
 const MAX_FIELD_LENGTH = 2000;
 const MAX_FIELDS = 20;

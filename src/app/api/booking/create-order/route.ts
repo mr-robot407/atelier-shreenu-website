@@ -1,14 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import Razorpay from "razorpay";
+import { ALLOWED_ORIGINS } from "@/lib/allowed-origins";
 
 export const dynamic = "force-dynamic";
-
-const ALLOWED_ORIGINS = [
-  "https://ateliershreenu.com",
-  "https://www.ateliershreenu.com",
-  "http://localhost:3000",
-  "http://localhost:3001",
-];
 
 const VALID_KINDS = new Set(["project_discussion", "site_walkthrough"]);
 const VALID_VARIANTS = new Set(["any", "ncr", "outside_ncr"]);

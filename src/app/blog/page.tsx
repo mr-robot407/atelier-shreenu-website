@@ -11,7 +11,7 @@ const CATEGORY_META: Record<string, { title: string; description: string; intro:
     description:
       "Explore design thinking from Atelier Shreenu — spatial decisions, material choices, and the reasoning behind every room we shape.",
     intro:
-      "Design, at its most considered, is a conversation between a space and the people who inhabit it. In this category we unpack the decisions that shape Atelier Shreenu projects: why a wall opens instead of closes, why a palette leans warm rather than cool, how natural light is coaxed rather than forced. Each post traces the logic behind a material choice, a layout shift, or a detail that took weeks to resolve. Whether you are a future client looking to understand our process, a design student curious about practice-level decision-making, or simply someone who appreciates spaces built with intention — these essays are written for you.",
+      "Design, at its most considered, is a conversation between a space and the people who inhabit it. In this category we unpack the decisions that shape Atelier Shreenu projects: why a wall opens instead of closing, why a palette leans warm rather than cool, how natural light is coaxed rather than forced. Each post traces the logic behind a material choice, a layout shift, or a detail that took weeks to resolve. Whether you are a future client looking to understand our process, a design student curious about practice-level decision-making, or simply someone who appreciates spaces built with intention — these essays are written for you.",
   },
   insights: {
     title: "Insights — The Blog",

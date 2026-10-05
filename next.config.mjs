@@ -25,6 +25,7 @@ const nextConfig = {
     DYNAMODB_TABLE_NAME: process.env.DYNAMODB_TABLE_NAME ?? "atelier-shreenu-blog-posts",
     S3_BUCKET_NAME: process.env.S3_BUCKET_NAME ?? "atelier-shreenu-blog-images",
     NEXT_PUBLIC_CDN_URL: process.env.NEXT_PUBLIC_CDN_URL ?? "https://d3j5o298uybf9b.cloudfront.net",
+    ALLOWED_PREVIEW_ORIGINS: process.env.ALLOWED_PREVIEW_ORIGINS ?? "",
   },
 
   images: {

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { awsRegion, awsAccessKeyId, dynamodbTableName, s3BucketName, cdnUrl } from "@/lib/aws-runtime-config";
+import { ALLOWED_ORIGINS } from "@/lib/allowed-origins";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,8 @@ export async function GET() {
     // Raw Lambda runtime env (always missing in Amplify managed Lambda)
     env_BLOG_REGION: process.env.BLOG_REGION ?? "MISSING",
     env_BLOG_ACCESS_KEY_ID: process.env.BLOG_ACCESS_KEY_ID ? "set" : "MISSING",
+    env_ALLOWED_PREVIEW_ORIGINS: process.env.ALLOWED_PREVIEW_ORIGINS ?? "MISSING",
+    allowed_origins: ALLOWED_ORIGINS,
 
     // Lambda identity
     AWS_EXECUTION_ENV: process.env.AWS_EXECUTION_ENV ?? "MISSING",

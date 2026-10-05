@@ -26,6 +26,16 @@ const nextConfig = {
     S3_BUCKET_NAME: process.env.S3_BUCKET_NAME ?? "atelier-shreenu-blog-images",
     NEXT_PUBLIC_CDN_URL: process.env.NEXT_PUBLIC_CDN_URL ?? "https://d3j5o298uybf9b.cloudfront.net",
     ALLOWED_PREVIEW_ORIGINS: process.env.ALLOWED_PREVIEW_ORIGINS ?? "",
+    CONTACT_TABLE_NAME: process.env.CONTACT_TABLE_NAME ?? "atelier-shreenu-contact-submissions",
+    SITE_URL: process.env.SITE_URL ?? "https://ateliershreenu.com",
+    RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID ?? "",
+    RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET ?? "",
+    NEXT_PUBLIC_RAZORPAY_KEY_ID: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ?? "",
+    BOOKING_ACTION_SECRET: process.env.BOOKING_ACTION_SECRET ?? "",
+    NEXT_PUBLIC_COGNITO_REGION: process.env.NEXT_PUBLIC_COGNITO_REGION ?? "ap-south-1",
+    NEXT_PUBLIC_COGNITO_USER_POOL_ID: process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID ?? "",
+    NEXT_PUBLIC_COGNITO_CLIENT_ID: process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID ?? "",
+    FUNNEL_FUNCTION_NAME: process.env.FUNNEL_FUNCTION_NAME ?? "as-email-funnel",
   },
 
   images: {

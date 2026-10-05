@@ -18,7 +18,7 @@ const CATEGORY_META: Record<string, { title: string; description: string; intro:
     description:
       "Industry observations, research, and professional perspectives from the principals of Atelier Shreenu on architecture and interior design in India.",
     intro:
-      "Architecture does not exist in isolation — it reflects the culture, economy, and aspirations of its moment. The Insights category is where Atelier Shreenu steps back from individual projects to examine larger forces shaping the built environment in India: how clients are thinking about home in 2025, what sustainable practice actually looks like beyond greenwashing, where traditional craft and contemporary detailing can coexist, and what a decade of running a design studio has taught us about the gap between vision and execution. These are longer, more reflective pieces — the kind of writing that does not date quickly because it is rooted in principle rather than trend.",
+      "Architecture does not exist in isolation — it reflects the culture, economy, and aspirations of its moment. The Insights category is where Atelier Shreenu steps back from individual projects to examine larger forces shaping the built environment in India: how clients are thinking about design, what sustainable practice actually looks like beyond greenwashing, where traditional craft and contemporary detailing can coexist, and what over a decade of running a design studio has taught us about the gap between vision and execution. These are longer, more reflective pieces — the kind of writing that does not date quickly because it is rooted in principle rather than trend.",
   },
   lifestyle: {
     title: "Lifestyle — The Blog",

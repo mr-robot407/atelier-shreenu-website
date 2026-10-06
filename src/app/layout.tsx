@@ -54,12 +54,6 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  icons: {
-    icon: [
-      { url: "/favicon-beige.jpg", sizes: "any" },
-    ],
-    apple: "/favicon-beige.jpg",
-  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

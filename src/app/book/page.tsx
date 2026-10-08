@@ -227,6 +227,7 @@ function BookPageInner() {
     const p = PATHS.find((x) => x.key === next)!;
     params.set("kind", p.kind);
     if (p.kind === "site_walkthrough") params.set("variant", p.variant);
+    if (testToken) params.set("test", testToken);
     router.replace(`/book?${params.toString()}`, { scroll: false });
   }
 

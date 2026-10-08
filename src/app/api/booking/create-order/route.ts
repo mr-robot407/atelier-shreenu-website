@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
     booking_kind?: string;
     variant?: string;
     terms_accepted_at?: string;
+    test_token?: string;
   };
   try {
     data = await req.json();
@@ -83,13 +84,24 @@ export async function POST(req: NextRequest) {
   }
 
   const feeKey = `${kind}:${variant}`;
-  const amountPaise = FEES_PAISE[feeKey];
-  if (!amountPaise) {
+  const configuredAmount = FEES_PAISE[feeKey];
+  if (!configuredAmount) {
     return NextResponse.json(
       { error: `no fee configured for ${feeKey}` },
       { status: 400 },
     );
   }
+
+  // Test override: when ?test=<token> matches BOOKING_TEST_TOKEN, charge ₹1
+  // instead of the real fee. Lets us drive the full production flow
+  // (verify-payment → /book/thanks → /api/booking/confirm-paid → studio notify)
+  // without burning real amounts. Token is server-only; the client just
+  // forwards whatever is in the URL.
+  const testToken = (data.test_token ?? "").trim();
+  const expectedTestToken = (process.env.BOOKING_TEST_TOKEN ?? "").trim();
+  const isTest =
+    expectedTestToken.length > 0 && testToken === expectedTestToken;
+  const amountPaise = isTest ? 100 : configuredAmount;
 
   // Receipt is capped at 40 chars by Razorpay — keep it human but short.
   const receipt = `bk_${kind.slice(0, 4)}_${Date.now().toString(36)}`.slice(0, 40);
@@ -107,6 +119,7 @@ export async function POST(req: NextRequest) {
         booking_kind: kind,
         variant,
         terms_accepted_at: termsAcceptedAt,
+        ...(isTest ? { test: "1" } : {}),
       },
     });
 

@@ -177,6 +177,9 @@ function BookPageInner() {
   // Lock the format selection when the URL carries ?lock=1 (used from
   // deep-linked ack emails so the client can't change consultation type mid-flow).
   const locked = searchParams.get("lock") === "1";
+  // ?test=<token> → create-order overrides amount to ₹1 when the token matches
+  // BOOKING_TEST_TOKEN server-side. For end-to-end verification of the paid flow.
+  const testToken = searchParams.get("test") ?? "";
 
   const today = useMemo(() => todayIsoInIst(), []);
   const minDate = useMemo(() => addDaysIso(today, 1), [today]);
@@ -281,6 +284,7 @@ function BookPageInner() {
           booking_kind: path.kind,
           variant: path.variant,
           terms_accepted_at: new Date().toISOString(),
+          ...(testToken ? { test_token: testToken } : {}),
         }),
       });
       const order = await res.json().catch(() => ({}));
@@ -399,6 +403,12 @@ function BookPageInner() {
 
   return (
     <main className="min-h-screen bg-warm-ivory font-sans text-charcoal">
+      {testToken && (
+        <div className="bg-amber-100 border-b border-amber-300 text-amber-900 text-center text-xs py-2 px-4 font-medium">
+          TEST MODE — paid tiers will charge ₹1 (requires matching
+          BOOKING_TEST_TOKEN server-side)
+        </div>
+      )}
       <div className="max-w-3xl mx-auto px-6 py-16">
         <Link
           href="/"

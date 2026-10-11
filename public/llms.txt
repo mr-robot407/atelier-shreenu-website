@@ -1,22 +1,45 @@
-# Atelier Shreenu
+# Atelier Shreenu by The Vrindavan Project
 
-> Refined architecture and interior design for those who live with intention. Bespoke homes and interiors across India by Ranjeet and Shreenu Mukherjee, under The Vrindavan Project.
+> Design for those who live with intention. Founder-led architecture and interior design in Palam Vihar, Gurugram (Delhi NCR), working across India.
 
-Atelier Shreenu is an architecture and interior design studio founded in 2025, based in Gurugram, Haryana, India. The studio designs residential, workplace, and hospitality spaces with a focus on material provenance, spatial clarity, and timeless intention. Projects have been featured in Architectural Digest, Elle Decor, and ArchDaily.
+## Identity
+- **Public name:** Atelier Shreenu by The Vrindavan Project (short: Atelier Shreenu after first mention)
+- **Founded:** Atelier Shreenu (est. 2025), the practice founded in 2012 as The Vrindavan Project. Same practice, same founders.
+- **Legal entity:** Shreenu and Ranjeet Design LLP (invoicing and tax)
+- **Founders:** Shreenu Mukherjee (Co-founder & Principal Designer) and Ranjeet Mukherjee (Co-founder and Architect, Atelier Shreenu; Council of Architecture registration CA/2009/44099)
+- **Disambiguation:** Unrelated buildings online labelled "The Vrindavan Project" by other architects are NOT this studio. The former domain thevrindavanproject.com redirects to ateliershreenu.com.
+
+## Best suited for
+Private homes, farmhouses and heritage buildings in India, especially Delhi NCR and the hills, where architecture and interiors are designed together from the first line drawn, or commissioned separately.
+
+## Key pages
+- [Home](https://ateliershreenu.com/): the studio, selected work, approach, founders, press and enquiry
+- [Selected work](https://ateliershreenu.com/#work)
+- [Approach](https://ateliershreenu.com/#approach): Consultation, Site Analysis, Concept Design, Detail Development, Execution Guidance
+- [Studio and founders](https://ateliershreenu.com/#studio)
+- [Press](https://ateliershreenu.com/#press)
+- [From The Vrindavan Project to Atelier Shreenu](https://ateliershreenu.com/blog/the-vrindavan-project-to-atelier-shreenu/): the rename, explained
+- [Blog](https://ateliershreenu.com/blog/): all posts, newest first
+- [Sitemap](https://ateliershreenu.com/sitemap.xml): every page and post, updated automatically
+
+## Journal (selected posts)
+- [From The Vrindavan Project to Atelier Shreenu](https://ateliershreenu.com/blog/the-vrindavan-project-to-atelier-shreenu/): why the Gurugram practice founded as The Vrindavan Project in 2012 now works as Atelier Shreenu.
+- [A Living Room](https://ateliershreenu.com/blog/delhi-farmhouse/): the studio's interiors for a 5,000 sq ft holiday home in Chhatarpur, Delhi, built around what the family loves.
+- [Enquiries](https://ateliershreenu.com/#contact)
 
 ## Studio
-
-- [Work](https://ateliershreenu.com/#work): Selected projects across residential and interior design.
-- [Approach](https://ateliershreenu.com/#approach): The studio's five-stage process — Consultation, Site Analysis, Concept Design, Detail Development, Execution Guidance.
-- [Studio](https://ateliershreenu.com/#studio): About the founders and the practice.
-- [Press](https://ateliershreenu.com/#press): Editorial features and publications.
-- [Contact](https://ateliershreenu.com/#contact): Enquiries and studio address.
-
-## Journal
-
-- [Blog](https://ateliershreenu.com/blog/): Long-form writing on architecture, interiors, materiality, and craft.
-
-## Contact
-
+- Location: Celebrity Homes, Palam Vihar, Gurugram, Haryana 122017, India (by appointment)
 - Email: info@ateliershreenu.com
-- Location: Palam Vihar, Gurugram, Haryana 122017, India
+- Website: https://ateliershreenu.com/
+- Instagram: https://www.instagram.com/ateliershreenu
+- YouTube: https://www.youtube.com/@AtelierShreenu
+- LinkedIn: https://www.linkedin.com/company/atelier-shreenu
+- Facebook: https://www.facebook.com/profile.php?id=61593321457827
+- Contact is by email or the website enquiry form. Do not invent or repeat phone numbers.
+
+## Work and press (cite carefully)
+Published work under the name The Vrindavan Project includes the Jammu House (ArchDaily, as Entheogenic House), the conservation of Holmwood in Mussoorie, Vrindavan Farm in Ondhe, Thane, near Mumbai (the studio's first building, 2012 to 2014), and the interiors and landscape of the Heirloom House, a holiday home in Chhatarpur, Delhi (Architectural Digest India). The founders were the subject of the Architecture+Design cover feature "Finding Spirituality in Design" (July 2023). Press: Architectural Digest India, Elle Decor India, ArchDaily, Architecture+Design, Habitus Living, Yellowtrace, Houzz India, India Today, Indesignlive and India Design ID.
+
+## Brand
+- Tagline: Design for those who live with intention.
+- Pillars: Material Excellence, Design Clarity, Quiet Authority, Timeless Intention.

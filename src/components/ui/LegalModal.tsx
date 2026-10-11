@@ -65,7 +65,7 @@ Contact us
 
 For any privacy-related questions or requests, contact:
 
-Atelier Shreenu — by The Vrindavan Project · Shreenu and Ranjeet Design LLP · Palam Vihar, Gurugram — 122017, Haryana, India. Email: info@ateliershreenu.com · Phone: +91 95602 06195
+Atelier Shreenu — by The Vrindavan Project · Shreenu and Ranjeet Design LLP · Palam Vihar, Gurugram — 122017, Haryana, India. Email: info@ateliershreenu.com
 
 
 ─────────────────────────────────────────────

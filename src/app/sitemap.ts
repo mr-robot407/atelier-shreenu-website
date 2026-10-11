@@ -21,24 +21,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.8,
     },
-    {
-      url: `${BASE_URL}/blog/?category=design`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.6,
-    },
-    {
-      url: `${BASE_URL}/blog/?category=insights`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.6,
-    },
-    {
-      url: `${BASE_URL}/blog/?category=lifestyle`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.6,
-    },
   ];
 
   try {

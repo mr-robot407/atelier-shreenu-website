@@ -8,8 +8,6 @@ export const site = {
 
   contact: {
     email: "info@ateliershreenu.com",
-    phone: "+91 9560206195",
-    phoneIntl: "919560206195",
     whatsapp: "919560206195",
     address: {
       line1: "Palam Vihar",

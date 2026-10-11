@@ -44,7 +44,14 @@ export function FoundersNote() {
             <div className="mt-8 space-y-6 text-base leading-relaxed text-ink/75 md:mt-10 md:text-[17px]">
               <FadeIn delay={0.2}>
                 <p>
-                  Founded from over a decade of thoughtful practice and acclaimed work, Atelier Shreenu builds on the legacy of The Vrindavan Project, established in 2012. Led by interior designer Shreenu Mukherjee and architect Ranjeet Mukherjee, the original practice earned recognition for sensitive heritage restorations, refined hospitality interiors, luxurious farmhouses, and elegant residential projects.
+                  Founded from over a decade of thoughtful practice and acclaimed work, Atelier Shreenu builds on the legacy of{" "}
+                  <a
+                    href="/blog/the-vrindavan-project-to-atelier-shreenu/"
+                    className="underline decoration-ink/30 underline-offset-4 transition hover:decoration-ink"
+                  >
+                    The Vrindavan Project, established in 2012
+                  </a>
+                  . Led by interior designer Shreenu Mukherjee and architect Ranjeet Mukherjee, the original practice earned recognition for sensitive heritage restorations, refined hospitality interiors, luxurious farmhouses, and elegant residential projects.
                 </p>
               </FadeIn>
 

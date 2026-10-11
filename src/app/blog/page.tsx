@@ -39,7 +39,7 @@ export async function generateMetadata({
     return {
       title: CATEGORY_META[cat].title,
       description: CATEGORY_META[cat].description,
-      alternates: { canonical: `/blog/?category=${cat}` },
+      alternates: { canonical: "/blog/" },
     };
   }
   return {

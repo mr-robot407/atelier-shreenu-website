@@ -382,7 +382,7 @@ export function Contact() {
 
                 <FormField label="Name" name="name" placeholder="Your full name" autoComplete="name" required />
                 <FormField label="Email" name="email" type="email" placeholder="your@email.com" autoComplete="email" required />
-                <FormField label="Phone" name="phone" type="tel" placeholder="+91 98765 43210" autoComplete="tel" inputMode="tel" required />
+                <FormField label="Phone" name="phone" type="tel" placeholder="Mobile" autoComplete="tel" inputMode="tel" required />
                 <FormField label="Project Location" name="location" placeholder="City, state" autoComplete="address-level2" />
 
                 <SelectField
@@ -448,7 +448,7 @@ export function Contact() {
                 <FormField label="Company Name" name="company_name" placeholder="Your company name" required />
                 <FormField label="Contact Person" name="contact_person" placeholder="Your full name" autoComplete="name" required />
                 <FormField label="Email" name="email" type="email" placeholder="your@company.com" autoComplete="email" required />
-                <FormField label="Phone" name="phone" type="tel" placeholder="+91 98765 43210" autoComplete="tel" inputMode="tel" required />
+                <FormField label="Phone" name="phone" type="tel" placeholder="Mobile" autoComplete="tel" inputMode="tel" required />
 
                 <SelectField
                   label="Category"
@@ -497,7 +497,7 @@ export function Contact() {
 
                 <FormField label="Name" name="name" placeholder="Your full name" autoComplete="name" required />
                 <FormField label="Email" name="email" type="email" placeholder="your@email.com" autoComplete="email" required />
-                <FormField label="Phone" name="phone" type="tel" placeholder="+91 98765 43210" autoComplete="tel" inputMode="tel" required />
+                <FormField label="Phone" name="phone" type="tel" placeholder="Mobile" autoComplete="tel" inputMode="tel" required />
 
                 <SelectField
                   label="Career Type"

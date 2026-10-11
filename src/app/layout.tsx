@@ -7,7 +7,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://ateliershreenu.com"),
   title: {
-    default: "Atelier Shreenu — Architecture & Interior Design | by The Vrindavan Project",
+    default: "Atelier Shreenu by The Vrindavan Project | Interior Design and Architecture",
     template: "%s · Atelier Shreenu",
   },
   description:
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: "https://ateliershreenu.com",
     siteName: "Atelier Shreenu",
-    title: "Atelier Shreenu — Architecture and Interior Design",
+    title: "Atelier Shreenu by The Vrindavan Project | Interior Design and Architecture",
     description:
       "Design for those who live with intention. Architecture and interiors rooted in place, by Shreenu & Ranjeet Mukherjee.",
     images: [
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Atelier Shreenu",
+    title: "Atelier Shreenu by The Vrindavan Project | Interior Design and Architecture",
     description:
       "Design for those who live with intention. Architecture and interiors rooted in place, by Shreenu & Ranjeet Mukherjee.",
     images: ["/og-image.jpg"],
@@ -53,6 +53,11 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  verification: {
+    other: {
+      "msvalidate.01": "F926DEBEE0CF557BE49CACD930DC68B6",
+    },
   },
 };
 
@@ -149,34 +154,68 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             alt=""
           />
         </noscript>
-        {/* Structured data: Architect / LocalBusiness */}
+        {/* Structured data: LocalBusiness (sitewide organization entity) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": ["Architect", "LocalBusiness"],
+              "@type": "LocalBusiness",
+              "@id": "https://ateliershreenu.com/#organization",
               name: "Atelier Shreenu",
-              url: "https://ateliershreenu.com",
-              telephone: "+91-95602-06195",
+              alternateName: [
+                "Atelier Shreenu by The Vrindavan Project",
+                "The Vrindavan Project",
+              ],
+              legalName: "Shreenu and Ranjeet Design LLP",
+              url: "https://ateliershreenu.com/",
+              logo: "https://ateliershreenu.com/Shreenu%20logo%20maroon.jpeg",
+              image: "https://ateliershreenu.com/og-image.jpg",
+              description:
+                "Founder-led architecture and interior design practice in Palam Vihar, Gurugram, working across India. Atelier Shreenu (est. 2025) is the practice founded in 2012 as The Vrindavan Project by Shreenu Mukherjee and Ranjeet Mukherjee.",
+              slogan: "Design for those who live with intention.",
+              foundingDate: "2012",
               email: "info@ateliershreenu.com",
               address: {
                 "@type": "PostalAddress",
-                streetAddress: "Palam Vihar",
+                streetAddress: "Celebrity Homes, Palam Vihar",
                 addressLocality: "Gurugram",
                 addressRegion: "Haryana",
                 postalCode: "122017",
                 addressCountry: "IN",
               },
+              hasMap: "https://maps.app.goo.gl/r5N5uGP7yKWBGSdh7",
+              areaServed: [
+                { "@type": "Place", name: "Delhi NCR" },
+                { "@type": "Country", name: "India" },
+              ],
               founder: [
-                { "@type": "Person", name: "Ranjeet Mukherjee" },
-                { "@type": "Person", name: "Shreenu Mukherjee" },
+                {
+                  "@type": "Person",
+                  name: "Shreenu Mukherjee",
+                  jobTitle: "Co-founder & Principal Designer",
+                },
+                {
+                  "@type": "Person",
+                  name: "Ranjeet Mukherjee",
+                  jobTitle: "Co-founder and Architect",
+                  hasCredential: {
+                    "@type": "EducationalOccupationalCredential",
+                    credentialCategory: "Professional registration",
+                    name: "Council of Architecture registration CA/2009/44099",
+                    recognizedBy: {
+                      "@type": "Organization",
+                      name: "Council of Architecture, India",
+                    },
+                  },
+                },
               ],
               sameAs: [
                 "https://www.instagram.com/ateliershreenu",
                 "https://www.youtube.com/@AtelierShreenu",
                 "https://www.linkedin.com/company/atelier-shreenu/",
                 "https://www.facebook.com/profile.php?id=61593321457827",
+                "https://maps.app.goo.gl/r5N5uGP7yKWBGSdh7",
               ],
             }),
           }}

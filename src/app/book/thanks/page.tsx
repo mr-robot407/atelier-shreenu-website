@@ -35,11 +35,72 @@ export default function ThanksPage() {
   );
 }
 
+// Booking fee schedule (INR, incl. 18% GST) — mirrors
+// src/app/api/booking/create-order/route.ts.
+const PURCHASE_VALUE_INR: Record<string, number> = {
+  "project_discussion:any": 1770,
+  "site_walkthrough:ncr": 3540,
+  "site_walkthrough:outside_ncr": 7080,
+};
+
 function ThanksPageInner() {
   const params = useSearchParams();
   const kind = params.get("kind") ?? "discovery_call";
   const slot = params.get("slot") ?? "";
   const label = KIND_LABEL[kind] ?? "Appointment";
+  const paid = params.get("paid") === "1";
+  const paymentId = params.get("payment_id") ?? "";
+  const variant = params.get("variant") ?? "any";
+
+  // Marketing conversion events on successful booking payment.
+  // Fires Meta Pixel Purchase + dataLayer `purchase` event (GTM routes it to
+  // Google Ads via container config). Dedup keyed by payment_id so refreshes
+  // and StrictMode double-invokes don't double-count.
+  useEffect(() => {
+    if (!paid || !paymentId) return;
+    if (typeof window === "undefined") return;
+
+    const value = PURCHASE_VALUE_INR[`${kind}:${variant}`];
+    if (!value) return;
+
+    const dedupKey = `as_purchase_fired:${paymentId}`;
+    if (sessionStorage.getItem(dedupKey)) return;
+    sessionStorage.setItem(dedupKey, "1");
+
+    type Fbq = (...args: unknown[]) => void;
+    const w = window as unknown as {
+      fbq?: Fbq;
+      dataLayer?: Record<string, unknown>[];
+    };
+
+    if (typeof w.fbq === "function") {
+      w.fbq("track", "Purchase", {
+        value,
+        currency: "INR",
+        content_name: KIND_LABEL[kind] ?? "Appointment",
+        content_category: "booking",
+      }, { eventID: paymentId });
+    }
+
+    w.dataLayer = w.dataLayer ?? [];
+    w.dataLayer.push({
+      event: "purchase",
+      ecommerce: {
+        transaction_id: paymentId,
+        value,
+        currency: "INR",
+        items: [
+          {
+            item_id: `${kind}:${variant}`,
+            item_name: KIND_LABEL[kind] ?? "Appointment",
+            item_category: "booking",
+            price: value,
+            quantity: 1,
+          },
+        ],
+      },
+    });
+  }, [paid, paymentId, kind, variant]);
 
   // Post-payment safety net: for paid tiers, fire the client confirmation +
   // studio notify from the browser once we land back from Razorpay. Uses the

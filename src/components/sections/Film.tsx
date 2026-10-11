@@ -7,7 +7,7 @@ import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
 
 const FILMS = [
-  { id: "Sb0wXYPINFY", title: "The Vrindavan Project — Studio Film" },
+  { id: "Sb0wXYPINFY", title: "Atelier Shreenu — Studio Film" },
   { id: "NGTnmmrGiIM", title: "Atelier Shreenu — A Home Considered" },
   { id: "WP1i5JgiveE", title: "Atelier Shreenu — Process" },
   { id: "FIWUjKLDFL8", title: "Atelier Shreenu — Material & Making" },

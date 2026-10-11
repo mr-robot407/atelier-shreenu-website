@@ -19,14 +19,24 @@ export async function generateMetadata({
 }) {
   const post = await getPostBySlug(params.slug);
   if (!post) return {};
+  const url = `https://ateliershreenu.com/blog/${post.slug}/`;
+  const images = post.coverImage ? [post.coverImage] : [];
   return {
     title: `${post.title} — The Blog`,
     description: post.excerpt,
     alternates: { canonical: `/blog/${post.slug}/` },
     openGraph: {
+      type: "article",
+      url,
       title: post.title,
       description: post.excerpt,
-      images: post.coverImage ? [post.coverImage] : [],
+      images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images,
     },
   };
 }

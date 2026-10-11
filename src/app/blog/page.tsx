@@ -35,18 +35,44 @@ export async function generateMetadata({
   searchParams: { category?: string };
 }): Promise<Metadata> {
   const cat = searchParams.category ?? "";
+  const blogUrl = "https://ateliershreenu.com/blog/";
   if (cat && CATEGORY_META[cat]) {
+    const meta = CATEGORY_META[cat];
     return {
-      title: CATEGORY_META[cat].title,
-      description: CATEGORY_META[cat].description,
+      title: meta.title,
+      description: meta.description,
       alternates: { canonical: "/blog/" },
+      openGraph: {
+        type: "website",
+        url: blogUrl,
+        title: meta.title,
+        description: meta.description,
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: meta.title,
+        description: meta.description,
+      },
     };
   }
+  const title = "The Blog — Atelier Shreenu";
+  const description =
+    "Ideas, references, and perspectives from the studio of Atelier Shreenu.";
   return {
     title: "The Blog",
-    description:
-      "Ideas, references, and perspectives from the studio of Atelier Shreenu.",
+    description,
     alternates: { canonical: "/blog/" },
+    openGraph: {
+      type: "website",
+      url: blogUrl,
+      title,
+      description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
   };
 }
 

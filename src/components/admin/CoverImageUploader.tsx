@@ -174,16 +174,28 @@ export default function CoverImageUploader({ value, onChange }: Props) {
       file.name.replace(/\.[^.]+$/, ".jpg"),
       { type: "image/jpeg" }
     );
-    const res = await fetch(
-      `/api/shreenu-editor/upload?filename=${encodeURIComponent(croppedFile.name)}&contentType=image%2Fjpeg`
-    );
-    const { uploadUrl, publicUrl } = await res.json();
-    await fetch(uploadUrl, { method: "PUT", body: croppedFile, headers: { "Content-Type": "image/jpeg" } });
+    try {
+      const res = await fetch(
+        `/api/shreenu-editor/upload?filename=${encodeURIComponent(croppedFile.name)}&contentType=image%2Fjpeg`
+      );
+      if (!res.ok) throw new Error(`presign failed: ${res.status}`);
+      const { uploadUrl, publicUrl } = await res.json();
+      const put = await fetch(uploadUrl, {
+        method: "PUT",
+        body: croppedFile,
+        headers: { "Content-Type": "image/jpeg" },
+      });
+      if (!put.ok) throw new Error(`upload failed: ${put.status}`);
 
-    URL.revokeObjectURL(objectUrl);
-    setCrop(null);
-    onChange(publicUrl);
-    setUploading(false);
+      URL.revokeObjectURL(objectUrl);
+      setCrop(null);
+      onChange(publicUrl);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Upload failed";
+      alert(`Cover image upload failed: ${msg}. Check your network tab for details.`);
+    } finally {
+      setUploading(false);
+    }
   }
 
   function cancelCrop() {

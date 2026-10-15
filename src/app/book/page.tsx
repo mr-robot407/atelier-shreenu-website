@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { bookingTermsFor } from "@/content/booking-terms";
@@ -195,12 +195,16 @@ function BookPageInner() {
 
   const [termsOpen, setTermsOpen] = useState(false);
   const [ackAll, setAckAll] = useState(false);
+  const [holdToken, setHoldToken] = useState<string>("");
+  const holdRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
     setSlots([]);
     setSelectedSlot("");
+    setHoldToken("");
+    if (holdRef.current) holdRef.current.abort();
     const params = new URLSearchParams({ date, kind: path.kind });
     if (path.variant !== "any") params.set("variant", path.variant);
     fetch(`/api/booking/slots?${params}`)
@@ -233,6 +237,31 @@ function BookPageInner() {
     router.replace(`/book?${params.toString()}`, { scroll: false });
   }
 
+  function selectSlot(slot: string) {
+    setSelectedSlot(slot);
+    setHoldToken("");
+    if (holdRef.current) holdRef.current.abort();
+    const ctrl = new AbortController();
+    holdRef.current = ctrl;
+    fetch("/api/booking/hold", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        slot_iso: slot,
+        booking_kind: path.kind,
+        variant: path.variant === "any" ? "" : path.variant,
+      }),
+      signal: ctrl.signal,
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        if (!ctrl.signal.aborted && data.hold_token) {
+          setHoldToken(data.hold_token);
+        }
+      })
+      .catch(() => {});
+  }
+
   async function confirmDiscovery(e: React.FormEvent) {
     e.preventDefault();
     if (!selectedSlot) return;
@@ -246,6 +275,7 @@ function BookPageInner() {
           email,
           first_name: name,
           slot_iso: selectedSlot,
+          hold_token: holdToken,
         }),
       });
       if (!res.ok) {
@@ -287,6 +317,7 @@ function BookPageInner() {
           booking_kind: path.kind,
           variant: path.variant,
           terms_accepted_at: new Date().toISOString(),
+          hold_token: holdToken,
           ...(testToken ? { test_token: testToken } : {}),
         }),
       });
@@ -525,7 +556,7 @@ function BookPageInner() {
                 <button
                   key={slot}
                   type="button"
-                  onClick={() => setSelectedSlot(slot)}
+                  onClick={() => selectSlot(slot)}
                   className={`border py-3 text-sm transition-colors ${
                     selectedSlot === slot
                       ? "border-charcoal bg-charcoal text-warm-ivory"

@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
     booking_kind?: string;
     variant?: string;
     terms_accepted_at?: string;
+    hold_token?: string;
     test_token?: string;
   };
   try {
@@ -57,6 +58,7 @@ export async function POST(req: NextRequest) {
   const kind = (data.booking_kind ?? "").trim();
   const variant = (data.variant ?? "any").trim();
   const termsAcceptedAt = (data.terms_accepted_at ?? "").trim();
+  const holdToken = (data.hold_token ?? "").trim();
 
   if (!termsAcceptedAt || Number.isNaN(Date.parse(termsAcceptedAt))) {
     return NextResponse.json(
@@ -119,6 +121,7 @@ export async function POST(req: NextRequest) {
         booking_kind: kind,
         variant,
         terms_accepted_at: termsAcceptedAt,
+        ...(holdToken ? { hold_token: holdToken } : {}),
         ...(isTest ? { test: "1" } : {}),
       },
     });

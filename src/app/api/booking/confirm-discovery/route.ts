@@ -156,7 +156,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  let data: { email?: string; first_name?: string; slot_iso?: string };
+  let data: { email?: string; first_name?: string; slot_iso?: string; hold_token?: string };
   try {
     data = await req.json();
   } catch {
@@ -166,6 +166,7 @@ export async function POST(req: NextRequest) {
   const email = (data.email ?? "").trim();
   const firstName = (data.first_name ?? "").trim();
   const slotIso = (data.slot_iso ?? "").trim();
+  const holdToken = (data.hold_token ?? "").trim();
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: "invalid email" }, { status: 400 });
@@ -180,6 +181,7 @@ export async function POST(req: NextRequest) {
       email,
       first_name: firstName || "Guest",
       slot_iso: slotIso,
+      hold_token: holdToken,
     });
     if (statusCode !== 200) {
       const text = typeof body === "string" ? body : JSON.stringify(body);

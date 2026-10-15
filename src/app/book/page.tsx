@@ -4,6 +4,7 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { bookingTermsFor } from "@/content/booking-terms";
+import { detectVariant } from "@/lib/ncr-pincodes";
 
 type RazorpayResponse = {
   razorpay_payment_id: string;
@@ -190,6 +191,8 @@ function BookPageInner() {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [sitePin, setSitePin] = useState("");
+  const [pinMismatch, setPinMismatch] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
   const [errMsg, setErrMsg] = useState<string>("");
 
@@ -229,6 +232,7 @@ function BookPageInner() {
     setStatus("idle");
     setErrMsg("");
     setAckAll(false);
+    setPinMismatch(null);
     const params = new URLSearchParams();
     const p = PATHS.find((x) => x.key === next)!;
     params.set("kind", p.kind);
@@ -607,6 +611,54 @@ function BookPageInner() {
               placeholder="you@example.com"
             />
           </div>
+          {path.kind === "site_walkthrough" && (
+            <div>
+              <label
+                htmlFor="sitePin"
+                className="block text-micro uppercase tracking-wide text-warm-grey mb-2"
+              >
+                Site pin code
+              </label>
+              <input
+                id="sitePin"
+                required
+                inputMode="numeric"
+                pattern="\d{6}"
+                maxLength={6}
+                value={sitePin}
+                onChange={(e) => {
+                  const v = e.target.value.replace(/\D/g, "").slice(0, 6);
+                  setSitePin(v);
+                  setPinMismatch(null);
+                  if (v.length === 6) {
+                    const detected = detectVariant(v);
+                    if (detected && detected !== path.variant) {
+                      const label = detected === "ncr" ? "Within NCR" : "Outside NCR";
+                      setPinMismatch(label);
+                    }
+                  }
+                }}
+                className="border border-stone bg-warm-ivory px-4 py-3 w-full focus:outline-none focus:border-charcoal"
+                placeholder="110001"
+              />
+              {pinMismatch && (
+                <p className="mt-2 text-sm text-burgundy">
+                  This pin code falls under <strong>{pinMismatch}</strong>.{" "}
+                  <button
+                    type="button"
+                    className="underline"
+                    onClick={() => {
+                      const target = pinMismatch === "Within NCR" ? "site_visit_ncr" : "site_visit_outside";
+                      selectPath(target as Path);
+                      setPinMismatch(null);
+                    }}
+                  >
+                    Switch to {pinMismatch}
+                  </button>
+                </p>
+              )}
+            </div>
+          )}
           <div className="pt-4">
             <button
               type="submit"
@@ -614,6 +666,7 @@ function BookPageInner() {
                 !selectedSlot ||
                 !name ||
                 !email ||
+                (path.kind === "site_walkthrough" && sitePin.length !== 6) ||
                 status === "submitting"
               }
               className="bg-charcoal text-warm-ivory px-8 py-3 text-micro uppercase tracking-wide disabled:opacity-40"

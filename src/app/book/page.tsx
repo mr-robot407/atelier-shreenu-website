@@ -192,6 +192,8 @@ function BookPageInner() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [sitePin, setSitePin] = useState("");
+  const [siteAddress, setSiteAddress] = useState("");
+  const [mapLink, setMapLink] = useState("");
   const [pinMismatch, setPinMismatch] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
   const [errMsg, setErrMsg] = useState<string>("");
@@ -323,6 +325,8 @@ function BookPageInner() {
           terms_accepted_at: new Date().toISOString(),
           hold_token: holdToken,
           ...(testToken ? { test_token: testToken } : {}),
+          ...(path.kind === "site_walkthrough" ? { site_address: siteAddress } : {}),
+          ...(path.kind === "site_walkthrough" && mapLink ? { map_link: mapLink } : {}),
         }),
       });
       const order = await res.json().catch(() => ({}));
@@ -345,6 +349,8 @@ function BookPageInner() {
             slot_iso: selectedSlot,
             booking_kind: path.kind,
             variant: path.variant,
+            ...(path.kind === "site_walkthrough" ? { site_address: siteAddress } : {}),
+            ...(path.kind === "site_walkthrough" && mapLink ? { map_link: mapLink } : {}),
           }),
         );
       } catch {
@@ -659,6 +665,42 @@ function BookPageInner() {
               )}
             </div>
           )}
+          {path.kind === "site_walkthrough" && (
+            <div>
+              <label
+                htmlFor="siteAddress"
+                className="block text-micro uppercase tracking-wide text-warm-grey mb-2"
+              >
+                Site address
+              </label>
+              <input
+                id="siteAddress"
+                required
+                value={siteAddress}
+                onChange={(e) => setSiteAddress(e.target.value)}
+                className="border border-stone bg-warm-ivory px-4 py-3 w-full focus:outline-none focus:border-charcoal"
+                placeholder="Full site address"
+              />
+            </div>
+          )}
+          {path.kind === "site_walkthrough" && (
+            <div>
+              <label
+                htmlFor="mapLink"
+                className="block text-micro uppercase tracking-wide text-warm-grey mb-2"
+              >
+                Map link (optional)
+              </label>
+              <input
+                id="mapLink"
+                type="url"
+                value={mapLink}
+                onChange={(e) => setMapLink(e.target.value)}
+                className="border border-stone bg-warm-ivory px-4 py-3 w-full focus:outline-none focus:border-charcoal"
+                placeholder="https://maps.google.com/..."
+              />
+            </div>
+          )}
           <div className="pt-4">
             <button
               type="submit"
@@ -667,6 +709,7 @@ function BookPageInner() {
                 !name ||
                 !email ||
                 (path.kind === "site_walkthrough" && sitePin.length !== 6) ||
+                (path.kind === "site_walkthrough" && !siteAddress) ||
                 status === "submitting"
               }
               className="bg-charcoal text-warm-ivory px-8 py-3 text-micro uppercase tracking-wide disabled:opacity-40"

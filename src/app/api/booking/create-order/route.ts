@@ -45,6 +45,8 @@ export async function POST(req: NextRequest) {
     terms_accepted_at?: string;
     hold_token?: string;
     test_token?: string;
+    site_address?: string;
+    map_link?: string;
   };
   try {
     data = await req.json();
@@ -59,6 +61,8 @@ export async function POST(req: NextRequest) {
   const variant = (data.variant ?? "any").trim();
   const termsAcceptedAt = (data.terms_accepted_at ?? "").trim();
   const holdToken = (data.hold_token ?? "").trim();
+  const siteAddress = (data.site_address ?? "").trim();
+  const mapLink = (data.map_link ?? "").trim();
 
   if (!termsAcceptedAt || Number.isNaN(Date.parse(termsAcceptedAt))) {
     return NextResponse.json(
@@ -123,6 +127,8 @@ export async function POST(req: NextRequest) {
         terms_accepted_at: termsAcceptedAt,
         ...(holdToken ? { hold_token: holdToken } : {}),
         ...(isTest ? { test: "1" } : {}),
+        ...(siteAddress ? { site_address: siteAddress } : {}),
+        ...(mapLink ? { map_link: mapLink } : {}),
       },
     });
 

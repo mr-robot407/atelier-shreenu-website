@@ -127,6 +127,8 @@ export async function POST(req: NextRequest) {
     slot_iso?: string;
     booking_kind?: string;
     variant?: string;
+    site_address?: string;
+    map_link?: string;
   };
   try {
     data = await req.json();
@@ -139,6 +141,8 @@ export async function POST(req: NextRequest) {
   const slotIso = (data.slot_iso ?? "").trim();
   const kind = (data.booking_kind ?? "").trim();
   const variant = (data.variant ?? "any").trim();
+  const siteAddress = (data.site_address ?? "").trim();
+  const mapLink = (data.map_link ?? "").trim();
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: "invalid email" }, { status: 400 });
@@ -228,6 +232,8 @@ export async function POST(req: NextRequest) {
     `Client: ${firstName}`,
     `Email:  ${email}`,
     `Slot:   ${slotLabel} IST (${durationMin} minutes)`,
+    ...(siteAddress ? [`Site:   ${siteAddress}`] : []),
+    ...(mapLink ? [`Map:    ${mapLink}`] : []),
     ``,
     `The .ics attachment adds the appointment to your calendar. Payment was`,
     `handled by Razorpay; the receipt is dispatched separately by Razorpay.`,
@@ -244,7 +250,7 @@ export async function POST(req: NextRequest) {
     durationMinutes: durationMin,
     summary: `${summary} · ${firstName}`,
     description: `${summary}.\nClient: ${firstName}\nEmail: ${email}`,
-    location: kind === "project_discussion" ? "Google Meet (link to follow)" : "On site (address to follow)",
+    location: kind === "project_discussion" ? "Google Meet (link to follow)" : siteAddress || "On site (address to follow)",
     organizerEmail: STUDIO_INBOX,
     organizerName: "Atelier Shreenu",
   });

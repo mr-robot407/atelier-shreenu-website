@@ -117,6 +117,8 @@ function ThanksPageInner() {
       slot_iso?: string;
       booking_kind?: string;
       variant?: string;
+      site_address?: string;
+      map_link?: string;
     } | null = null;
     try {
       const raw = sessionStorage.getItem("as_pending_booking");

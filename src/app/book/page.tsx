@@ -201,7 +201,9 @@ function BookPageInner() {
     setLoading(true);
     setSlots([]);
     setSelectedSlot("");
-    fetch(`/api/booking/slots?date=${date}&kind=${path.kind}`)
+    const params = new URLSearchParams({ date, kind: path.kind });
+    if (path.variant !== "any") params.set("variant", path.variant);
+    fetch(`/api/booking/slots?${params}`)
       .then((r) => r.json())
       .then((data) => {
         if (!cancelled) setSlots(Array.isArray(data.slots) ? data.slots : []);
@@ -215,7 +217,7 @@ function BookPageInner() {
     return () => {
       cancelled = true;
     };
-  }, [date, path.kind]);
+  }, [date, path.kind, path.variant]);
 
   function selectPath(next: Path) {
     if (locked) return;

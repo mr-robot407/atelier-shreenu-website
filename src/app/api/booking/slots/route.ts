@@ -11,6 +11,7 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const date = searchParams.get("date");
   const kind = searchParams.get("kind") ?? "discovery_call";
+  const variant = searchParams.get("variant") ?? "";
 
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     return NextResponse.json(
@@ -27,6 +28,7 @@ export async function GET(req: NextRequest) {
       source: "booking_slots",
       date,
       booking_kind: kind,
+      variant,
     });
     if (statusCode !== 200) {
       return NextResponse.json(

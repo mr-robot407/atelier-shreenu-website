@@ -178,7 +178,7 @@ function BookPageInner() {
   // Lock the format selection when the URL carries ?lock=1 (used from
   // deep-linked ack emails so the client can't change consultation type mid-flow).
   const locked = searchParams.get("lock") === "1";
-  // ?test=<token> → create-order overrides amount to ₹1 when the token matches
+  // ?test=<token> → create-order overrides amount to ₹5 when the token matches
   // BOOKING_TEST_TOKEN server-side. For end-to-end verification of the paid flow.
   const testToken = searchParams.get("test") ?? "";
 
@@ -449,7 +449,7 @@ function BookPageInner() {
     <main className="min-h-screen bg-warm-ivory font-sans text-charcoal">
       {testToken && (
         <div className="bg-amber-100 border-b border-amber-300 text-amber-900 text-center text-xs py-2 px-4 font-medium">
-          TEST MODE — paid tiers will charge ₹1 (requires matching
+          TEST MODE — paid tiers will charge ₹5 (requires matching
           BOOKING_TEST_TOKEN server-side)
         </div>
       )}

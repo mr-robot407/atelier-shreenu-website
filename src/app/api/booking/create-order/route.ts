@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Test override: when ?test=<token> matches BOOKING_TEST_TOKEN, charge ₹1
+  // Test override: when ?test=<token> matches BOOKING_TEST_TOKEN, charge ₹5
   // instead of the real fee. Lets us drive the full production flow
   // (verify-payment → /book/thanks → /api/booking/confirm-paid → studio notify)
   // without burning real amounts. Token is server-only; the client just
@@ -107,7 +107,7 @@ export async function POST(req: NextRequest) {
   const expectedTestToken = (process.env.BOOKING_TEST_TOKEN ?? "").trim();
   const isTest =
     expectedTestToken.length > 0 && testToken === expectedTestToken;
-  const amountPaise = isTest ? 100 : configuredAmount;
+  const amountPaise = isTest ? 500 : configuredAmount;
 
   // Receipt is capped at 40 chars by Razorpay — keep it human but short.
   const receipt = `bk_${kind.slice(0, 4)}_${Date.now().toString(36)}`.slice(0, 40);

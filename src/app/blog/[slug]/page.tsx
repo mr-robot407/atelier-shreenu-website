@@ -12,6 +12,11 @@ const CATEGORY_LABELS: Record<string, string> = {
   insights: "Insights",
 };
 
+const AUTHOR_ENTITIES = {
+  ranjeet: { "@id": "https://ateliershreenu.com/#ranjeet", name: "Ranjeet Mukherjee" },
+  shreenu: { "@id": "https://ateliershreenu.com/#shreenu", name: "Shreenu Mukherjee" },
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -70,28 +75,38 @@ export default async function PostPage({
       ? allPosts[currentIndex + 1]
       : null;
 
+  const authorKey = post.author ?? "ranjeet";
+  const articleSection = category && CATEGORY_LABELS[category] ? CATEGORY_LABELS[category] : undefined;
+  const postUrl = `https://ateliershreenu.com/blog/${post.slug}/`;
+
   const blogPostingSchema = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: post.title,
-    description: post.excerpt,
-    ...(post.coverImage ? { image: post.coverImage } : {}),
-    datePublished: post.publishedAt ?? post.createdAt,
-    dateModified: post.publishedAt ?? post.createdAt,
-    author: {
-      "@type": "Organization",
-      name: "Atelier Shreenu",
-      url: "https://ateliershreenu.com",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Atelier Shreenu",
-      url: "https://ateliershreenu.com",
-    },
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `https://ateliershreenu.com/blog/${post.slug}/`,
-    },
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${postUrl}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://ateliershreenu.com/" },
+          { "@type": "ListItem", position: 2, name: "Blog", item: "https://ateliershreenu.com/blog/" },
+          { "@type": "ListItem", position: 3, name: post.title, item: postUrl },
+        ],
+      },
+      {
+        "@type": "BlogPosting",
+        "@id": `${postUrl}#article`,
+        mainEntityOfPage: { "@type": "WebPage", "@id": postUrl },
+        headline: post.title,
+        description: post.excerpt,
+        ...(post.coverImage ? { image: post.coverImage } : {}),
+        datePublished: post.publishedAt ?? post.createdAt,
+        dateModified: post.updatedAt ?? post.publishedAt ?? post.createdAt,
+        ...(articleSection ? { articleSection } : {}),
+        inLanguage: "en-IN",
+        author: { "@id": AUTHOR_ENTITIES[authorKey]["@id"] },
+        publisher: { "@id": "https://ateliershreenu.com/#organization" },
+        isPartOf: { "@id": "https://ateliershreenu.com/#website" },
+      },
+    ],
   };
 
   return (
@@ -133,11 +148,10 @@ export default async function PostPage({
               {post.excerpt}
             </p>
           )}
-          {date && (
-            <p className="font-sans text-[11px] uppercase tracking-widest text-charcoal/30">
-              {date}
-            </p>
-          )}
+          <p className="font-sans text-[11px] uppercase tracking-widest text-charcoal/40">
+            By {AUTHOR_ENTITIES[authorKey].name}
+            {date ? <span className="text-charcoal/30"> · {date}</span> : null}
+          </p>
           <div className="mt-8 h-px bg-charcoal/10" />
         </div>
 

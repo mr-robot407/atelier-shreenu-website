@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { serif, sans } from "@/styles/fonts";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
+import { OrgJsonLd } from "@/components/seo/OrgJsonLd";
 import Script from "next/script";
 import "./globals.css";
 
@@ -14,6 +15,11 @@ export const metadata: Metadata = {
     "Architecture and interior design studio based in Gurugram, specialising in residential, hospitality, and ecologically sensitive design across India. By Ranjeet & Shreenu Mukherjee.",
   alternates: {
     canonical: "/",
+    types: {
+      "application/atom+xml": [
+        { url: "/feed.xml", title: "The Atelier Shreenu Blog" },
+      ],
+    },
   },
   keywords: [
     "architecture firm Gurugram",
@@ -141,7 +147,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '1078519821811648');
+            fbq('init', '1094571223342097');
             fbq('track', 'PageView');
           `}
         </Script>
@@ -151,76 +157,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             height="1"
             width="1"
             style={{ display: "none" }}
-            src="https://www.facebook.com/tr?id=1078519821811648&ev=PageView&noscript=1"
+            src="https://www.facebook.com/tr?id=1094571223342097&ev=PageView&noscript=1"
             alt=""
           />
         </noscript>
-        {/* Structured data: LocalBusiness (sitewide organization entity) */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "LocalBusiness",
-              "@id": "https://ateliershreenu.com/#organization",
-              name: "Atelier Shreenu",
-              alternateName: [
-                "Atelier Shreenu by The Vrindavan Project",
-                "The Vrindavan Project",
-              ],
-              legalName: "Shreenu and Ranjeet Design LLP",
-              url: "https://ateliershreenu.com/",
-              logo: "https://ateliershreenu.com/Shreenu%20logo%20maroon.jpeg",
-              image: "https://ateliershreenu.com/og-image.jpg",
-              description:
-                "Founder-led architecture and interior design practice in Palam Vihar, Gurugram, working across India. Atelier Shreenu (est. 2025) is the practice founded in 2012 as The Vrindavan Project by Shreenu Mukherjee and Ranjeet Mukherjee.",
-              slogan: "Design for those who live with intention.",
-              foundingDate: "2012",
-              email: "info@ateliershreenu.com",
-              address: {
-                "@type": "PostalAddress",
-                streetAddress: "Celebrity Homes, Palam Vihar",
-                addressLocality: "Gurugram",
-                addressRegion: "Haryana",
-                postalCode: "122017",
-                addressCountry: "IN",
-              },
-              hasMap: "https://maps.app.goo.gl/r5N5uGP7yKWBGSdh7",
-              areaServed: [
-                { "@type": "Place", name: "Delhi NCR" },
-                { "@type": "Country", name: "India" },
-              ],
-              founder: [
-                {
-                  "@type": "Person",
-                  name: "Shreenu Mukherjee",
-                  jobTitle: "Co-founder & Principal Designer",
-                },
-                {
-                  "@type": "Person",
-                  name: "Ranjeet Mukherjee",
-                  jobTitle: "Co-founder and Architect",
-                  hasCredential: {
-                    "@type": "EducationalOccupationalCredential",
-                    credentialCategory: "Professional registration",
-                    name: "Council of Architecture registration CA/2009/44099",
-                    recognizedBy: {
-                      "@type": "Organization",
-                      name: "Council of Architecture, India",
-                    },
-                  },
-                },
-              ],
-              sameAs: [
-                "https://www.instagram.com/ateliershreenu",
-                "https://www.youtube.com/@AtelierShreenu",
-                "https://www.linkedin.com/company/atelier-shreenu/",
-                "https://www.facebook.com/profile.php?id=61593321457827",
-                "https://maps.app.goo.gl/r5N5uGP7yKWBGSdh7",
-              ],
-            }),
-          }}
-        />
+        <OrgJsonLd />
       </body>
     </html>
   );

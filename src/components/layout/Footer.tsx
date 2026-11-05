@@ -74,6 +74,7 @@ export function Footer() {
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
               <div>
                 <div>© {new Date().getFullYear()} Atelier Shreenu · Shreenu and Ranjeet Design LLP</div>
+                <div className="mt-1 text-charcoal/40">Atelier Shreenu (est. 2025), formerly The Vrindavan Project (est. 2012).</div>
                 <div className="mt-1 text-charcoal/40">Atelier Shreenu is the trading name of Shreenu and Ranjeet Design LLP</div>
               </div>
               <button

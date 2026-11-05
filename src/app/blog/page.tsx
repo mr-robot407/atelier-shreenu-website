@@ -1,4 +1,5 @@
 import { listPublishedPosts, type Post } from "@/lib/dynamodb";
+import { filterRedirectedSlugs } from "@/lib/blog-redirects";
 import { CATEGORIES } from "@/lib/categories";
 import { PostGrid } from "@/components/blog/PostGrid";
 import type { Metadata } from "next";
@@ -42,6 +43,7 @@ export async function generateMetadata({
       title: meta.title,
       description: meta.description,
       alternates: { canonical: "/blog/" },
+      robots: { index: false, follow: true },
       openGraph: {
         type: "website",
         url: blogUrl,
@@ -83,7 +85,7 @@ export default async function BlogPage({
 }) {
   let allPosts: Post[] = [];
   try {
-    allPosts = await listPublishedPosts();
+    allPosts = filterRedirectedSlugs(await listPublishedPosts());
   } catch (err) {
     console.error("DynamoDB error:", err);
   }
@@ -122,7 +124,7 @@ export default async function BlogPage({
           <h1 className="font-serif text-[clamp(42px,5vw,72px)] leading-[1.1] text-charcoal max-w-3xl">
             {activeCategory
               ? `${categoryLabel} — ideas from the studio.`
-              : "Ideas, references, and perspectives from the studio."}
+              : "The Atelier Shreenu Blog"}
           </h1>
           {categoryMeta && (
             <p className="font-sans text-[15px] leading-relaxed text-charcoal/60 max-w-2xl mt-8">

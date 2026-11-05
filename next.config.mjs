@@ -1,3 +1,5 @@
+import blogRedirects from "./src/lib/blog-redirects.json" with { type: "json" };
+
 /** @type {import('next').NextConfig} */
 const securityHeaders = [
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
@@ -70,6 +72,34 @@ const nextConfig = {
         headers: securityHeaders,
       },
     ];
+  },
+
+  async redirects() {
+    const slugRedirects = blogRedirects.flatMap(({ from, to }) => [
+      {
+        source: `/blog/${from}`,
+        destination: `/blog/${to}/`,
+        permanent: true,
+      },
+      {
+        source: `/blog/${from}/`,
+        destination: `/blog/${to}/`,
+        permanent: true,
+      },
+    ]);
+    const deadSlugRedirects = [
+      {
+        source: "/blog/vrindavan-farm-ondhe-thane",
+        destination: "/blog/",
+        permanent: true,
+      },
+      {
+        source: "/blog/vrindavan-farm-ondhe-thane/",
+        destination: "/blog/",
+        permanent: true,
+      },
+    ];
+    return [...slugRedirects, ...deadSlugRedirects];
   },
 };
 

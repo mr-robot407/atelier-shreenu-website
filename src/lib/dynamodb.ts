@@ -35,7 +35,9 @@ export type Post = {
   coverImage?: string;
   status: "draft" | "published";
   publishedAt?: string;
+  updatedAt?: string;
   tags?: string[];
+  author?: "ranjeet" | "shreenu";
 };
 
 export type CreatePostInput = Omit<Post, "postId" | "createdAt">;
@@ -128,6 +130,8 @@ export async function updatePost(
     ([, v]) => v !== undefined && v !== ""
   );
   if (!entries.length) return;
+  normalized.updatedAt = new Date().toISOString();
+  entries.push(["updatedAt", normalized.updatedAt]);
 
   const ExpressionAttributeNames: Record<string, string> = {};
   const ExpressionAttributeValues: Record<string, unknown> = {};

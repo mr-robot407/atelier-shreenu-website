@@ -30,6 +30,7 @@ export default function EditPostPage({
   const [content, setContent] = useState("");
   const [coverImage, setCoverImage] = useState("");
   const [category, setCategory] = useState("");
+  const [author, setAuthor] = useState<"ranjeet" | "shreenu">("ranjeet");
   const [status, setStatus] = useState<"draft" | "published">("draft");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -49,6 +50,7 @@ export default function EditPostPage({
       setContent(found.content);
       setCoverImage(found.coverImage ?? "");
       setCategory(found.tags?.[0] ?? "");
+      setAuthor(found.author ?? "ranjeet");
       setStatus(found.status);
     }
     load();
@@ -70,6 +72,7 @@ export default function EditPostPage({
         content,
         coverImage,
         tags: category ? [category] : [],
+        author,
         status: statusToSave,
         publishedAt:
           statusToSave === "published"
@@ -183,6 +186,17 @@ export default function EditPostPage({
               <option value="insights">Insights</option>
             </select>
           </div>
+        </div>
+        <div>
+          <label className="block text-xs text-stone-400 mb-1 uppercase tracking-wider">Author</label>
+          <select
+            value={author}
+            onChange={(e) => setAuthor(e.target.value as "ranjeet" | "shreenu")}
+            className="w-full border border-stone-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-stone-400 text-stone-700"
+          >
+            <option value="ranjeet">Ranjeet Mukherjee</option>
+            <option value="shreenu">Shreenu Mukherjee</option>
+          </select>
         </div>
         <div>
           <CoverImageUploader value={coverImage} onChange={setCoverImage} />

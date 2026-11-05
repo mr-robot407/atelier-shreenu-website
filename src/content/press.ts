@@ -25,7 +25,7 @@ export const press = [
   },
   {
     name: "Habitus Living",
-    url: "https://www.habitusliving.com/projects/the-vrindavan-project",
+    url: "https://www.habitusliving.com/projects/atelier-shreenu",
     logo: "/images/press/habitus-living.svg",
     square: false,
   },

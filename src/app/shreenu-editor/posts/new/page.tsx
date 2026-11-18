@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import CoverImageUploader from "@/components/admin/CoverImageUploader";
 import PostPreview from "@/components/admin/PostPreview";
+import SeoPanel, { emptySeo, type SeoValues } from "@/components/admin/SeoPanel";
 
 const Editor = dynamic(() => import("@/components/admin/Editor"), {
   ssr: false,
@@ -22,6 +23,7 @@ export default function NewPostPage() {
   const [coverImage, setCoverImage] = useState("");
   const [category, setCategory] = useState("");
   const [author, setAuthor] = useState<"ranjeet" | "shreenu">("ranjeet");
+  const [seo, setSeo] = useState<SeoValues>(emptySeo);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [preview, setPreview] = useState(false);
@@ -54,6 +56,10 @@ export default function NewPostPage() {
           statusToSave === "published" ? new Date().toISOString() : undefined,
         tags: category ? [category] : [],
         author,
+        seoTitle: seo.seoTitle.trim(),
+        seoDescription: seo.seoDescription.trim(),
+        canonicalUrl: seo.canonicalUrl.trim(),
+        noindex: seo.noindex,
       }),
     });
 
@@ -178,6 +184,14 @@ export default function NewPostPage() {
               className="w-full border border-stone-200 rounded px-3 py-2 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-stone-400"
             />
           </div>
+
+          <SeoPanel
+            value={seo}
+            onChange={setSeo}
+            postTitle={title}
+            excerpt={excerpt}
+            slug={slug || autoSlug(title)}
+          />
 
           <div>
             <label className="block text-xs text-stone-400 mb-2 uppercase tracking-wider">Content</label>

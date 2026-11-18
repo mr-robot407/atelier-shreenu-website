@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { listPublishedPosts } from "@/lib/dynamodb";
+import { listPublishedPosts, isIndexable } from "@/lib/dynamodb";
 import { filterRedirectedSlugs } from "@/lib/blog-redirects";
 
 export const revalidate = 3600;
@@ -25,10 +25,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   try {
-    const posts = filterRedirectedSlugs(await listPublishedPosts());
+    const posts = filterRedirectedSlugs(await listPublishedPosts()).filter(isIndexable);
     const postEntries: MetadataRoute.Sitemap = posts.map((post) => ({
       url: `${BASE_URL}/blog/${post.slug}/`,
-      lastModified: post.publishedAt ? new Date(post.publishedAt) : now,
+      lastModified: new Date(post.updatedAt ?? post.publishedAt ?? now),
       changeFrequency: "monthly",
       priority: 0.7,
     }));

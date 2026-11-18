@@ -1,4 +1,4 @@
-import { listPublishedPosts } from "@/lib/dynamodb";
+import { listPublishedPosts, isIndexable } from "@/lib/dynamodb";
 import { filterRedirectedSlugs } from "@/lib/blog-redirects";
 
 export const revalidate = 3600;
@@ -22,7 +22,7 @@ const AUTHOR_NAMES = {
 
 export async function GET() {
   let posts = await listPublishedPosts().catch(() => []);
-  posts = filterRedirectedSlugs(posts);
+  posts = filterRedirectedSlugs(posts).filter(isIndexable);
 
   const updated =
     posts[0]?.updatedAt ??

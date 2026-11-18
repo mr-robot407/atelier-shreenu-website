@@ -24,23 +24,27 @@ export async function generateMetadata({
 }) {
   const post = await getPostBySlug(params.slug);
   if (!post) return {};
-  const url = `https://ateliershreenu.com/blog/${post.slug}/`;
+  const url = post.canonicalUrl?.trim() || `https://ateliershreenu.com/blog/${post.slug}/`;
   const images = post.coverImage ? [post.coverImage] : [];
+  const title = post.seoTitle?.trim() || post.title;
+  const description = post.seoDescription?.trim() || post.excerpt;
   return {
-    title: `${post.title} — The Blog`,
-    description: post.excerpt,
-    alternates: { canonical: `/blog/${post.slug}/` },
+    // A custom SEO title is used as-is; the default keeps the " — The Blog" suffix.
+    title: post.seoTitle?.trim() ? { absolute: title } : `${post.title} — The Blog`,
+    description,
+    alternates: { canonical: url },
+    ...(post.noindex ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       type: "article",
       url,
-      title: post.title,
-      description: post.excerpt,
+      title,
+      description,
       images,
     },
     twitter: {
       card: "summary_large_image",
-      title: post.title,
-      description: post.excerpt,
+      title,
+      description,
       images,
     },
   };

@@ -38,7 +38,20 @@ export type Post = {
   updatedAt?: string;
   tags?: string[];
   author?: "ranjeet" | "shreenu";
+  /** SEO overrides — fall back to title / excerpt / own URL when empty. */
+  seoTitle?: string;
+  seoDescription?: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
 };
+
+/** Fields the editor may clear; an empty string removes them from the item. */
+const CLEARABLE_FIELDS = new Set(["seoTitle", "seoDescription", "canonicalUrl"]);
+
+/** Posts that should be listed for search engines and AI crawlers. */
+export function isIndexable(post: Post): boolean {
+  return post.status === "published" && !post.noindex;
+}
 
 export type CreatePostInput = Omit<Post, "postId" | "createdAt">;
 export type UpdatePostInput = Partial<Omit<Post, "postId" | "createdAt">>;
@@ -126,10 +139,13 @@ export async function updatePost(
   if (typeof normalized.slug === "string" && normalized.slug !== "") {
     normalized.slug = normalizeSlug(normalized.slug);
   }
+  const removeKeys = Object.entries(normalized)
+    .filter(([k, v]) => CLEARABLE_FIELDS.has(k) && v === "")
+    .map(([k]) => k);
   const entries = Object.entries(normalized).filter(
     ([, v]) => v !== undefined && v !== ""
   );
-  if (!entries.length) return;
+  if (!entries.length && !removeKeys.length) return;
   normalized.updatedAt = new Date().toISOString();
   entries.push(["updatedAt", normalized.updatedAt]);
 
@@ -137,6 +153,9 @@ export async function updatePost(
   const ExpressionAttributeValues: Record<string, unknown> = {};
   const setParts: string[] = [];
 
+  for (const key of removeKeys) {
+    ExpressionAttributeNames[`#${key}`] = key;
+  }
   for (const [key, value] of entries) {
     ExpressionAttributeNames[`#${key}`] = key;
     ExpressionAttributeValues[`:${key}`] = value;
@@ -147,7 +166,9 @@ export async function updatePost(
     new UpdateCommand({
       TableName: TABLE,
       Key: { postId, createdAt },
-      UpdateExpression: `SET ${setParts.join(", ")}`,
+      UpdateExpression:
+        `SET ${setParts.join(", ")}` +
+        (removeKeys.length ? ` REMOVE ${removeKeys.map((k) => `#${k}`).join(", ")}` : ""),
       ExpressionAttributeNames,
       ExpressionAttributeValues,
     })

@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import CoverImageUploader from "@/components/admin/CoverImageUploader";
 import PostPreview from "@/components/admin/PostPreview";
+import SeoPanel, { emptySeo, type SeoValues } from "@/components/admin/SeoPanel";
 import type { Post } from "@/lib/dynamodb";
 
 const Editor = dynamic(() => import("@/components/admin/Editor"), {
@@ -32,6 +33,7 @@ export default function EditPostPage({
   const [category, setCategory] = useState("");
   const [author, setAuthor] = useState<"ranjeet" | "shreenu">("ranjeet");
   const [status, setStatus] = useState<"draft" | "published">("draft");
+  const [seo, setSeo] = useState<SeoValues>(emptySeo);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [preview, setPreview] = useState(false);
@@ -52,6 +54,12 @@ export default function EditPostPage({
       setCategory(found.tags?.[0] ?? "");
       setAuthor(found.author ?? "ranjeet");
       setStatus(found.status);
+      setSeo({
+        seoTitle: found.seoTitle ?? "",
+        seoDescription: found.seoDescription ?? "",
+        canonicalUrl: found.canonicalUrl ?? "",
+        noindex: found.noindex ?? false,
+      });
     }
     load();
   }, [params.id]);
@@ -73,6 +81,10 @@ export default function EditPostPage({
         coverImage,
         tags: category ? [category] : [],
         author,
+        seoTitle: seo.seoTitle.trim(),
+        seoDescription: seo.seoDescription.trim(),
+        canonicalUrl: seo.canonicalUrl.trim(),
+        noindex: seo.noindex,
         status: statusToSave,
         publishedAt:
           statusToSave === "published"
@@ -213,6 +225,14 @@ export default function EditPostPage({
             className="w-full border border-stone-200 rounded px-3 py-2 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-stone-400"
           />
         </div>
+
+        <SeoPanel
+          value={seo}
+          onChange={setSeo}
+          postTitle={title}
+          excerpt={excerpt}
+          slug={slug}
+        />
 
         <div>
           <label className="block text-xs text-stone-400 mb-2 uppercase tracking-wider">

@@ -1,4 +1,14 @@
-# Atelier Shreenu by The Vrindavan Project
+import { listPublishedPosts, isIndexable } from "@/lib/dynamodb";
+import { filterRedirectedSlugs } from "@/lib/blog-redirects";
+
+// Rebuilt hourly, and immediately whenever a post is saved in the editor
+// (see src/lib/revalidate-site.ts). Edit the static sections below by hand;
+// the Journal list comes from the blog database.
+export const revalidate = 3600;
+
+const SITE_URL = "https://ateliershreenu.com";
+
+const HEAD = `# Atelier Shreenu by The Vrindavan Project
 
 > Design for those who live with intention. Founder-led architecture and interior design in Palam Vihar, Gurugram (Delhi NCR), working across India.
 
@@ -20,17 +30,12 @@ Private homes, farmhouses and heritage buildings in India, especially Delhi NCR 
 - [Press](https://ateliershreenu.com/#press)
 - [From The Vrindavan Project to Atelier Shreenu](https://ateliershreenu.com/blog/the-vrindavan-project-to-atelier-shreenu/): the rename, explained
 - [Blog](https://ateliershreenu.com/blog/): all posts, newest first
+- [Enquiries](https://ateliershreenu.com/#contact)
 - [Sitemap](https://ateliershreenu.com/sitemap.xml): every page and post, updated automatically
 
-## Journal (selected posts)
-- [From The Vrindavan Project to Atelier Shreenu](https://ateliershreenu.com/blog/the-vrindavan-project-to-atelier-shreenu/): why the Gurugram practice founded as The Vrindavan Project in 2012 now works as Atelier Shreenu.
-- [A Living Room](https://ateliershreenu.com/blog/delhi-farmhouse/): the studio's interiors for a 5,000 sq ft holiday home in Chhatarpur, Delhi, built around what the family loves.
-- [Shreenu and Ranjeet Mukherjee — the founders](https://ateliershreenu.com/blog/shreenu-and-ranjeet-mukherjee/): the founders of Atelier Shreenu, their formation and the practice they built.
-- [Shreenu Mukherjee — interior designer and co-founder](https://ateliershreenu.com/blog/shreenu-mukherjee-interior-designer-and-co-founder-of-atelier-shreenu/): profile of Shreenu Mukherjee, co-founder and interior designer at Atelier Shreenu.
-- [How to choose a farmhouse architect near Delhi](https://ateliershreenu.com/blog/how-to-choose-a-farmhouse-architect-near-delhi/): a practical guide for owners commissioning a farmhouse in Delhi NCR and surrounding areas.
-- [Enquiries](https://ateliershreenu.com/#contact)
+`;
 
-## Studio
+const TAIL = `## Studio
 - Location: Celebrity Homes, Palam Vihar, Gurugram, Haryana 122017, India (by appointment)
 - Email: info@ateliershreenu.com
 - Website: https://ateliershreenu.com/
@@ -46,3 +51,36 @@ Published work under the name The Vrindavan Project includes the Jammu House (Ar
 ## Brand
 - Tagline: Design for those who live with intention.
 - Pillars: Material Excellence, Design Clarity, Quiet Authority, Timeless Intention.
+`;
+
+function oneLine(s: string): string {
+  return s.replace(/\s+/g, " ").trim();
+}
+
+export async function GET() {
+  const posts = filterRedirectedSlugs(
+    await listPublishedPosts().catch(() => [])
+  ).filter(isIndexable);
+
+  const journal = posts
+    .map((post) => {
+      const summary = oneLine(post.seoDescription || post.excerpt || "");
+      const link = `- [${oneLine(post.title)}](${SITE_URL}/blog/${post.slug}/)`;
+      return summary ? `${link}: ${summary}` : link;
+    })
+    .join("\n");
+
+  const body =
+    HEAD +
+    "## Journal (newest first)\n" +
+    (journal || `- [Blog](${SITE_URL}/blog/)`) +
+    "\n\n" +
+    TAIL;
+
+  return new Response(body, {
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+    },
+  });
+}

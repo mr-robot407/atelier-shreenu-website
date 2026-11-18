@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { updatePost, deletePost } from "@/lib/dynamodb";
 import { requireAuth } from "@/lib/auth";
+import { revalidateBlogSurfaces } from "@/lib/revalidate-site";
 
 export async function PUT(
   req: NextRequest,
@@ -11,6 +12,7 @@ export async function PUT(
     const body = await req.json();
     const { createdAt, ...updates } = body;
     await updatePost(params.id, createdAt, updates);
+    revalidateBlogSurfaces();
     return NextResponse.json({ ok: true });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Error";
@@ -28,6 +30,7 @@ export async function DELETE(
     await requireAuth();
     const { createdAt } = await req.json();
     await deletePost(params.id, createdAt);
+    revalidateBlogSurfaces();
     return NextResponse.json({ ok: true });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "Error";
